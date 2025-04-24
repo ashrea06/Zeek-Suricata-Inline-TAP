@@ -24,8 +24,8 @@ Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Serve
 
 # Let's install the "OpenSSH Server" to begin with on the Kali Machine : 
 
-
-    $ sudo apt-get install  openssh-server
+````
+ $ sudo apt-get install  openssh-server
 
 Reading package lists... Done
 Building dependency tree... Done
@@ -40,7 +40,7 @@ The following packages were automatically installed and are no longer required:
   python3-speaklater python3-sphinx python3.10 python3.10-dev python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc sphinx-common
 Use 'sudo apt autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 283 not upgraded.
-
+````
 
 
 - Importantly, the interface through which our "NIDS" would be connected, would not have any sort of liaison with it, in other words, this would not produce any "ARP" tables and neither any routing tables under the NIDS.
@@ -58,10 +58,12 @@ At last, just make sure to ocnfigure the "2 interfaces" :
 
 # Try the below to allow the "promisc mode" on the interface eth1 : 
             
+
+````
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
 
 └─# sudo ip link set eth1  promisc on        
-
+````
 
 
 - eth3 ; bridge adapter(COnnected to the "Wifi Adapter" from the Windows Host Machine)
@@ -74,8 +76,7 @@ At last, just make sure to ocnfigure the "2 interfaces" :
 
 
                                                                                 ************//////////// Configuring the Open-SSH Server + Enable Root Login ///////////********
-                                                                        
-
+                                                        
 
  # To sumarize, our OpenSSH Server would need both an "id_rsa key" to allow for an "initial authentication with the Server" during the "3-way handshake mechanism", and still very much requires for an "ssh_host_* key" to encrypt the communication between both "client and server end". 
 
@@ -85,14 +86,15 @@ At last, just make sure to ocnfigure the "2 interfaces" :
 
 - Let's make use of "dpkg", command  to check if the OpenSSH-Server has been properly installed : 
 
-
+````
         $ dpkg  -s  openssh-server
-
+````
 
  # We may as well use the following  : 
 
+````
       $ dpkg -l  | grep openssh-server
-
+````
 
 
 # In order to access the "SSH Server", we would also need the a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"  ; 
@@ -101,6 +103,7 @@ At last, just make sure to ocnfigure the "2 interfaces" :
 
 - Let's take a look : 
 
+````
 ┌──(root㉿kali)-[/home/kali]
 
 └─# ls -larh /etc/ssh     
@@ -116,14 +119,20 @@ total 624K
 -rw-r--r--   1 root root 1.0K Apr 30 22:58 .sshd_config.swp
 drwxr-xr-x   2 root root 4.0K Oct 16  2022 sshd_config.d
 
-* ---> ----rw-r--r--   1 root root 3.2K Mar 25 14:37 sshd_config
+````
 
+
+````
+* ---> ----rw-r--r--   1 root root 3.2K Mar 25 14:37 sshd_config
+````
+
+````
 drwxr-xr-x   2 root root 4.0K Oct 16  2022 ssh_config.d
 -rw-r--r--   1 root root 1.7K Oct 16  2022 ssh_config
 -rw-r--r--   1 root root 561K Feb  8 05:43 moduli
 drwxr-xr-x 193 root root  12K Apr 30 22:48 ..
 drwxr-xr-x   4 root root 4.0K Apr 30 22:58 .
-
+````
 
 # Let's carry some modification on the file, sshd_config in order to enable `root login`, however this is only to be deployed on a `development server`, never on a `production server` !!
 
