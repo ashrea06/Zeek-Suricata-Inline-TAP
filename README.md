@@ -75,9 +75,6 @@ Use 'sudo apt autoremove' to remove them.
 ┌──(osint㉿tlosint)-[~]
 
 └─$ sudo ip addr add 192.168.2.80/24 dev eth0
-
-[sudo] password for osint:
-
 ```
 
 
@@ -108,7 +105,7 @@ So we started with statically assigning ann IP address to the our bridge adapate
 
 
 
-> - let's start with adding the default route for our bridge adapter : 
+> let's start with adding the default route for our bridge adapter : 
 
 
 ```
