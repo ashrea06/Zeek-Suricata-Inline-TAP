@@ -5,7 +5,11 @@
 
  In this tutorial we`ll be building a Home Lab, using Zeek NIDs + FileBeat Input Agent(Written in Golang Programming Language) + Connected to an output Elastic Search.Specifically our NIDS Server, will have "two" separate "interfaces", one of which will be connected to a "Private Network", whilst the other one will be connected to the "NIDS Management Network" where it will also be sending "Log information". 
 
-## Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server". 
+
+
+
+
+- Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server". 
 
 
 
