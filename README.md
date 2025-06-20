@@ -209,13 +209,13 @@ Include /etc/ssh/sshd_config.d/*.conf
 > Let's enable "PermitRootLogin", to "yes" instead of "prohibit-password". 
 
 
-- Ensure that these are confgiured as required  : 
+> - Ensure that these are confgiured as required  : 
 
-LoginGraceTime 2m
-PermitRootLogin yes        # ← changed this from prohibit-password to yes
-StrictModes yes
-MaxAuthTries 6
-MaxSessions 10
+> - LoginGraceTime 2m
+> - PermitRootLogin yes        # ← changed this from prohibit-password to yes
+> - StrictModes yes
+> - MaxAuthTries 6
+> - MaxSessions 10
 
 
 
