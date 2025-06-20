@@ -38,14 +38,14 @@ Use 'sudo apt autoremove' to remove them.
 > For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS
 
 
-> _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
+[^1]: _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
 
 - eth1 ; Host-only Adapter (No Ip Address, contained network with promisc mode enabled
 * eth3 ; Bridge Adapter( Connected to the "Wifi Adapter" from the Windows Host Machine)
 
 
 
->_Try the below to allow the "promisc mode" on the interface eth1_:
+[^2]: _Try the below to allow the "promisc mode" on the interface eth1_:
              
 ```
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
