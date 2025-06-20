@@ -110,15 +110,16 @@ drwxr-xr-x 193 root root  12K Apr 30 22:48 ..
 drwxr-xr-x   4 root root 4.0K Apr 30 22:58 .
 ````
 
-# Let's carry some modification on the file, sshd_config in order to enable `root login`, however this is only to be deployed on a `development server`, never on a `production server` !!
 
 
+> [!WARNING]
+> Important : Since we need to enable `root login` on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server.
 
 
+> ^1 Enable the `ssh` service : 
 
-# Enable the `ssh` service : 
 
-
+```
 ┌──(root㉿kali)-[~]
 
 └─# systemctl enable ssh
@@ -128,14 +129,13 @@ Synchronizing state of ssh.service with SysV service script with /lib/systemd/sy
 Executing: /lib/systemd/systemd-sysv-install enable ssh
 Created symlink /etc/systemd/system/sshd.service → /lib/systemd/system/ssh.service.
 Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib/systemd/system/ssh.service.
+```
 
 
+> - Ensure that the `root password` has been set correctly, or try to set up a "new one" if needed :
 
-# Make sure that the `root password` has been set correctly, or try to set up a "new one" if needed :
-
-
+```
     $ sudo -i 
-
 
 ┏━(Message from Kali developers)
 ┃
@@ -145,10 +145,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib
 ┃
 ┗━(Run: “touch ~/.hushlogin” to hide this message)
 
+```
 
 
 
-# Modifying the `password` : 
+Modifying the `password` : 
 
     $ passwd 
 
