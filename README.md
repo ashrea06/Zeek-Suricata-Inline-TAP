@@ -281,19 +281,11 @@ Include /etc/ssh/sshd_config.d/*.conf
 #ListenAddress ::
 
 ```
+> - Uncomment the "#port 22", and update this to "port number to 65328" : 
 
 
-> - Uncomment the `# port 22`, and replace the latter : 
-
-
-
-..................................................................
-
-  GNU nano 7.2                   /etc/ssh/sshd_config 
-
-
-# This is the sshd server system-wide configuration file.  See
-# sshd_config(5) for more information.
+```
+  GNU nano 8.3                                         sshd_config
 
 # This sshd was compiled with PATH=/usr/local/bin:/usr/bin:/bin:/usr/games
 
@@ -304,18 +296,35 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 Include /etc/ssh/sshd_config.d/*.conf
 
->>>>>>>>
->>>>>>
->>>>
-
-# From here, `uncomment` and add a `New Port Number` >>>>>>>>>> Port 65288
-
+Port 65328
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
 
-....................................................................
+# Ciphers and keying
+#RekeyLimit default none
+
+# Logging
+#SyslogFacility AUTH
+#LogLevel INFO
+
+# Authentication:
+
+#LoginGraceTime 2m
+#PermitRootLogin prohibit-password
+#StrictModes yes
+#MaxAuthTries 6
+#MaxSessions 10
+
+#PubkeyAuthentication yes
+```
+
+
+
 
 
 # Let's observe the `networking side` of thing : 
