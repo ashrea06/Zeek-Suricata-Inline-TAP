@@ -1,21 +1,12 @@
 
-# ***Zeek NIDS with (Server OpenSSH Server) - Network Intrusion Detection System(Integrating "Suricata" rules similar to "Snort" rules)***
-
-
+# ***Zeek NIDS with OpenSSH Server - Network Intrusion Detection System(Integrating "Suricata" rules similar to "Snort" rules)***
 
 
 > - In this tutorial we`ll be building a Home Lab, using Zeek NIDs + FileBeat Input Agent(Written in Golang Programming Language) + Connected to an output Elastic Search.Specifically our NIDS Server, will have "two" separate "interfaces", one of which will be connected to a "Private Network", whilst the other one will be connected to the "NIDS Management Network" where it will also be sending "Log information". 
 
 
-
-
-
 > [!TIP]
-> Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server". 
-
-
-
-
+> Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server".
 
 
 _Let's install the "OpenSSH Server" to begin with on the Kali Machine_: 
@@ -55,10 +46,9 @@ Use 'sudo apt autoremove' to remove them.
 
 
 
-
-- Try the below to allow the "promisc mode" on the interface eth1 : 
+- Try the below to allow the "promisc mode" on the interface eth1 :
+  
             
-
 ```
 
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
