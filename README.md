@@ -20,7 +20,7 @@
 
 _Let's install the "OpenSSH Server" to begin with on the Kali Machine_: 
 
-```bash
+```
  $ sudo apt-get install  openssh-server
 
 Reading package lists... Done
@@ -36,7 +36,6 @@ The following packages were automatically installed and are no longer required:
   python3-speaklater python3-sphinx python3.10 python3.10-dev python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc sphinx-common
 Use 'sudo apt autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 283 not upgraded.
-
 ```
 
 
