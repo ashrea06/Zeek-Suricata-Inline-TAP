@@ -97,7 +97,7 @@ total 624K
 drwxr-xr-x   2 root root 4.0K Oct 16  2022 sshd_config.d
 ```
 
-> - _This is available !_ 
+> - _Great this is available !_ 
 ````
 * ---> ----rw-r--r--   1 root root 3.2K Mar 25 14:37 sshd_config
 ````
