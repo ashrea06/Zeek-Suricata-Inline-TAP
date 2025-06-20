@@ -50,8 +50,8 @@ Use 'sudo apt autoremove' to remove them.
 
 > _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
 
-- eth1 ; Host-only Adapter( No Ip Address, contained network with promisc mode enabled
-* eth3 ; bridge adapter(COnnected to the "Wifi Adapter" from the Windows Host Machine)
+- eth1 ; Host-only Adapter (No Ip Address, contained network with promisc mode enabled
+* eth3 ; Bridge Adapter( Connected to the "Wifi Adapter" from the Windows Host Machine)
 
 
 
@@ -64,10 +64,6 @@ Use 'sudo apt autoremove' to remove them.
 └─# sudo ip link set eth1  promisc on
 
 ````
-
-
-- eth3 ; bridge adapter(COnnected to the "Wifi Adapter" from the Windows Host Machine)
-
 
 
 
