@@ -198,7 +198,6 @@ Include /etc/ssh/sshd_config.d/*.conf
 > [!IMPORTANT]
 > We want to primarily tweak some of the options under "Authentication". 
 
-
 > - #LoginGraceTime 2m
 > - #PermitRootLogin prohibit-password
 > - #StrictModes yes
@@ -206,7 +205,9 @@ Include /etc/ssh/sshd_config.d/*.conf
 > - #MaxSessions 10
 
 
->  Ensure that these are confgiured as required  : 
+
+> [!NOTE]
+>  Ensure that these are confgiured as required : 
 
 > - LoginGraceTime 2m
 > - PermitRootLogin yes        # ← changed this from prohibit-password to yes
@@ -217,7 +218,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 
-# Once we have exited out of the file, and properly saved the "new applied settings", we're then good to restart the "ssh service" : 
+> -  _"Restart the "ssh service"_ : 
 
       $ service ssh restart 
 
