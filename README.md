@@ -9,8 +9,11 @@
 
 
 
+
 > [!TIP]
 > Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server". 
+
+
 
 
 
