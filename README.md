@@ -112,6 +112,17 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 ```
 
+
+> "Reset" the "interface" before "reassigning a new static IP address": 
+
+
+┌──(osint㉿tlosint)-[~]
+
+└─$ sudo ip addr flush dev eth2
+
+
+
+
 > _Let's add our default route for our bridge adapter_:
 
 ```
@@ -126,6 +137,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 > _Verify our default route_: 
 
 ```
+
 ┌──(osint㉿tlosint)-[~]
 
 └─$ ip route show
@@ -133,6 +145,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 default via 192.168.2.1 dev eth0
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
+
  ```
 
 
@@ -161,7 +174,7 @@ $ dpkg -l  | grep openssh-server
 > _In order to access the "SSH Server", we would also need a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"._ 
 
 
-> - _Let's take verify if this is present_: 
+> _Let's verify if this is present_:
 
 ```
 ┌──(root㉿kali)-[/home/kali]
