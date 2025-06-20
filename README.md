@@ -31,6 +31,8 @@ The following packages were automatically installed and are no longer required:
 Use 'sudo apt autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 283 not upgraded.
 
+```
+
 
 - Importantly, the interface through which our "NIDS" would be connected, would not have any sort of liaison with it, in other words, this would not produce any "ARP" tables and neither any routing tables under the NIDS.
 
