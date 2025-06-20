@@ -27,7 +27,6 @@ The following packages were automatically installed and are no longer required:
   python3-speaklater python3-sphinx python3.10 python3.10-dev python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc sphinx-common
 Use 'sudo apt autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 283 not upgraded.
-
 ```
 
 
@@ -56,7 +55,6 @@ Use 'sudo apt autoremove' to remove them.
 ┌──(root㉿kali)-[/home/kali]
                                                                                   
 └─# sudo ip link set eth0  promisc on up
-
 ````
 
 > [!IMPORTANT]
@@ -109,12 +107,10 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 ┌──(osint㉿tlosint)-[~]
 
 └─$ sudo ip route del default
-
 ```
 
 
 > "Reset" the "interface" before "reassigning a new static IP address": 
-
 
 ┌──(osint㉿tlosint)-[~]
 
@@ -133,11 +129,9 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 
 
-
 > _Verify our default route_: 
 
 ```
-
 ┌──(osint㉿tlosint)-[~]
 
 └─$ ip route show
@@ -145,7 +139,6 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 default via 192.168.2.1 dev eth0
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
-
  ```
 
 
@@ -193,7 +186,8 @@ total 624K
 drwxr-xr-x   2 root root 4.0K Oct 16  2022 sshd_config.d
 ```
 
-> - _Great this is available !_ 
+> - _Great this is available !_
+
 ````
 * ---> ----rw-r--r--   1 root root 3.2K Mar 25 14:37 sshd_config
 ````
@@ -209,10 +203,10 @@ drwxr-xr-x   4 root root 4.0K Apr 30 22:58 .
 
 
 > [!WARNING]
-> _Important : Since we need to enable `root login` on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server._
+> _Important : Since we need to enable root login on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server._
 
 
-> - Enable the `ssh` service : 
+> - Enable the ssh service : 
 
 
 ```
