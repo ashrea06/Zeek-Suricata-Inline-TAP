@@ -217,7 +217,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 
-> -  _"Restart the "ssh service"_ : 
+> _"Restart the "ssh service"_ : 
 
 ```
       $ service ssh restart 
@@ -225,7 +225,8 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 
-- Let's check if the "Server" is listening at port 22 :
+
+> _Verify that the "SSH Server" is listening at "port 22"_ :
 
 
 ┌──(root㉿kali)-[/home/kali]                                           
