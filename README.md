@@ -192,17 +192,19 @@ Include /etc/ssh/sshd_config.d/*.conf
 # Logging
 #SyslogFacility AUTH
 #LogLevel INFO
+
 ```
 
-
-
-
-> [!TIP]
+> [!IMPORTANT]
 > We want to primarily tweak some of the options under "Authentication". 
 
-> - Authentication
 
-> - LoginGraceTime 2m
+> - #LoginGraceTime 2m
+> - #PermitRootLogin prohibit-password
+> - #StrictModes yes
+> - #MaxAuthTries 6
+> - #MaxSessions 10
+
 
 
 - Let's enable "PermitRootLogin", to "yes", rather than what it is "currently" set to :  prohibit-password 
@@ -213,7 +215,10 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 
+> - Ensure that these are confgiured as required  : 
 
+
+LoginGraceTime 2m
 # StrictModes yes
 # MaxAuthTries 6
 # MaxSessions 10 
