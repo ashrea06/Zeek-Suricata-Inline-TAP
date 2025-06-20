@@ -10,7 +10,7 @@
 
 
 
-__Let's install the "OpenSSH Server" to begin with on the Kali Machine __ : 
+_Let's install the "OpenSSH Server" to begin with on the Kali Machine_: 
 
 ```bash
  $ sudo apt-get install  openssh-server
