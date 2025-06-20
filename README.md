@@ -70,7 +70,7 @@ Use 'sudo apt autoremove' to remove them.
 
 
 
-   ***#Configuring the Open-SSH Server + Enable Root Login***
+***##Configuring the Open-SSH Server + Enable Root Login***
    
 
  # To sumarize, our OpenSSH Server would need both an "id_rsa key" to allow for an "initial authentication with the Server" during the "3-way handshake mechanism", and still very much requires for an "ssh_host_* key" to encrypt the communication between both "client and server end". 
