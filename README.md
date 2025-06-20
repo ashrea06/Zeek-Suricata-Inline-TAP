@@ -57,7 +57,7 @@ Use 'sudo apt autoremove' to remove them.
 # Try the below to allow the "promisc mode" on the interface eth1 : 
             
 
-```bash
+```
 
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
 └─# sudo ip link set eth1  promisc on
