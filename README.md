@@ -39,12 +39,101 @@ Use 'sudo apt autoremove' to remove them.
 
 
 
-> [!NOTE]
-> _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
 
-- eth1 ; Host-only Adapter (No Ip Address, contained network with promisc mode enabled
+[!NOTE]
+> We are configuring two VM network interfaces:
+
+- eth0 – Bridged Adapter (stealth, no IP, promiscuous mode on)
+- eth2 – Host‑only Adapter (management, gets an IP, normal routing)
+
+
+
+
+> _We require "Zeek" to listen to all "traffic on the bridged interface", hence we musst enable promiscuous mode on the "interface eth0"_:         
+
+
+````
+┌──(root㉿kali)-[/home/kali]
+                                                                                  
+└─# sudo ip link set eth0  promisc on up
+````
+
+> [!IMPORTANT]
+> This setup was achieved through a VMware’s bridged NIC adapater, as we did not readily obtain a DHCP lease (IP address), so we had to assign a static IP address to the interface eth0.
+
+
+> - Assign a Static IP aadress to eth0 :  
+
+```
+┌──(osint㉿tlosint)-[~]
+
+└─$ sudo ip addr add 192.168.2.80/24 dev eth0
+
+[sudo] password for osint:
+
+```
+
+> [!WARNING]
+> The bridge adapater did not boot up with an IP address ddynamically assigned to it, so we had to assign one statically assigned to its interface.
+
+
+Kknwoing from fact that we're this setup is beig done wireless , which means that my bridge adapter is connected to the wireless interface of my Windows host machine, and the local IP of my router follows a Class C "private address 192.168.2.x"
+
+
+ So we started with statically assigning ann IP address to the our bridge adapater, and at the same time , we createa default route whcih will allow our bridge addapter is able to communicate and route any exiting traffic via the 192.168.2.0/24 default route address. 
+
+
+
+
+
+> - let's start with adding the default route for our bridge adapter : 
+
+
+```
+┌──(osint㉿tlosint)-[~]
+
+
+└─$ sudo ip route add default via 192.168.2.1 dev eth0
+
+```
+
+
+
+```
+┌──(osint㉿tlosint)-[~]
+
+
+└─$ ip route show
+default via 192.168.2.1 dev eth0
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
+
+ ```
+
+
+
+
+┌──(osint㉿tlosint)-[~]
+
+
+└─$ ip route show
+
+default via 192.168.2.1 dev eth0
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
+
+
+
+
+
+
+
+- eth0 ; Host-only Adapter (No Ip Address, contained network with promisc mode enabled
 * eth3 ; Bridge Adapter( Connected to the "Wifi Adapter" from the Windows Host Machine)
 
+
+
+Note : Distinguishing between the bridge adapater and the 
 
 > _Try the below to allow the "promisc mode" on the interface eth1_:         
 ````
@@ -163,9 +252,9 @@ $ passwd
 $ nano /etc/ssh/sshd_config 
 ```
 
+
 ```
 
-{
   GNU nano 7.2                                                  /etc/ssh/sshd_config                                                           
 
 # This sshd was compiled with PATH=/usr/local/bin:/usr/bin:/bin:/usr/games
@@ -192,7 +281,6 @@ Include /etc/ssh/sshd_config.d/*.conf
 # Logging
 #SyslogFacility AUTH
 #LogLevel INFO
-
 ```
 
 > [!IMPORTANT]
@@ -314,55 +402,16 @@ Port 65328
 
 # Authentication:
 
-#LoginGraceTime 2m
-#PermitRootLogin prohibit-password
-#StrictModes yes
-#MaxAuthTries 6
-#MaxSessions 10
+LoginGraceTime 2m
+PermitRootLogin prohibit-password
+StrictModes yes
+MaxAuthTries 6
+MaxSessions 10
 
 #PubkeyAuthentication yes
 ```
 
 
-
-
-
-# Let's observe the `networking side` of thing : 
-
-
-
-
-
-
-# As soon as we `changed`, the `default port : 22`  to a different one, from command prompt we would not be able to `connect` to the existing `port 22` ...
-
-
-
-C:\WINDOWS\system32> ssh root@192.168.2.18
-
->>>>>>>>>
->>>>>>>  ssh: connect to host 192.168.2.18 port 22: Connection refused
-
-
-┌──(root㉿kali)-[~]
-
-└─# ss -lntp 
-
-State      Recv-Q      Send-Q           Local Address:Port            Peer Address:Port     Process                                         
-LISTEN     0           4096                 127.0.0.1:38531                0.0.0.0:*         users:(("containerd",pid=867,fd=8))            
-LISTEN     0           4096                 127.0.0.1:8889                 0.0.0.0:*         users:(("velociraptor.bi",pid=1089,fd=54))     
-LISTEN     0           4096                 127.0.0.1:8003                 0.0.0.0:*         users:(("velociraptor.bi",pid=1089,fd=52))     
-LISTEN     0           4096                 127.0.0.1:8001                 0.0.0.0:*         users:(("velociraptor.bi",pid=1089,fd=51))     
-
->>>>>>>>>> # Check the below, how the `Local port` has been changed from `port 22` : 
->>>>>>>
->>>
->>>>> LISTEN     0           128                    0.0.0.0:6748                 0.0.0.0:*         users:(("sshd",pid=66617,
-
-
-fd=3))                
-LISTEN     0           128                       [::]:6528                    [::]:*         users:(("sshd",pid=66617,fd=4))                
-LISTEN     0           4096                         *:8000                       *:*         users:(("velociraptor.bi",pid=1089,fd=55))     
 
 
 
