@@ -75,12 +75,12 @@ $ dpkg -l  | grep openssh-server
 
 
 > [!TIP]
-> _In order to access the "SSH Server", we would also need a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"_ ; 
+> _In order to access the "SSH Server", we would also need a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"._ 
 
 
-> - Let's take verify if this is present: 
+> - _Let's take verify if this is present_: 
 
-````
+```
 ┌──(root㉿kali)-[/home/kali]
 
 └─# ls -larh /etc/ssh     
@@ -95,10 +95,9 @@ total 624K
 -rw-------   1 root root  505 Apr 21 15:35 ssh_host_ecdsa_key
 -rw-r--r--   1 root root 1.0K Apr 30 22:58 .sshd_config.swp
 drwxr-xr-x   2 root root 4.0K Oct 16  2022 sshd_config.d
+```
 
-````
-
-
+> - _This is available !_ 
 ````
 * ---> ----rw-r--r--   1 root root 3.2K Mar 25 14:37 sshd_config
 ````
