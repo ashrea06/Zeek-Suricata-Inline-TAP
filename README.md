@@ -97,11 +97,20 @@ Use 'sudo apt autoremove' to remove them.
 
 > [!NOTE]
 > Since this setup operates over a wireless connection, the bridged adapter on the VM is connected to the wireless interface of the Windows host machine. The local network is configured within the 192.168.2.0/24 Class C private IP range, and the router's gateway address is typically 192.168.2.1.
-Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80—to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
+Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80 to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
 
 
 
 
+
+> As a good practice before proceeding with this lab, ensure that you remove any existing or conflicting default routes prior to adding new ones:
+
+```
+┌──(osint㉿tlosint)-[~]
+
+└─$ sudo ip route del default
+
+```
 
 > _Let's add our default route for our bridge adapter_:
 
@@ -124,7 +133,6 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 default via 192.168.2.1 dev eth0
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
-
  ```
 
 
@@ -132,7 +140,7 @@ default via 192.168.2.1 dev eth0
 # ***Configuring the Open-SSH Server + Enable Root Login***
    
 
-> - To sumarize, our OpenSSH Server would need both an "id_rsa key" to allow for an "initial authentication with the Server" during the "3-way handshake mechanism", and still very much requires for an "ssh_host_* key" to encrypt the communication between both "client and server end". 
+> - To summarize, our OpenSSH Server would need both an "id_rsa key" to allow for an "initial authentication with the Server" during the "3-way handshake mechanism", and still very much requires for an "ssh_host_* key" to encrypt the communication between both "client and server end". 
 
 
 > [!TIP]
