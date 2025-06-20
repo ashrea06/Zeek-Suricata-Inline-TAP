@@ -198,10 +198,9 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 > [!TIP]
-
 > We want to primarily tweak some of the options under "Authentication". 
 
-> - Authentication:
+> - Authentication
 
 > - LoginGraceTime 2m
 
