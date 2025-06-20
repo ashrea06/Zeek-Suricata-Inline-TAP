@@ -36,34 +36,40 @@ Use 'sudo apt autoremove' to remove them.
 
 
 > [!CAUTION]
-> For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS
+> For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS.
 
 
 
 
-[!NOTE]
-> We are configuring two VM network interfaces:
+> [!NOTE]
+> We are configuring two network interfaces inside our Kali Linux VM for use with Zeek:
 
-- eth0 – Bridged Adapter (stealth, no IP, promiscuous mode on)
-- eth2 – Host‑only Adapter (management, gets an IP, normal routing)
-
-
+> - eth0 – Bridged Adapter (used as a stealth sniffing interface, in promiscuous mode, no IP assigned)
+> - eth2 – Host‑only Adapter (used for management and internet access if required; assigned an IP automatically or manually)
 
 
-> _We require "Zeek" to listen to all "traffic on the bridged interface", hence we musst enable promiscuous mode on the "interface eth0"_:         
+
+> _We require "Zeek" to listen to all "traffic on the bridged interface", hence we must enable promiscuous mode on the "interface eth0"_:         
 
 
 ````
 ┌──(root㉿kali)-[/home/kali]
                                                                                   
 └─# sudo ip link set eth0  promisc on up
+
 ````
 
 > [!IMPORTANT]
-> This setup was achieved through a VMware’s bridged NIC adapater, as we did not readily obtain a DHCP lease (IP address), so we had to assign a static IP address to the interface eth0.
+> eth0 (Bridged Adapter) 
+> Understanding Interface roles and visibility
+
+> - The eth0 (bridged) interface is used purely for passive monitoring.
+> - It  performs no acive communication.
+> - It does not generate ARP traffic or populate routing tables.
+> - This ensures the interface remains invisible and non-interactive on the network, avoiding detection by an attacker.
 
 
-> - Assign a Static IP aadress to eth0 :  
+> Assign a Static IP aadress to eth0 :  
 
 ```
 ┌──(osint㉿tlosint)-[~]
@@ -74,14 +80,29 @@ Use 'sudo apt autoremove' to remove them.
 
 ```
 
-> [!WARNING]
-> The bridge adapater did not boot up with an IP address ddynamically assigned to it, so we had to assign one statically assigned to its interface.
 
 
-Kknwoing from fact that we're this setup is beig done wireless , which means that my bridge adapter is connected to the wireless interface of my Windows host machine, and the local IP of my router follows a Class C "private address 192.168.2.x"
+> [!IMPORTANT]
+> eth2 (Host-only Adapter)
+> The eth2 interface uses  VMware's host-only network. This allows communication between the guest VM and the host machine and this interface does have an IP address (e.g., 192.168.233.132)
+
+> It can be used for management tasks like: SSH access
+> - File transfer
+> - Package updates (if NAT is enabled on the host)
 
 
- So we started with statically assigning ann IP address to the our bridge adapater, and at the same time , we createa default route whcih will allow our bridge addapter is able to communicate and route any exiting traffic via the 192.168.2.0/24 default route address. 
+
+
+
+
+
+
+
+
+Kwoing from fact that we're this setup is beig done wireless , which means that my bridge adapter is connected to the wireless interface of my Windows host machine, and the local IP of my router follows a Class C "private address 192.168.2.x"
+
+So we started with statically assigning ann IP address to the our bridge adapater, and at the same time , we create a default route whcih will allow our bridge addapter is able to communicate and route any exiting traffic via the 192.168.2.0/24 default route address. 
+
 
 
 
@@ -101,9 +122,11 @@ Kknwoing from fact that we're this setup is beig done wireless , which means tha
 ┌──(osint㉿tlosint)-[~]
 
 └─$ ip route show
+
 default via 192.168.2.1 dev eth0
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
+
  ```
 
 
