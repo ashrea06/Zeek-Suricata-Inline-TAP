@@ -58,19 +58,19 @@ Use 'sudo apt autoremove' to remove them.
 > - To sumarize, our OpenSSH Server would need both an "id_rsa key" to allow for an "initial authentication with the Server" during the "3-way handshake mechanism", and still very much requires for an "ssh_host_* key" to encrypt the communication between both "client and server end". 
 
 
-
+> [!TIP]
 > _Ensure that OpenSSH-Server has been properly install and configured_: 
-
 
 ```
         $ dpkg  -s  openssh-server
 ```
 
- # We may as well use the following  : 
-
-````
+```
       $ dpkg -l  | grep openssh-server
-````
+```
+
+
+
 
 
 # In order to access the "SSH Server", we would also need the a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"  ; 
