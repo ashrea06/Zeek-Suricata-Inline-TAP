@@ -48,11 +48,12 @@ Use 'sudo apt autoremove' to remove them.
 > For security reason : We do not want to alarm or raise awareeness of an attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS
 
 
+> _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
 
-> Here onfigure the "2 interfaces" :In my case, we'll be using the following two interfces : 
+- eth1 ; Host-only Adapter( No Ip Address, contained network with promisc mode enabled
+* eth3 ; bridge adapter(COnnected to the "Wifi Adapter" from the Windows Host Machine)
 
 
-- eth1 ; Host-only Adapter( No Ip Address, contained network with promisc mode enabled  : )
 
 # Try the below to allow the "promisc mode" on the interface eth1 : 
             
