@@ -64,22 +64,21 @@ Use 'sudo apt autoremove' to remove them.
 > _Ensure that OpenSSH-Server has been properly install and configured_: 
 
 ```
-        $ dpkg  -s  openssh-server
+$ dpkg  -s  openssh-server
 ```
 
 ```
-      $ dpkg -l  | grep openssh-server
+$ dpkg -l  | grep openssh-server
 ```
 
 
 
 
+> [!TIP]
+> _In order to access the "SSH Server", we would also need a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"_ ; 
 
-# In order to access the "SSH Server", we would also need the a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"  ; 
 
-
-
-- Let's take a look : 
+> - Let's take verify if this is present: 
 
 ````
 ┌──(root㉿kali)-[/home/kali]
