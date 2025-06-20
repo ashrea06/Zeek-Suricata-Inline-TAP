@@ -27,6 +27,7 @@ The following packages were automatically installed and are no longer required:
   python3-speaklater python3-sphinx python3.10 python3.10-dev python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc sphinx-common
 Use 'sudo apt autoremove' to remove them.
 0 upgraded, 0 newly installed, 0 to remove and 283 not upgraded.
+
 ```
 
 
@@ -92,38 +93,18 @@ Kknwoing from fact that we're this setup is beig done wireless , which means tha
 ```
 ┌──(osint㉿tlosint)-[~]
 
-
 └─$ sudo ip route add default via 192.168.2.1 dev eth0
-
 ```
-
 
 
 ```
 ┌──(osint㉿tlosint)-[~]
 
-
 └─$ ip route show
 default via 192.168.2.1 dev eth0
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
-
  ```
-
-
-
-
-┌──(osint㉿tlosint)-[~]
-
-
-└─$ ip route show
-
-default via 192.168.2.1 dev eth0
-172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
-192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
-
-
-
 
 
 
