@@ -81,7 +81,8 @@ Use 'sudo apt autoremove' to remove them.
 
 > [!IMPORTANT]
 > eth2 (Host-only Adapter)
-> The eth2 interface uses  VMware's host-only network. This allows communication between the guest VM and the host machine and this interface does have an IP address (e.g., 192.168.233.132)
+
+> The eth2 interface uses VMware's host-only network. This allows communication between the guest VM and the host machine and this interface does have an IP address (e.g., 192.168.233.132)
 
 > It can be used for management tasks like: SSH access
 > - File transfer
@@ -92,13 +93,11 @@ Use 'sudo apt autoremove' to remove them.
 
 
 
+> [!NOTE]
+> Since this setup operates over a wireless connection, the bridged adapter on the VM is connected to the wireless interface of the Windows host machine. The local network is configured within the 192.168.2.0/24 Class C private IP range, and the router's gateway address is typically 192.168.2.1.
 
+> Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80—to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
 
-
-
-Kwoing from fact that we're this setup is beig done wireless , which means that my bridge adapter is connected to the wireless interface of my Windows host machine, and the local IP of my router follows a Class C "private address 192.168.2.x"
-
-So we started with statically assigning ann IP address to the our bridge adapater, and at the same time , we create a default route whcih will allow our bridge addapter is able to communicate and route any exiting traffic via the 192.168.2.0/24 default route address. 
 
 
 
