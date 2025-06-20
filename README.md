@@ -94,7 +94,8 @@ Use 'sudo apt autoremove' to remove them.
 
 
 > [!NOTE]
-> Since this setup operates over a wireless connection, the bridged adapter on the VM is connected to the wireless interface of the Windows host machine. The local network is configured within the 192.168.2.0/24 Class C private IP range, and the router's gateway address is typically 192.168.2.1. Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80—to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
+> Since this setup operates over a wireless connection, the bridged adapter on the VM is connected to the wireless interface of the Windows host machine. The local network is configured within the 192.168.2.0/24 Class C private IP range, and the router's gateway address is typically 192.168.2.1.
+Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80—to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
 
 
 
@@ -133,7 +134,8 @@ default via 192.168.2.1 dev eth0
 
 Note : Distinguishing between the bridge adapater and the 
 
-> _Try the below to allow the "promisc mode" on the interface eth1_:         
+> _Try the below to allow the "promisc mode" on the interface eth1_:
+ 
 ````
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
 └─# sudo ip link set eth1  promisc on
@@ -200,7 +202,7 @@ drwxr-xr-x   4 root root 4.0K Apr 30 22:58 .
 
 
 > [!WARNING]
-> Important : Since we need to enable `root login` on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server.
+> _Important : Since we need to enable `root login` on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server._
 
 
 > - Enable the `ssh` service : 
