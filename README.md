@@ -224,11 +224,9 @@ Include /etc/ssh/sshd_config.d/*.conf
 ```
 
 
-
-
 > _Verify that the "SSH Server" is listening at "port 22"_ :
 
-
+```
 ┌──(root㉿kali)-[/home/kali]                                           
 
 └─# netstat -tulpn :22                                                 
@@ -245,15 +243,25 @@ tcp6       0      0 :::1883                 :::*                    LISTEN      
 tcp6       0      0 :::22                   :::*                    LISTEN      76111/sshd: /usr/sb 
 tcp6       0      0 :::9392                 :::*                    LISTEN      1468/docker-proxy    
 
+```
 
 
 
 
+> [!NOTE]
+> Reduce exposure to "SSH port 22" by changing it to a "less obvious, non-standard port". This helps "obfuscate our operation" by selecting "a port" that "blends in" more naturally with other "network traffic".
 
-# Finlly,  we'll now want to reduce `exposure` to the `ssh port : 22`, by changing the port number to anything `less obvious`, between `0-65535` :  
+
+```
+┌──(root㉿tlosint)-[/etc/ssh]
+
+└─# nano sshd_config
+
+```
 
 
-  GNU nano 7.2                                                /etc/ssh/sshd_config                                                          
+```
+  GNU nano 8.3                                         sshd_config
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
@@ -267,13 +275,16 @@ tcp6       0      0 :::9392                 :::*                    LISTEN      
 
 Include /etc/ssh/sshd_config.d/*.conf
 
-Port 6528
+#Port 22
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
+```
 
-- Let's head to the `sshd_config`, and uncomment the `# port 22`, and replace the latter : 
+
+> - Uncomment the `# port 22`, and replace the latter : 
+
 
 
 ..................................................................
