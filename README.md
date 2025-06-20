@@ -45,7 +45,7 @@ Use 'sudo apt autoremove' to remove them.
 
 
 > [!CAUTION]
-> For security reason : We do not want to alarm or raise awareeness of an attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS
+> For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS
 
 
 > _"Here we'll be configuring "two interfaces namely, eth1 and eth3"_:
