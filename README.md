@@ -84,7 +84,9 @@ Use 'sudo apt autoremove' to remove them.
 
 > The eth2 interface uses VMware's host-only network. This allows communication between the guest VM and the host machine and this interface does have an IP address (e.g., 192.168.233.132)
 
-> It can be used for management tasks like: SSH access
+> It can be used for management tasks like :
+
+> - SSH access
 > - File transfer
 > - Package updates (if NAT is enabled on the host)
 
@@ -101,10 +103,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 
 
-
-
-> let's start with adding the default route for our bridge adapter : 
-
+> _Let's add our default route for our bridge adapter_:
 
 ```
 ┌──(osint㉿tlosint)-[~]
@@ -112,6 +111,10 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 └─$ sudo ip route add default via 192.168.2.1 dev eth0
 ```
 
+
+
+
+> _Verify our default route_: 
 
 ```
 ┌──(osint㉿tlosint)-[~]
@@ -123,23 +126,6 @@ default via 192.168.2.1 dev eth0
 192.168.2.0/24 dev eth0 proto kernel scope link src 192.168.2.80
 
  ```
-
-
-
-
-- eth0 ; Host-only Adapter (No Ip Address, contained network with promisc mode enabled
-* eth3 ; Bridge Adapter( Connected to the "Wifi Adapter" from the Windows Host Machine)
-
-
-
-Note : Distinguishing between the bridge adapater and the 
-
-> _Try the below to allow the "promisc mode" on the interface eth1_:
- 
-````
-┌──(root㉿kali)-[/home/kali]                                                                                                                   
-└─# sudo ip link set eth1  promisc on
-````
 
 
 
