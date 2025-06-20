@@ -44,9 +44,8 @@ Use 'sudo apt autoremove' to remove them.
 * eth3 ; Bridge Adapter( Connected to the "Wifi Adapter" from the Windows Host Machine)
 
 
-> _Try the below to allow the "promisc mode" on the interface eth1_:
-             
-```
+> _Try the below to allow the "promisc mode" on the interface eth1_:         
+````
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
 └─# sudo ip link set eth1  promisc on
 ````
