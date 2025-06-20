@@ -217,11 +217,11 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 
 
-
 > -  _"Restart the "ssh service"_ : 
 
+```
       $ service ssh restart 
-
+```
 
 
 
