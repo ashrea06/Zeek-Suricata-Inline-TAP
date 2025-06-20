@@ -116,7 +116,7 @@ drwxr-xr-x   4 root root 4.0K Apr 30 22:58 .
 > Important : Since we need to enable `root login` on the OpenSSH Server, however, this is only to be deployed on a development server, never on a production server.
 
 
-> ^1 Enable the `ssh` service : 
+> - Enable the `ssh` service : 
 
 
 ```
@@ -132,10 +132,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib
 ```
 
 
-> - Ensure that the `root password` has been set correctly, or try to set up a "new one" if needed :
+> - Ensure that the root password has been set correctly, or try to set up a "new one" if needed :
 
 ```
-    $ sudo -i 
+
+$ sudo -i 
 
 ┏━(Message from Kali developers)
 ┃
@@ -149,18 +150,20 @@ Created symlink /etc/systemd/system/multi-user.target.wants/ssh.service → /lib
 
 
 
-Modifying the `password` : 
+> - Modifying the password : 
 
-    $ passwd 
-
-
-
-    $ nano /etc/ssh/sshd_config 
+```
+$ passwd 
+```
 
 
+> - Edit the contents of sshd_config file using nano editor : 
 
-- Below is an excerp of this file : 
+```
+$ nano /etc/ssh/sshd_config 
+```
 
+```
 
 {
   GNU nano 7.2                                                  /etc/ssh/sshd_config                                                           
@@ -189,14 +192,18 @@ Include /etc/ssh/sshd_config.d/*.conf
 # Logging
 #SyslogFacility AUTH
 #LogLevel INFO
+```
 
 
 
-- We want to primarily tweak some of the options under "Authentication"  : 
 
-# Authentication:
+> [!TIP]
 
-# LoginGraceTime 2m
+> We want to primarily tweak some of the options under "Authentication". 
+
+> - Authentication:
+
+> - LoginGraceTime 2m
 
 
 - Let's enable "PermitRootLogin", to "yes", rather than what it is "currently" set to :  prohibit-password 
