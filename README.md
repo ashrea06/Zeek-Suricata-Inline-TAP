@@ -45,7 +45,7 @@ Use 'sudo apt autoremove' to remove them.
 
 
 
-* Try the below to allow the "promisc mode" on the interface eth1 :
+>_Try the below to allow the "promisc mode" on the interface eth1_:
              
 ```
 ┌──(root㉿kali)-[/home/kali]                                                                                                                   
