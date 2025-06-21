@@ -542,7 +542,7 @@ id_rsa  id_rsa.pub  known_hosts  known_hosts.old
 
 
 > [!IMPORTANT]
-> Make sure that the "SSH" directory has "permission of the chmod 700, --drwx---", whilst the authorized_keys,id_rsa.pub has "permission of 600 , -rw---"
+> Make sure that the "SSH" directory has "permission of the chmod 700, --drwx---", whilst the authorized_keys, id_rsa.pub has "permission of 600 , -rw---"
 
 ```
 ┌──(root㉿kali)-[/etc/ssh]
