@@ -112,10 +112,12 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 > - _"Reset" the "interface" before "reassigning a new static IP address"_: 
 
+
+```
 ┌──(osint㉿tlosint)-[~]
 
 └─$ sudo ip addr flush dev eth2
-
+```
 
 
 
