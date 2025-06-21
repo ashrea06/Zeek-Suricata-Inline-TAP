@@ -110,7 +110,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 ```
 
 
-> "Reset" the "interface" before "reassigning a new static IP address": 
+> - _"Reset" the "interface" before "reassigning a new static IP address"_: 
 
 ┌──(osint㉿tlosint)-[~]
 
@@ -119,7 +119,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 
 
-> _Let's add our default route for our bridge adapter_:
+> - _Let's add our default route for our bridge adapter_:
 
 ```
 ┌──(osint㉿tlosint)-[~]
