@@ -129,7 +129,7 @@ Because the bridged adapter did not obtain an IP address dynamically via DHCP, w
 
 
 
-> _Verify our default route_: 
+> - _Verify our default route_: 
 
 ```
 ┌──(osint㉿tlosint)-[~]
