@@ -451,7 +451,7 @@ $ ssh-keygen -A
 
 
 
-# Purge and remove the entire installed OpenSSH-Server, and then let's give it one more try : 
+> - _Purge and remove the entire installed OpenSSH-Server, and then let's give it one more try_ : 
 
 
 - Run the below command : 
