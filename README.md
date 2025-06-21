@@ -439,7 +439,7 @@ Last login: Wed Jun 21 22:56:27 2023 from 192.168.2.30
 
 
 > [!NOTE]
-> Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
+> - Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
 
 ```
 $ ssh-keygen -A 
@@ -448,7 +448,7 @@ $ ssh-keygen -A
 > - _Purge and remove the entire installed OpenSSH-Server, and then let's give it one more try_ : 
 
 
-- Run the below command : 
+> Run the below command : 
 
 ```
 ┌──(root㉿kali)-[/etc/ssh]                                                                     
@@ -469,20 +469,25 @@ The following packages were automatically installed and are no longer required:
 ```
 
 
-- From our directory, almost all of the existing files have successfully been removed  :
 
 
+> - Running the above, successfully removed all the files within this directory :
+
+
+```
 ┌──(root㉿kali)-[/etc/ssh]
 
 └─# ls       
 
 ssh_config.d  sshd.config
 
+```
 
 
-  # Once this is done, let's try another install : 
+ > - Re-install OpenSSH Server : 
 
 
+```
 ┌──(root㉿kali)-[/etc/ssh]                                                                     
 
 └─# apt-get install openssh-server                                           
@@ -497,11 +502,15 @@ The following packages were automatically installed and are no longer required:
   libnginx-mod-mail libnginx-mod-stream libnginx-mod-stream-geoip libpoppler123 libprotobuf23
   libpython3.10 libpython3.10-dev libpython3.10-minimal libpython3.10-stdlib libtiff5
   libzxingcore1 nginx-common nginx-core python-pastedeploy-tpl python3-alabas
+```
 
 
 
-# Let's take a look at the same directory, "/etc/ssh" , the new files would have populated : 
 
+> - New files would have been populated within this directory, "/etc/ssh" : 
+
+
+```
   $ ls -larh /etc/ssh
 
 ┌──(root㉿kali)-[/etc/ssh]
@@ -511,18 +520,19 @@ The following packages were automatically installed and are no longer required:
 moduli        sshd_config         ssh_host_ecdsa_key.pub    ssh_host_rsa_key
 ssh_config.d  sshd_config.d       ssh_host_ed25519_key      ssh_host_rsa_key.pub
 sshd.config   ssh_host_ecdsa_key  ssh_host_ed25519_key.pub
+```
 
 
 
 
+> - Locate the "id_rsa" containing directory : 
+
+
+
+```
 ┌──(root㉿kali)-[/etc/ssh]
 
-└─# cd ~/.ssh       
-                     
-
-
-# Here we're at the "id_rsa" containing directory : 
-
+└─$ cd ~/.ssh       
 
 ┌──(root㉿kali)-[~/.ssh]
 
@@ -786,11 +796,7 @@ iface eth1 inet manual
 
 
 
-
-
-                                                                                                                                        *******//////// Installing Suricata - Signature Based IDS ///////*********
- 
-
+# ***Installing Suricata - Signature Based IDS***
 
 
 
