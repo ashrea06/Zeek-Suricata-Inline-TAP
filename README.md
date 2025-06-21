@@ -525,8 +525,6 @@ sshd.config   ssh_host_ecdsa_key  ssh_host_ed25519_key.pub
 ```
 
 
-
-
 > - Locate the "id_rsa" containing directory : 
 
 ```
@@ -536,24 +534,15 @@ sshd.config   ssh_host_ecdsa_key  ssh_host_ed25519_key.pub
 id_rsa  id_rsa.pub  known_hosts  known_hosts.old
 ```
 
-> - Concurrently, let's generate a new private public key-pair : 
+> - Generate a new private public key-pair : 
 
 ```
     $ ssh-keygen -t rsa 
 ```
 
 
-
-
-
 > [!IMPORTANT]
 > Make sure that the "SSH" directory has "permission of the chmod 700, --drwx---", whilst the authorized_keys,id_rsa.pub has "permission of 600 , -rw---"
-
-
-```
-    $ ls -larh ~/.ssh
-```
-
 
 ```
 ┌──(root㉿kali)-[/etc/ssh]
@@ -576,14 +565,13 @@ drwx------  2 root root 4.0K May  1 11:39 .
 ┌──(root㉿kali)-[~/.ssh]
 
 $  service ssh restart            
-
 ```
 
 
+> [!NOTE]
+> Fundamentally, the "ssh-copy-id" application allows us to connect over "SSH"and copy the "public key" over to the server we're trying to connect to.
 
-# Fundamentally, the "ssh-copy-id" application allows us to connect over "SSH"and copy the " public key" over to the server we're trying to connect to : 
-
-
+```
 ┌──(root㉿kali)-[/etc/ssh]                        
 
 └─# ssh-copy-id root@192.168.243.128                                                                
@@ -610,8 +598,8 @@ ERROR: Host key for 192.168.243.128 has changed and you have requested strict ch
 ERROR: Host key verification failed.              
 
 # This conflicting scenario, "Host Key Verification error occurs" due to the fact that, we just generated a new id_rsa key-pair while using the "ssh-keygen command".
-# Another plausible explanation, is that this could not match the "local identity of the Server with the Remote Identity of the Server" from previous authentication. 
-
+# Another plausible explanation, is that this could not match the "local identity of the Server with the Remote Identity of the Server" from previous authentication.
+```
 
 
 
