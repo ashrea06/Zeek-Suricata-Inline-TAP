@@ -167,7 +167,7 @@ $ dpkg -l  | grep openssh-server
 > _In order to access the "SSH Server", we would also need a "private key-pair", namely "sshd_config file" in the directory, "/etc/ssh"._ 
 
 
-> _Let's verify if this is present_:
+> _Let's verify if this is present_ :
 
 ```
 ┌──(root㉿kali)-[/home/kali]
@@ -238,14 +238,11 @@ $ sudo -i
 
 ```
 
-
-
 > - Modifying the password : 
 
 ```
 $ passwd 
 ```
-
 
 > - Edit the contents of sshd_config file using nano editor : 
 
@@ -255,7 +252,6 @@ $ nano /etc/ssh/sshd_config
 
 
 ```
-
   GNU nano 7.2                                                  /etc/ssh/sshd_config                                                           
 
 # This sshd was compiled with PATH=/usr/local/bin:/usr/bin:/bin:/usr/games
@@ -284,6 +280,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 #LogLevel INFO
 ```
 
+
 > [!IMPORTANT]
 > We want to primarily tweak some of the options under "Authentication". 
 
@@ -292,7 +289,6 @@ Include /etc/ssh/sshd_config.d/*.conf
 > - #StrictModes yes
 > - #MaxAuthTries 6
 > - #MaxSessions 10
-
 
 
 > [!NOTE]
@@ -305,13 +301,11 @@ Include /etc/ssh/sshd_config.d/*.conf
 > - MaxSessions 10
 
 
-
 > _"Restart the "ssh service"_ : 
 
 ```
 $ service ssh restart 
 ```
-
 
 > _Verify that the "SSH Server" is listening at "port 22"_ :
 
@@ -331,7 +325,6 @@ tcp        0      0 0.0.0.0:9392            0.0.0.0:*               LISTEN      
 tcp6       0      0 :::1883                 :::*                    LISTEN      1511/docker-proxy   
 tcp6       0      0 :::22                   :::*                    LISTEN      76111/sshd: /usr/sb 
 tcp6       0      0 :::9392                 :::*                    LISTEN      1468/docker-proxy    
-
 ```
 
 
@@ -345,7 +338,6 @@ tcp6       0      0 :::9392                 :::*                    LISTEN      
 ┌──(root㉿tlosint)-[/etc/ssh]
 
 └─# nano sshd_config
-
 ```
 
 
@@ -368,8 +360,8 @@ Include /etc/ssh/sshd_config.d/*.conf
 #AddressFamily any
 #ListenAddress 0.0.0.0
 #ListenAddress ::
-
 ```
+
 > - Uncomment the "#port 22", and update this to "port number to 65328" : 
 
 
@@ -416,9 +408,10 @@ MaxSessions 10
 
 
 
-# From Our `Command prompt`, let's connect with the new `altered port` : 
+> - From Our command prompt, let's connect with the new altered port : 
 
 
+```
 C:\WINDOWS\system32> ssh root@192.168.2.18 -p 6748
 
 root@192.168.2.18's password:
@@ -439,26 +432,22 @@ Last login: Wed Jun 21 22:56:27 2023 from 192.168.2.30
 ┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/
 ┃
 ┗━(Run: “touch ~/.hushlogin” to hide this message)
-
-
-─(root㉿kali)-[~]
-
-└─# pwd 
-
-/root
-
-
-                                                                                    **********///////// Accidental Delete of the SSH Host-Keys files -  sudo rm ssh_host /////////*********
+```
 
 
 
 
-  # Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys" : 
+
+# ***Accidental Delete of the SSH Host-Keys files -  sudo rm ssh_host***
+
+
+> - Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
 
 
 
-  $ ssh-keygen -A 
-  
+```
+$ ssh-keygen -A 
+```  
 
 
 
