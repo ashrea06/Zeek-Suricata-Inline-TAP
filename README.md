@@ -529,32 +529,33 @@ sshd.config   ssh_host_ecdsa_key  ssh_host_ed25519_key.pub
 
 > - Locate the "id_rsa" containing directory : 
 
-
-
 ```
-┌──(root㉿kali)-[/etc/ssh]
-
-└─$ cd ~/.ssh       
-
 ┌──(root㉿kali)-[~/.ssh]
-
 └─# ls              
 
 id_rsa  id_rsa.pub  known_hosts  known_hosts.old
+```
 
+> - Concurrently, let's generate a new private public key-pair : 
 
-# Concurrently, let's generate a new private public key-pair : 
-
-
+```
     $ ssh-keygen -t rsa 
+```
 
 
-Make sure that the "SSH" directory has "permission of the chmod 700, --drwx---", whilst the authorized_keys,id_rsa.pub has "permission of 600 , -rw---"
 
 
+
+> [!IMPORTANT]
+> Make sure that the "SSH" directory has "permission of the chmod 700, --drwx---", whilst the authorized_keys,id_rsa.pub has "permission of 600 , -rw---"
+
+
+```
     $ ls -larh ~/.ssh
+```
 
 
+```
 ┌──(root㉿kali)-[/etc/ssh]
 
 └─# ls -larh ~/.ssh                 
@@ -566,18 +567,17 @@ total 24K
 -rw-------  1 root root 2.6K May  1 11:34 id_rsa
 drwx------ 22 root root 4.0K May  1 11:24 ..
 drwx------  2 root root 4.0K May  1 11:39 .
+```
 
 
+> - Let's restart the "Openssh-Server" :
 
-# Let's restart the "Openssh-Server" :
-
-
+```
 ┌──(root㉿kali)-[~/.ssh]
 
+$  service ssh restart            
 
-    $  service ssh restart            
-
-
+```
 
 
 
