@@ -412,7 +412,7 @@ MaxSessions 10
 
 
 ```
-C:\WINDOWS\system32> ssh root@192.168.2.18 -p 6748
+C:\WINDOWS\system32> ssh root@192.168.2.18 -p 65328
 
 root@192.168.2.18's password:
 
@@ -438,22 +438,19 @@ Last login: Wed Jun 21 22:56:27 2023 from 192.168.2.30
 # ***Accidental Delete of the SSH Host-Keys files -  sudo rm ssh_host***
 
 
-> - Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
-
-
+> [!NOTE]
+> Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
 
 ```
 $ ssh-keygen -A 
 ```  
-
-
 
 > - _Purge and remove the entire installed OpenSSH-Server, and then let's give it one more try_ : 
 
 
 - Run the below command : 
 
-
+```
 ┌──(root㉿kali)-[/etc/ssh]                                                                     
 
 └─# apt-get remove --purge openssh-server 
@@ -469,7 +466,7 @@ The following packages were automatically installed and are no longer required:
   libzxingcore1 nginx-common nginx-core openssh-sftp-server python-pastedeploy-tpl
   python3-alabaster python3-commonmark python3-docutils python3-imagesize python3-roman
   python3-snowballstemmer python3-speaklater python3-sphinx python3.10 python3.10-
-
+```
 
 
 - From our directory, almost all of the existing files have successfully been removed  :
