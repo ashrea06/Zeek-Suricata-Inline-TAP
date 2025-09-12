@@ -687,7 +687,7 @@ iface eth0 inet dhcp
 
 > [!NOTE]
 >  Just as a quick "recapitulation" , "eth1" will be the interface that contains no "IP Addresss",  whilst eth0 will have a "statically assigned DHCP IP Address", and this is exactly what what we're are specifying in the "interface file" above.
-> -
+> 
 > _The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology._ 
 
 > - ***Here is an equivalent of the "Network Interfave File" designed for a Ubuntu Operating system*** : 
