@@ -725,7 +725,7 @@ iface lo inet loopback
 > [!TIP]
 > _In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine"_ 
 
-> - Here are our "Network interface cards :
+> - ***Here are our "Network interface cards :***
 - eth0 : NAT Interface Card
 - eth1 : Host-Only Interface Card 
 
@@ -973,58 +973,49 @@ $ mousepad /etc/suricata/suricata.yaml
 > - ***Ensure to replace the default interface, to your previously "assigned sniffing interface : eth0 " shown in the directory , "/etc/network/interfaces"***
 
 
+> [!NOTE]
+> _The HOME_NET CIDR corresponds to the Host-Only network  with interface card eth1 (the sniffing NIC)._
+> _Consider naming your network as "HOME_NET", and in the "suricata.yaml" file, search for #HOME_NET and set the value for your network. (Don't uncomment these HOME_NET)_
+ 
 
 
-# Note that the "HOME_NET network " has CIDR belonging to the "HOST-Only Network" with interface card eth1. 
+> [!TIP]
+> 
+>  For the sake of clarity, we've included the interface file("/etc/network/interface") below, so that you may distinguish between the "sniffing interface and the management interface".  
 
-
-- Also consider naming your network as "HOME_NET", and search the "suricata.yaml" file, for its corresponding "#HOME_NET" IP address.
-- (Don't uncomment these HOME_NET)
-
-
-
-
-
-
-#  For the `sake of clarity`, we've hve included the `interface file("/etc/network/interface")` below, so that you may `distinguish` between the `"sniffing interface and the management interface"`. 
-
-
-
-{
-
-GNU nano 7.2                              /etc/network/interfaces *                                      
-source /etc/network/interfaces.d/*
-
-# The loopback network interface
-auto lo
-iface lo inet loopback
-
-# management interface
-allow-hotplug eth0
-iface eth0 inet dhcp
-
-# sniffing interface
-allow-hotplug eth1
-iface eth1 inet manual
-up ifconfig eth1 promisc up
-down ifconfig eth1 promisc down
-}
-
-
-# Change the following lines, within the "suricata.yaml file" and also add in the "Sniffing NIC Address, Network Address , eth1", as well as addding a corresponding "Subnet Mask, /24"
+ ```
+ {
+ 
+ GNU nano 7.2                              /etc/network/interfaces *                                      
+ source /etc/network/interfaces.d/*
+ 
+ # The loopback network interface
+ auto lo
+ iface lo inet loopback
+ 
+ # management interface
+ allow-hotplug eth0
+ iface eth0 inet dhcp
+ 
+ # sniffing interface
+ allow-hotplug eth1
+ iface eth1 inet manual
+ up ifconfig eth1 promisc up
+ down ifconfig eth1 promisc down
+ }
+```
 
 
 
-Let us start modifying and adding these information as required at the following location ; /etc/suricata/suricata.yaml
 
 
 
-# Remember to change the interface from eth0 --> eth1
+> [!NOTE]
+> _Change the following lines, within the "suricata.yaml(/etc/suricata/suricata.yaml) file" and also add in the "Sniffing NIC Address, Network Address , eth1", as well as addding a corresponding "Subnet Mask, /24"_ 
+> - ***Do not forget to change modify the interface from eth0 --> eth1***
+> - _Take note that we intentionally, added a new "HOME_NET" Address which matches that of our "Host-Only Network", in addition we also "uncommented" it, as follows, HOME_NET:"[192.168.233.0/24]"_  
 
-
-- Below we intentionally, added a new "HOME_NET" Address which matches that of our "Host-Only Network", in addition we also "uncommented" it, as follows, HOME_NET:"[192.168.233.0/24]" : 
-
-
+```
 vars:
   # more specific is better for alert accuracy and performance
   address-groups:
@@ -1033,9 +1024,10 @@ vars:
     #HOME_NET: "[10.0.0.0/8]"
     #HOME_NET: "[172.16.0.0/12]"
     #HOME_NET: "any"
-    
-  # Add in this line correspondoing to our actual `Home_Network` --->>>   HOME_NET:"[192.168.233.0/24]"
-    
+
+  ```
+
+ > - _Add in this line correspondoing to our actual `Home_Network` --->>>   HOME_NET:"[192.168.233.0/24]"_
 
 
 # Note :  Make sure to change/disable, "chechsum validation : No", and the reason for this, is we want to avoid "rejecting or dropping off packets", in case if the "packet capture" software being used, oversees the captured packets not passing the "checksum validation."
