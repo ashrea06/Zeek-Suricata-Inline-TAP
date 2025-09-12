@@ -703,16 +703,16 @@ source /etc/network/interfaces.d/*
 auto lo
 iface lo inet loopback
 
-
 > - From here, let's add in some of the lines accordingly (check the pointers below) : 
 
-```
-* # management interface
+
+> * - Management interface
 
 * ---> allow-hotplug eth0
 * ---> iface eth0 inet dhcp
 
-* # sniffing interface
+> * - Sniffing interface
+
 * ----> allow-hotplug eth1
 * ----> iface eth1 inet manual
 * ---> up ifconfig eth1 prmisc up
