@@ -719,7 +719,7 @@ iface lo inet loopback
 * --> down ifconfig  eth1 promisc down
 }
 
-``
+```
 
 # In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine" 
 
