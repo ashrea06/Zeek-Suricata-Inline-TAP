@@ -662,19 +662,16 @@ Enter the new Password :
 # ***Continue Setup and IDS with FileBeat***
 
 
->  Let's create a "Network Interface" file and for this will first need to go into this directory, "/etc/network"
+> - Let's create a "Network Interface" file and for this will first need to go into this directory, "/etc/network"
 
 
 
+***Prior to any changes made onto the "interface file*** : 
 
-
-# Prior to any changes made onto the "interface file" : 
-
-
+```
 ┌──(root㉿kali)-[/etc/network]
 
 └─# nano interfaces
-
 
 {
 # The loopback network interface
@@ -685,7 +682,7 @@ iface lo inet loopback
 allow-hotplug eth0
 iface eth0 inet dhcp
 }
-
+```
 
 # Just as a quick "recapitulation" , "eth1" will be the interface that contains no "IP Addresss",  whilst eth0 will have a "statically assigned DHCP IP Address", and this is exactly what what we're are specifying in the "interface file" above.
 
