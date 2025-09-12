@@ -704,7 +704,7 @@ auto lo
 iface lo inet loopback
 
 
-***From here, let's add in some of the lines accordingly (check the pointers below)*** : 
+> - From here, let's add in some of the lines accordingly (check the pointers below) : 
 
 ```
 * # management interface
