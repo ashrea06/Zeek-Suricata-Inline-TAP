@@ -649,13 +649,13 @@ root@192.168.243.128: Permission denied (publickey,password).
 ```
 
 
-# If this persists, let's try to change the "root", passwd : 
+> - _If this persists, let's try to change the "root", passwd_ : 
 
-
+```
     $ passwd root
 
-  * ---> Enter the new Password : 
-
+Enter the new Password :
+```
 
 
 
