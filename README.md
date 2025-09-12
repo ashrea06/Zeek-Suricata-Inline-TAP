@@ -665,7 +665,6 @@ Enter the new Password :
 > - Let's create a "Network Interface" file and for this will first need to go into this directory, "/etc/network"
 
 
-
 ***Prior to any changes made onto the "interface file*** : 
 
 ```
@@ -684,15 +683,18 @@ iface eth0 inet dhcp
 }
 ```
 
-# Just as a quick "recapitulation" , "eth1" will be the interface that contains no "IP Addresss",  whilst eth0 will have a "statically assigned DHCP IP Address", and this is exactly what what we're are specifying in the "interface file" above.
 
 
-# Note : The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology. 
+> [!NOTE]
+> _***Just as a quick "recapitulation" , "eth1" will be the interface that contains no "IP Addresss",  whilst eth0 will have a "statically assigned DHCP IP Address", and this is exactly what what we're are specifying in the "interface file" above.
+>
+> ***_The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology.***_ 
 
 
 
-- Here is an equivalent of the "Network Interfave File" designed for a Ubuntu Operating system : 
+> - _***Here is an equivalent of the "Network Interfave File" designed for a Ubuntu Operating system_*** : 
 
+```
 { 
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
@@ -703,10 +705,12 @@ source /etc/network/interfaces.d/*
 auto lo
 iface lo inet loopback
 
+> [!NOTE]
+> - ***_ From here, let's add in some of the lines accordingly (check the pointers below)*** : 
 
 
-- From here, let's add in some of the lines accordingly (check the pointers below)
 
+```
 * # management interface
 
 * ---> allow-hotplug eth0
@@ -719,7 +723,7 @@ iface lo inet loopback
 * --> down ifconfig  eth1 promisc down
 }
 
-
+``
 
 # In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine" 
 
