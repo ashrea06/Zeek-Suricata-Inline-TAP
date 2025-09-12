@@ -598,18 +598,16 @@ ERROR: Host key verification failed.
 # Another plausible explanation, is that this could not match the "local identity of the Server with the Remote Identity of the Server" from previous authentication.
 ```
 
-> - # Remediate this situation using the command below : 
+> - _Remediate this situation using the command below_ : 
 
 ```
   $ ssh-keygen -f /root/.ssh/known_hosts -R 192.168.243.128
 ```
 
- 
- > - # Alternatively, we can also delete the "known_hosts" file to resolve this issue : 
+ > - _Similarly, we can also delete the "known_hosts" file to resolve this issue_ : 
 
 ```
     $ rm -f  /.ssh/known_hosts
-
 ```
 
 ```
@@ -621,17 +619,16 @@ ERROR: Host key verification failed.
 
 /root/.ssh/known_hosts updated.                                                                          
 Original contents retained as /root/.ssh/known_hosts.old         
-
 ```
 
 
+> - _We'll now try to get into the server_ : 
 
-# We'll now try to get into the server : 
-
+```
   $ ssh root@192.168.243.128
+```
 
-
-                                                                                    
+```                                                                                 
 ┌──(root㉿kali)-[/etc/ssh]
 
 └─# ssh root@192.168.243.128
@@ -642,13 +639,14 @@ root@192.168.243.128's password:
 Permission denied, please try again.
 root@192.168.243.128's password: 
 root@192.168.243.128: Permission denied (publickey,password).
--
-# We still seem to encounter some difficulties with the newly set-password.
+```
 
-- Let's try to work around this : 
 
+> - _Yet, we're still encountering some difficulties with the newly set-password_ : 
+
+```
   $ dpkg-reconfigure openssh-server 
-
+```
 
 
 # If this persists, let's try to change the "root", passwd : 
