@@ -705,12 +705,14 @@ iface lo inet loopback
 
 > - From here, let's add in some of the lines accordingly (check the pointers below) : 
 
- ***Management interface***
+
+
+> - Management interface
 
 * ---> allow-hotplug eth0
 * ---> iface eth0 inet dhcp
 
-> * - Sniffing interface
+> - Sniffing interface
 
 * ----> allow-hotplug eth1
 * ----> iface eth1 inet manual
@@ -720,20 +722,18 @@ iface lo inet loopback
 
 ```
 
-# In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine" 
 
+> [!TIP]
+> _In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine"_ 
 
-Here are our "Network interface cards : 
+> - Here are our "Network interface cards : 
 
+> eth0 : NAT Interface Card
+>  eth1 : Host-Only Interface Card 
 
-- eth0 : NAT Interface Card
+> - ***In our case, here's the equivalent of the "Network Interface File" for our "Kali OS"*** : 
 
-- eth1 : Host-Only Interface Card 
-
-
-- In our case, here's the equivalent of the "Network Interface File" for our "Kali OS" : 
-
-
+```
 {
 
 # The loopback network interface
@@ -749,40 +749,34 @@ allow-hotplug eth1
 iface eth1 inet manual
         up ifconfig eth1 promisc up
         down ifconfig eth1 promisc down
-
-
 }
 
+```
 
-# Note : For Ubuntu User's we're trying to stop the "systemd-networkd", which is a network panner service. 
-- For Kali Users no need to worry about this. 
-
-
-
+> [!NOTE]
+> For Ubuntu User's we're trying to stop the "systemd-networkd", which is a network panner service and for Kali Users no need to worry about this. 
 
 
-- Let's proceed with stopping this service : 
-
-# From the Ubuntu command-Line Terminal : 
-
+> ***From our Ubuntu command-Line Terminal, stop the service*** : 
 
   $ sudo service systemd-networkd stop
 
 
 
-# Again for our Ubuntu Users, we will use another command to ensure complete removal, of the "netplan service" : 
 
 
+> ***Again for our Ubuntu Users, we will use another command to ensure complete removal, of the "netplan service"*** : 
+
+
+```
   $ sudo apt remove netplan -y 
-
-
+```
 
 
 # ***Installing Suricata - Signature Based IDS***
 
-
-
- # For this tuturial, we have two options, however, we shall start with the "easiest one", first one as the second one requires us to "build and compile the file from source". 
+> [!TIP]
+> _For this tuturial, we have two options, however, we shall start with the "easiest one", first one as the second one requires us to "build and compile the file from source"._
 
 
 
