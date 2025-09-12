@@ -1014,6 +1014,7 @@ $ mousepad /etc/suricata/suricata.yaml
 > _Change the following lines, within the "suricata.yaml(/etc/suricata/suricata.yaml) file" and also add in the "Sniffing NIC Address, Network Address , eth1", as well as addding a corresponding "Subnet Mask, /24"_ 
 > - ***Do not forget to change modify the interface from eth0 --> eth1***
 > - _Take note that we intentionally, added a new "HOME_NET" Address which matches that of our "Host-Only Network", in addition we also "uncommented" it, as follows, HOME_NET:"[192.168.233.0/24]"_  
+ > - ***Add in this line correspondoing to our actual `Home_Network` --->>>   HOME_NET:"[192.168.233.0/24]"***
 
 ```
 vars:
@@ -1024,16 +1025,15 @@ vars:
     #HOME_NET: "[10.0.0.0/8]"
     #HOME_NET: "[172.16.0.0/12]"
     #HOME_NET: "any"
-
   ```
 
- > - _Add in this line correspondoing to our actual `Home_Network` --->>>   HOME_NET:"[192.168.233.0/24]"_
+
+> [!IMPORTANT]
+> - ***Make sure to change/disable, "chechsum validation : No", and the reason for this, is we want to avoid "rejecting or dropping off packets", in case if the "packet capture" software being used, oversees the captured packets not passing the "checksum validation."***
+> - ***Change this setting to `no` #   checksum-validation: yes/ = `no`    # To validate the checksum of received***
 
 
-# Note :  Make sure to change/disable, "chechsum validation : No", and the reason for this, is we want to avoid "rejecting or dropping off packets", in case if the "packet capture" software being used, oversees the captured packets not passing the "checksum validation."
-
-
-
+```
 # Stream engine settings. Here the TCP stream tracking and reassembly 
 # engine is configured.
 #
@@ -1043,27 +1043,20 @@ vars:
 #   memcap-policy: ignore       # Can be "drop-flow", "pass-flow", "bypass",
 #                               # "drop-packet", "pass-packet", "reject" or
 #                               # "ignore" default is "ignore"
-
-# ---->> Change this setting to `no` #   checksum-validation: yes/ = `no`    # To validate the checksum of received
-
+```
 
 
 
 
 
+> # Creating a "Service File for Suricata(Start or Stop, for e.g service ssh start)
+
+> ***Great, we're good to use to Suricata, however, we would need to use "command-line arguments", to get this to start each and every time(rather lengthy and cumbersome)_***
+
+> [!IMPORTANT]
+> _In our very case a there exists already a service file, for `Suricata`._
 
 
-
-                                                                                                                ********///////// Creating a "Service File for Suricata(Start or Stop, for e.g service ssh start) *********//////////// 
-
-
-
-
-
-# Great, we're good to use to Suricata, however, we would need to use "command-line arguments", to get this to start each and every time(rather lengthy and cumbersome)
-
-s
-# Remember ; In our case the new `Release`,already contains an added service file, for `Suricata`. 
 
 
 
