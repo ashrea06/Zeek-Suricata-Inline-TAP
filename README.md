@@ -565,7 +565,6 @@ drwx------  2 root root 4.0K May  1 11:39 .
 ┌──(root㉿kali)-[~/.ssh]
 
 $  service ssh restart
-        
 ```
 
 
@@ -578,9 +577,7 @@ $  service ssh restart
 └─# ssh-copy-id root@192.168.243.128                                                                
 
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
-/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are alr
-
-eady installed                                    
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed                                    
                                                   
 /usr/bin/ssh-copy-id: ERROR: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ERROR: @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
@@ -600,21 +597,21 @@ ERROR: Host key verification failed.
 
 # This conflicting scenario, "Host Key Verification error occurs" due to the fact that, we just generated a new id_rsa key-pair while using the "ssh-keygen command".
 # Another plausible explanation, is that this could not match the "local identity of the Server with the Remote Identity of the Server" from previous authentication.
-
 ```
 
-> - # We will now try to remediate this situation using the command below : 
+> - # Remediate this situation using the command below : 
 
-
+```
   $ ssh-keygen -f /root/.ssh/known_hosts -R 192.168.243.128
+```
+ 
+ > - # Alternatively, we can also delete the "known_hosts" file to resolve this issue : 
 
 
-- Alternatively, we can also delete the "known_hosts" file to resolve this issue : 
-
-
+```
     $ rm -f  /.ssh/known_hosts
 
-
+```
 
 ┌──(root㉿kali)-[~/.ssh]                                                                                 
 
