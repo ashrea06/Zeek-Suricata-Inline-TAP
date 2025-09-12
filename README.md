@@ -690,7 +690,7 @@ iface eth0 inet dhcp
 > 
 > _The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology._ 
 
-> - ***Here is an equivalent of the "Network Interfave File" designed for a Ubuntu Operating system*** : 
+> - ***Here is an equivalent of the "Network Interface File" designed for a Ubuntu Operating system*** : 
 
 ```
 { 
@@ -703,7 +703,7 @@ source /etc/network/interfaces.d/*
 auto lo
 iface lo inet loopback
 
-> [!NOTE]
+
 > -  ***From here, let's add in some of the lines accordingly (check the pointers below)***_ : 
 
 ```
