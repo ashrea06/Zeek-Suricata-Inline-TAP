@@ -705,8 +705,7 @@ iface lo inet loopback
 
 > - From here, let's add in some of the lines accordingly (check the pointers below) : 
 
-
-> * - Management interface
+ ***Management interface***
 
 * ---> allow-hotplug eth0
 * ---> iface eth0 inet dhcp
