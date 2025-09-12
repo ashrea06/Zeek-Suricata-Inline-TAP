@@ -364,7 +364,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 #ListenAddress ::
 ```
 
-> - Uncomment the "#port 22", and update this to "port number to 65328" : 
+> - ***Uncomment the "#port 22", and update this to "port number to 65328"*** : 
 
 
 ```
@@ -836,7 +836,8 @@ suricata-6.0.11  suricata-6.0.11.tar.gz
    $ ./configure 
 ```
 
-# Build "Suricata", using the "make" commmand : 
+> # ***Build "Suricata", using the "make" commmand*** : 
+
 
 ```
   $ make install
