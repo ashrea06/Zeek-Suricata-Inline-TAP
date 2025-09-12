@@ -1058,14 +1058,13 @@ vars:
 
 
 
+> - ***We'll head to the directory below and start to create "suricata.service" file :****  
 
-
-# We'll head to the directory below and start to create "suricata.service" file :  
-
-
+```
   $ sudo nano /lib/systemd/system/suricata.service
+```
 
-
+```
 [Unit]
 # At the beginning of any service, very important to give a Description.
 Description=Suricata Intrusion Detection Service
@@ -1093,19 +1092,17 @@ ExeceStartPre=/bin/rm -f /var/run/suricata.pid
 # Special command, that describes how the interface will be managing the packet capture and inspection.(other type exists, like pf ring) : --af-packet  
 ExecStart= /usr/bin/suricata -c /etc /suricata/suricata.yaml --pidfile /var/run/suricata.pid --af-packet
 
-
 # On the reload, this will kill the service.( Starting with /bin/kill, then the User, -USR2, and finally the process ID, PID  $MAINPID) 
 
 ExecReload=/bin/kill -USR2 $MAINPID  
 
-
 [Install]
 WantedBy=multi-user.target
+```
 
+> -  ***Under the current Version of Suricata, there seem to be a similar version of what we have gone through above (almost the same) :*** 
 
-
-# Under the current Version of Suricata, there seem to be a similar version of what we have gone through above (almost the same) : 
-
+```
   GNU nano 7.2       /lib/systemd/system/suricata.service                
 [Unit]
 Description=Suricata IDS/IDP daemon
@@ -1128,380 +1125,40 @@ ProtectHome=true
 
 [Install]
 WantedBy=multi-user.target
+```
 
 
 
 
 
-      
+> # Network Threat Hunting with Zeek
 
-      
-                                                                                                                                  *********////// Zeek Installation(Including Compilation : Building from Source) //////*******
 
+> -  ***In order to take advantage of Zeek, we'll need to get this installed locally. Not only does zeek provides us with that additional edge with deep packet level inspection but also does provide "rich parsing of packet metadata",***
+> -  ***which allow us to perform "understanding what a protocol is doing and what commands are being sent."***.
+> -  This tool has greatly been improved from the start till its very end allowing an out of the box experience. Installation now includes one liner bash  installation which also comes with RITA which again allows for a great visualization using different know the techniques such as common aggregation of data points hence allowing us to easily spot suspicious activities in heavy traffic
+> - environment.
 
 
 
-# Zeek is a good monitoring tool which provide a "rich parsing of packet metadata", for e.g, "understanding what a protocol is doing and what commands are being sent."
+ > - ***Execute the command below to install both RITA and Zeek altogether :*** 
 
+```
+wget https://github.com/activecm/rita/releases/download/v5.0.8/install-rita-zeek-here.sh
 
+chmod +x install-rita-zeek-here.sh
 
-- First of all, we will be installing some "dependencies" , thereafter, we''ll then be building this from `source` (compilationl)
+./install-rita-zeek-here.sh
+```
 
 
-# Let's ensure that "Git" is installed on our Machine : 
+> [!TIP]
+> 
+> - ***Since this will be taking a lot of time, from Settings --> "power management" --> ScreenTimeout set to "Never" to prevent the screen from timeing out during the "compilation" process.***
 
 
-┌──(root㉿kali)-[/home/kali]
 
-└─# apt-get install git -y 
-
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-git is already the newest version (1:2.39.2-1.1).
-The following packages were automatically installed and are no longer required:
-  catfish dh-elpa-helper docutils-common gir1.2-xfconf-0
-  libcfitsio9 libgdal31 libmpdec3 libnginx-mod-http-geoip
-  libnginx-mod-http-image-filter libnginx-mod-http-xslt-filter
-  libnginx-mod-mail libnginx-mod-stream libnginx-mod-stream-geoip
-  libpoppler123 libprotobuf23 libpython3.10 libpython3.10-dev
-  libpython3.10-minimal libpython3.10-stdlib libtiff5
-  libzxingcore1 nginx-common nginx-core python-pastedeploy-tpl
-  python3-alabaster python3-commonmark python3-docutils
-  python3-imagesize python3-roman python3-snowballstemmer
-  python3-speaklater python3-sphinx python3.10 python3.10-dev
-  python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc
-  sphinx-common
-
-Use 'sudo apt autoremove' to remove them.
-
-0 upgraded, 0 newly installed, 0 to remove and 321 not upgraded.
-
-
-# We have couple of things we would need while building, "Zeek from source", here are the development packaages : 
-
-- cmake 
-- make 
-- gcc  
-- g++ 
-- flex  
-- bison 
-- libpcap-dev
-- libssl-dev
-
-* --> - python-dev **
-
-- swig  
-
-* --> - zliblg-dev ** 
-
-
-# However for these 2 development packages,(python3-dev, zliblg-dev) did not work as expected could be that they 're obsoleete.Let's check if there may be any alternatives. 
-
-
-- Check if there're any python development that matches our need : 
-
-
-
-
-    $ sudo apt-cache search python dev 
-                                                                    
-acr - autoconf like tool                                                                                                                                
-astro-development - C/C++ development packages for astronomy                                                                                            
-autoimport - Automatically import missing Python libraries                                                                                              
-autoradio - radio automation software                                                                                                                   
-b4 - helper utility to work with patches made available via a public-inbox archive                                                                      
-berrynet-dashboard - deep learning gateway - python3 modules                                                                                            
-blag - Blog-aware, static site generator                                                                                                                
-blag-doc - Blog-aware, static site generator (documentation)                                                                                            
-bluefish - advanced Gtk+ text editor for web and software development                                                                                   
-brltty - Access software for a blind person using a braille display                                                                                     
-budgie-dropby-applet - Applet to popup when a USB device is connected                                                                                   
-bugz - command-line interface to Bugzilla                                                                                                               
-capirca-docs - Multi-platform ACL generation system (documentation)                                                                                     
-cloud-sptheme-common - Cloud Sphinx theme and related extensions (theme files and docs)                                                                 
-clustershell - Distributed shell that provides an efficient Python interface                                                                            
-collectd-core - statistics collection and monitoring daemon (core system)                                                                               
-commix - Automated All-in-One OS Command Injection and Exploitation Tool                                                                                
-confy - Conference schedule viewer written in Python                                                                                                    
-debmake-doc - Guide for Debian Maintainers                                                                                                              
-debomatic - automatic build machine for Debian source packages                                                                                          
-deluge-gtk - bittorrent client written in Python/PyGTK (GTK+ ui)                    
-
-
-
-# Let's install the missing dev-packages : 
-
-
-
-┌──(root㉿kali)-[/home/kali]                                                
-
-
-      $ sudo apt-get install python3-dev
-
-                                                
-
-                                                                                                                    
-Reading package lists... Done                                                                                                                           
-Building dependency tree... Done                                                                                                                        
-Reading state information... Done                                           
-The following packages were automatically installed and are no longer required:                                                                         
-  catfish dh-elpa-helper docutils-common gir1.2-xfconf-0 libcfitsio9 libgdal31 libmpdec3 libnginx-mod-http-geoip libnginx-mod-http-image-filter         
-  libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libnginx-mod-stream-geoip libpoppler123 libprotobuf23 libpython3.10
-  libpython3.10-dev libpython3.10-minimal libpython3.10-stdlib libtiff5 libzxingcore1 nginx-common nginx-core python-pastedeploy-tpl python3-alabaster
-  python3-commonmark python3-docutils python3-imagesize python3-roman python3-snowballstemmer python3-speaklater python3-sphinx python3.10              
-  python3.10-dev python3.10-minimal ruby3.0 ruby3.0-dev ruby3.0-doc sphinx-common                                        
-
-
-
-
-# The last missing part of the puzzle, "zliblg-dev" : 
-
-
-┌──(root㉿kali)-[/usr/local]
-
-└─# apt-cache  search zlib1g-dev 
-
-zlib1g-dev - compression library - development
-
-r-bioc-zlibbioc - (Virtual) zlibbioc Bioconductor package
-                                                              
-
-
-┌──(root㉿kali)-[/usr/local]
-
-└─# apt-get install zlib1g-dev  
-
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-zlib1g-dev is already the newest version (1:1.2.13.dfsg-1).
-The following packages were automatically installed and are no longer required:
-  python3-aardwolf python3-aesedb python3-aiocmd python3-aioconsole python3-aiosmb
-  python3-aiowinreg python3-arc4 python3-asciitree python3-asn1tools python3-asyauth
-  python3-asysocks python3-bitstruct python3-cryptography37 python3-diskcache python3-lsassy
-  python3-masky python3-minidump python3-minikerberos python3-msldap python3-neo4j python3-neobolt
-  python3-neotime python3-oscrypto python3-pylnk3 python3-pypsrp python3-pypykatz
-  python3-pywerview python3-spnego python3-unicrypto python3-winacl python3-xmltodict
-Use 'sudo apt autoremove' to remove them.
-0 upgraded, 0 newly installed, 0 to remove and 101 not upgraded.
-
-
-
-
-
- # After a `"series of enquiries"` with regards to `"why" some of the dependencies are not going through, found an "Alternative Source"` for the `right dependencies` : 
-
-
-
-┌──(root㉿kali)-[/usr/local]
-
-└─# sudo apt-get install cmake make gcc g++ flex libfl-dev bison libpcap-dev libssl-dev python3 python3-dev swig zlib1g-dev
-
-
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-cmake is already the newest version (3.27.4-1).
-make is already the newest version (4.3-4.1).
-gcc is already the newest version (4:13.2.0-1).
-g++ is already the newest version (4:13.2.0-1).
-flex is already the newest version (2.6.4-8.2).
-libfl-dev is already the newest version (2.6.4-8.2).
-bison is already the newest version (2:3.8.2+dfsg-1+b1).
-libpcap-dev is already the newest version (1.10.4-4).
-libssl-dev is already the newest version (3.0.10-1).
-python3 is already the newest version (3.11.4-5+b1).
-python3-dev is already the newest version (3.11.4-5+b1).
-swig is already the newest version (4.1.0-0.3).
-zlib1g-dev is already the newest version (1:1.2.13.dfsg-1).
-The following packages were automatically installed and are no longer required:
-  python3-aardwolf python3-aesedb python3-aiocmd python3-aioconsole python3-aiosmb python3-aiowinreg python3-arc4 python3-asciitree
-  python3-asn1tools python3-asyauth python3-asysocks python3-bitstruct python3-cryptography37 python3-diskcache python3-lsassy
-  python3-masky python3-minidump python3-minikerberos python3-msldap python3-neo4j python3-neobolt python3-neotime python3-oscrypto
-  python3-pylnk3 python3-pypsrp python3-pypykatz python3-pywerview python3-spnego python3-unicrypto python3-winacl python3-xmltodict
-Use 'sudo apt autoremove' to remove them.
-0 upgraded, 0 newly installed, 0 to remove and 101 not upgraded.
-
-
-
-
-
-
-- Here're the description of what each of this mean : 
-
-
-# Dependencies : 
-
-- cmake make gcc g++ flex libfl-dev bison ; Has to do with compiling and building. 
-
-- libpcap-dev libssl-dev python3 python3-dev swig zlib1g-dev ;  Development dependencies needed to build software, and "packat captures" development packages. 
- 
-
-
-# We'll now proceed to the installation of Zeek from its "Git Repository" : 
-
-
-    
-
-┌──(root㉿kali)-[/opt]
-
-└─# git clone --recursive  https://github.com/zeek/zeek
-
-Cloning into 'zeek'...
-remote: Enumerating objects: 226988, done.
-remote: Counting objects: 100% (317/317), done.
-remote: Compressing objects: 100% (161/161), done.
-remote: Total 226988 (delta 189), reused 231 (delta 150), pack-reused 226671
-Receiving objects: 100% (226988/226988), 165.40 MiB | 3.79 MiB/s, done.
-
-
-
-
-
-
-
-
-
-# Note : Applying the --recursive option to our git clone command, allows us to include all the child "files and folders" within this "current Repo" to be cloned, to avoid missing out on important files while cloning. 
-
-
-
-Let's create a directory called, /NIDS and "mv" Zeek to this "specified" directory. 
-
-
-┌──(root㉿kali)-[/NIDS]
-
-└─# cd zeek 
-                                                                                                                                                        
-                                                                                                                                                               
-┌──(root㉿kali)-[/opt/zeek]
-
-└─# ls  
-
-auxil    ci     CMakeLists.txt   configure  COPYING-3rdparty  docker   Makefile  NEWS    README.md  src      vcpkg.json  zeek-path-dev.in
-CHANGES  cmake  cmake_templates  COPYING    doc               INSTALL  man       README  scripts    testing  VERSION
-
-
-
-# We're now good to `build "Zeek"`, from `source`. 
-
-
-
-           
-
-
-
-                                                  
-                                                                                                                                                          *******////////  Important Rules to Compilation - C++/C - Memorize ********/////////
-
-
-
-
-
-# Whenever we've the need to `build`, or `compile builds` from `scratch/source`, such that to `create a binary executable`, then please follow along : 
-
-
-
-- Go after the directory of the application/source file we want to compile : 
-
-# Classic 3 of instructions, make sure to run this at the "root privilege" : 
-
-
-
-
-1. ./configure : Checks if all the `dependencies are there`, and what their `location` are required to be. 
-
-
-# From this step, make sure to read through each line as soon as the command "./configure" is launched, as the latter may help us to "debug" in case of any error. 
-
-
-# Case Scenario : During execution, we may encounter some errors due to missing dependencies or most probably that the author forgot to point out a "dependency" or while versioning, something has changed.(work around this, using chatgpt)
-
-
-
-# Run  ./configure : 
-
-Build Directory : build                                                                                                                
-Source Directory: /NIDS/zeek                                                                                                           
-Using cmake version 3.25.1                                                                                                             
-                                                                                                                                       
--- The C compiler identification is GNU 12.2.0                                                                                         
--- The CXX compiler identification is GNU 12.2.0                                                                                       
--- Detecting C compiler ABI info                                                                                                       
--- Detecting C compiler ABI info - done                                                                                                
--- Check for working C compiler: /usr/bin/cc - skipped                                                                                 
--- Detecting C compile features                                                                                                        
--- Detecting C compile features - done                                                                                                 
--- Detecting CXX compiler ABI info                                                                                                     
--- Detecting CXX compiler ABI info - done                                                                                              
--- Check for working CXX compiler: /usr/bin/c++ - skipped                                                                              
--- Detecting CXX compile features                                                                                                      
--- Detecting CXX compile features - done                                                                                               
--- Performing Test test_arch_x64                                                                                                       
--- Performing Test test_arch_x64 - Success                                                                                             
--- Performing Test test_arch_aarch64                                                                                                   
--- Performing Test test_arch_aarch64 - Failed                    
-
-
-
-
-                
-
-
-                                                                                                                                *********/////  Second Step - 2. "make" commamd + Changing ScreenTImeout/Kali + Keep-alive Message DropBear Server Modification  ******/////////
-
-
-
-
-# Lenthiest process, considering the "Size of the Processor", "RAM Size", and this is where the actual "compilation" takes place. 
-
-
-# Important : Prior to running the "make command" for its compilation process, make sure to adjust the "ScreenTimeout" together with the "Keep-Alive Default Server message", in order to prevent any eventual disruption while "compiling". 
-
-
-- Let's now run the "make" command : 
-
-
-
-┌──(root㉿kali)-[/opt/zeek]                                                                                                                     
-
-└─# make                                                                                                                                        
-
-make -C build all                                                                                                                               
-make[1]: Entering directory '/opt/zeek/build'                                                                                                   
-make[2]: Entering directory '/opt/zeek/build'                                                                                                   
-make[3]: Entering directory '/opt/zeek/build'                                                                                                   
-[  0%] [BISON][BIFParser] Building parser with bison 3.8.2                                                                                      
-[  0%] [FLEX][BIFScanner] Building scanner with flex 2.6.4                                                                                      
-make[3]: Leaving directory '/opt/zeek/build'                                                                                                    
-make[3]: Entering directory '/opt/zeek/build'                                                                                                   
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/bif_parse.cc.o                                                                      
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/bif_lex.cc.o      
-
-
-# After the "compilation process" has successfully ended, we will then proceed to the very last par below.
-
-
-                                    
-                                    
-                                    
-                                    
-                                                                                                                                                            ********///////// Altering the ScreenTimeout to never  ////////********
-
-
-
-
-# Note :  Since this will be taking a lot of time, from Settings --> "power management" --> ScreenTimeout set to "Never" to prevent the screen from timeing out during the "compilation" process.
-
-
-
-
-
-
-
-
-                                                                                                                                                  ********////////// Changing the Keep-Alive Default message to 300 Seconds //////////********
+Changing the Keep-Alive Default message to 300 Seconds
 
 
 
@@ -1517,129 +1174,7 @@ make[3]: Entering directory '/opt/zeek/build'
 
 
 
-
-# Within the Configuration file : 
-
-
-{
-# The TCP port that Dropbear listens on
-#DROPBEAR_PORT=22
-# NO_START=0
-# Receive window size - this is a tradeoff between memory and network performance
-#DROPBEAR_RECEIVE_WINDOW=65536
-
-# Any additional arguments for Dropbear.  For instead set
-#
-#   DROPBEAR_EXTRA_ARGS="-b /etc/issue.net"
-#
-# to specify an optional banner file containing a message to be sent to
-# clients before they connect; or
-#
-#   DROPBEAR_EXTRA_ARGS="-r /etc/dropbear/rsa_host_key -r /etc/dropbear/ed25519_host_key"
-
-* Add this line* -->   #   DROPBEAR_OPTIONS="-s -g -k 300"
-
-# to specify custom host keys.  See dropbear(8) for possible values.
-#DROPBEAR_EXTRA_ARGS=""
-} 
-
-
-
-
-# Then restart the DropBear Service : 
-
-
-    $ service dropbear restart
-       
-
-
-
-  # Run the "make command" : 
-
-  
-┌──(root㉿kali)-[/NIDS/zeek]                                       
-       
-        
-    $   make 
-
-
-make -C build all                                                                                                                      
-make[1]: Entering directory '/NIDS/zeek/build'                     
-make[2]: Entering directory '/NIDS/zeek/build'             
-make[3]: Entering directory '/NIDS/zeek/build'                     
-[  0%] [BISON][BIFParser] Building parser with bison 3.8.2         
-[  0%] [FLEX][BIFScanner] Building scanner with flex 2.6.4         
-make[3]: Leaving directory '/NIDS/zeek/build'                                                                                          
-make[3]: Entering directory '/NIDS/zeek/build'                     
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/bif_parse.cc.o                                                             
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/bif_lex.cc.o                                                               
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/bif_arg.cc.o                                                               
-[  0%] Building CXX object auxil/bifcl/CMakeFiles/bifcl.dir/module_util.cc.o                                                           
-[  0%] Linking CXX executable bifcl                                
-make[3]: Leaving directory '/NIDS/zeek/build'                      
-[  0%] Built target bifcl                                                               
-
-
-# Warning : This can take really long, 12 hours or more. 
-
-
-
-
-
-# In some cases the `compilation process` may `fail` asnd due to the fact that this was `taking way too long`, therefore, we `interrupted the compilation process` and right after, we tried the `make` command again : 
-
-
-- Re-run the compilation as follows : 
-
-
-    $ make clean 
-    
-
-# We'll run the "compilation process" once more : 
-
-    $ make 
-
-
-# Tips : Some Easy Steps to upgrade your Machine Ram Size : 
-
-
-- Check in the Total Ram Size in the Slot : 
-
-C:\Users\YashCyb>systeminfo | findstr /C:"Total Physical Memory"
-Total Physical Memory:     16,301 MB
-
-
-# Get the maximum Ram Size : 
-
-C:\Users\YashCyb>wmic memphysical get maxcapacityEx
-MaxCapacityEx
-
-33554432 --> 32 Gb
-
-
-
-
-                                                                                                                                        ********/////////// 3. sudo make install - Last Part (Actual Installation) *******////////////
-
-
-
-
-# Now, we're good to engage and `install our application` after the `compilation` has been `completed`s. 
-
-
-      $ sudo make install
-
-
-Great !!, we 're good to go .. 
-
-              
-                          
-                          
-                          
-
-      
-      
-                                                                                                                                    ********/////////// 4. Configuring Zeek after installation(Adding Zeek to our "Path") ////////*********
+> # Configuring Zeek after installation(Adding Zeek to our "Path
 
 
 
