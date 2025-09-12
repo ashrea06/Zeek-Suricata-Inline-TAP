@@ -658,7 +658,6 @@ Enter the new Password :
 ```
 
 
-
 # ***Continue Setup and IDS with FileBeat***
 
 
@@ -809,7 +808,7 @@ The following packages were automatically installed and are no longer required:
 
 
 
-> # - _Option 2_ : 
+> # _Option 2_ : 
 
 
 > - ***To begin with, we grabbed a ".gz version" of "Suricata Signature-Based-IDS", we're good to extracting the file, suricata-6.0.11.tar.gz :*** 
@@ -846,7 +845,7 @@ suricata-6.0.11  suricata-6.0.11.tar.gz
 
 
 > [!WARNING]
-> _Some Encountered issues on the way, as try to run our update on our Kali Machine, we happen to experience that the URL's, for e,g , "www.kali.org" is not resolving to anything._ 
+> _Some Encountered issues on the way, as try to run our update on our Kali Machine, we happen to experience that the URL's, for e,g , "www.kali.org" is not resolving to anything._
 
 
 > -  ***Next we tried to update our "sources.list" at this directory :*** 
@@ -893,7 +892,7 @@ Ign:2 http://http.kali.org/kali kali-rolling InRelease
 > command to add in the "network interface", "Ip Addrress, and all other related information :_ 
 
 ```
-$ sudo nmtui  
+$ sudo nmtui
 ```
 
 
@@ -901,66 +900,65 @@ $ sudo nmtui
 
 
 ```
+
 ┌──(root㉿kali)-[/etc]
 
 └─# nslookup 192.168.243.1
 
 ;; communications error to 192.168.243.1#53: timed out
 
+```
 
-
-# Our next step will involve adding a namserver(Google DNS) in addition to our "Local DNS Server" (192.168.243.XX) to our directory, "/etc/resolv.conf". 
-
-
+> [!IMPORTANT]
+> _Our next step will involve adding a namserver(Google DNS) in addition to our "Local DNS Server" (192.168.243.XX) to our directory, "/etc/resolv.conf"._ 
+ 
+```
 nameserver 8.8.8.8
 nameserver 8.8.4.4      
+```
 
 
-
-# Make sure that the "newly added", "nameservers" stays into the "resolv.conf", as this may occasionally, gets erased by itself after a booting process. 
-
-
-- From the below, just replace the <nameserver_IP> with the IP Address, of the nameserver 8.8.8.8 and 8.8.4.4 
+> [!NOTE]
+> Make sure that the "newly added", "nameservers" stays into the "resolv.conf", as this may occasionally, gets erased by itself after a booting process.
+> Replace the <nameserver_IP> with the IP Address, of the nameserver 8.8.8.8 and 8.8.4.4 
 
 
-Let's each one by one : 
+> - ***Let's add each one by one :*** 
 
+```
 echo "nameserver <nameserver_IP>" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
-
-
 
 echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 
 echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 
+```
 
 
----------------------------------------------------------------------------------------------------------------------
+> - ***Run the command to update the resolv.conf  :*** 
 
-
-
-# Run the command to update the resolv.conf  :
-
+```
   $ sudo resolv.conf -u 
-# We may need to install the resolvconf through apt : 
+```
+  
+> - ***Install the resolvconf if needed :*** 
 
+```
   $ apt-get install resolvconf  
+```
 
+> [!TIP]
+> _Lastly, we'll nmow clear the apt cache, in case this is causing any sort of conflict :_ 
 
-# Lastly, we'll nmow clear the apt cache, in case this is causing any sort of conflict  : 
-
-
+```
   $ apt clean
-
-
-
-
-                                                                                                                                    *********//////// Configuring Suricata Yaml  ///////////*********
+```
 
 
 
 
 
+> # Configuring Suricata Yaml
 
 
 # In order to configure the "Suricata Yaml" file, let's make use of any editor and access the file at "/etc/suricata/suricata.yaml" : 
