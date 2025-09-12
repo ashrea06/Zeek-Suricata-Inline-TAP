@@ -439,7 +439,6 @@ Last login: Wed Jun 21 22:56:27 2023 from 192.168.2.30
 
 # ***Accidental Delete of the SSH Host-Keys files -  sudo rm ssh_host***
 
-
 > [!NOTE]
 > - Prior to purging the "Installation of the OpenSSH-Server", let's try to generate the "Host-Keys,authorized keys".
 
@@ -604,16 +603,17 @@ ERROR: Host key verification failed.
 ```
   $ ssh-keygen -f /root/.ssh/known_hosts -R 192.168.243.128
 ```
+
  
  > - # Alternatively, we can also delete the "known_hosts" file to resolve this issue : 
-
 
 ```
     $ rm -f  /.ssh/known_hosts
 
 ```
 
-┌──(root㉿kali)-[~/.ssh]                                                                                 
+```
+┌──(root㉿kali)-[~/.ssh]                                                                             
 
 └─# ssh-keygen -f /root/.ssh/known_hosts -R 192.168.243.128                                              
 
@@ -622,6 +622,7 @@ ERROR: Host key verification failed.
 /root/.ssh/known_hosts updated.                                                                          
 Original contents retained as /root/.ssh/known_hosts.old         
 
+```
 
 
 
