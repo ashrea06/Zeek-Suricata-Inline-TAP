@@ -564,7 +564,8 @@ drwx------  2 root root 4.0K May  1 11:39 .
 ```
 ┌──(root㉿kali)-[~/.ssh]
 
-$  service ssh restart            
+$  service ssh restart
+        
 ```
 
 
@@ -599,11 +600,10 @@ ERROR: Host key verification failed.
 
 # This conflicting scenario, "Host Key Verification error occurs" due to the fact that, we just generated a new id_rsa key-pair while using the "ssh-keygen command".
 # Another plausible explanation, is that this could not match the "local identity of the Server with the Remote Identity of the Server" from previous authentication.
+
 ```
 
-
-
-# We will now try to remediate this situation using the command below : 
+> - # We will now try to remediate this situation using the command below : 
 
 
   $ ssh-keygen -f /root/.ssh/known_hosts -R 192.168.243.128
