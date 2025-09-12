@@ -658,7 +658,7 @@ Enter the new Password :
 ```
 
 
-# ***Continue Setup and IDS with FileBeat***
+> # ***Continue Setup and IDS with FileBeat***
 
 
 > - Let's create a "Network Interface" file and for this will first need to go into this directory, "/etc/network"
@@ -961,12 +961,17 @@ echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 > # Configuring Suricata Yaml
 
 
-# In order to configure the "Suricata Yaml" file, let's make use of any editor and access the file at "/etc/suricata/suricata.yaml" : 
+> [!TIP]
+> _In order to configure the "Suricata Yaml" file, let's make use of any editor and access the file at "/etc/suricata/suricata.yaml" :_ 
+
+```
+$ mousepad /etc/suricata/suricata.yaml 
+```
 
 
-    $ mousepad /etc/suricata/suricata.yaml 
 
-# Once we're in there, make sure to replace the default interface, to your previously "assigned sniffing interface : eth0 " shown in the directory , "/etc/network/interfaces"
+> [!IMPORTANT]
+> - ***Ensure to replace the default interface, to your previously "assigned sniffing interface : eth0 " shown in the directory , "/etc/network/interfaces"***
 
 
 
