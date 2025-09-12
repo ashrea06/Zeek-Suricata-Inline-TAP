@@ -812,11 +812,7 @@ The following packages were automatically installed and are no longer required:
 > # - _Option 2_ : 
 
 
-> - ***_To begin with, we grabbed a ".gz version" of "Suricata Signature-Based-IDS", we're good to extract the following_*** : 
-
- 
- 
-> - ***Extracting the file, suricata-6.0.11.tar.gz :***
+> - ***To begin with, we grabbed a ".gz version" of "Suricata Signature-Based-IDS", we're good to extracting the file, suricata-6.0.11.tar.gz :*** 
 
 
 ```
@@ -836,43 +832,43 @@ suricata-6.0.11  suricata-6.0.11.tar.gz
 > -  ***Let's head into the directory suricata-6.0.11 and run the command to generate the "MakeFile" :***
 
 
-
+```
    $ ./configure 
-
+```
 
 # Build "Suricata", using the "make" commmand : 
 
-
+```
   $ make install
+```
 
 
 
-# Some Encountered issues on the way : 
-
-- As we try to run our update on our Kali Machine, we happen to experience that the URL's, for e,g , "www.kali.org" is not resolving to anything. 
-
+> [!WARNING]
+> _Some Encountered issues on the way, as try to run our update on our Kali Machine, we happen to experience that the URL's, for e,g , "www.kali.org" is not resolving to anything._ 
 
 
-- Next we tried to update our "sources.list" at this directory, 
+> -  ***Next we tried to update our "sources.list" at this directory :*** 
 
-
+```
     $ sudo nano /etc/apt/sources.list
+```
 
+> - ***Let's add these 2 lines onto our file :***  
 
-
-# Let's add these 2 lines onto our file : 
-
+```
 deb http://us.archive.kali.org/kali kali-rolling main non-free contrib
 deb-src http://us.archive.kali.org/kali kali-rolling main non-free contrib
+```
 
 
-We'll now update the entire machine with this command :
 
+> [!NOTE]
+> We'll now update the entire machine with this command : 
 
-  $ apt update
- 
-
+```
 ┌──(root㉿kali)-[/home/kali]
+
 └─# apt update             
 
 Ign:1 https://download.greenbone.net/apt/gb-stable/20.08 main/ InRelease                                   
@@ -888,25 +884,22 @@ Ign:1 https://download.greenbone.net/apt/gb-stable/20.08 main/ InRelease
 
 Ign:2 http://http.kali.org/kali kali-rolling InRelease   
 
-
-# We're still stuck at the InReleae step .. 
-
+```
 
 
+> [!NOTE]
+>  _Yet, we're still stuck at the InReleae step. Let's check our DNS Resolution with this command, right before let`s take a look at another
+> command to add in the "network interface", "Ip Addrress, and all other related information :_ 
 
-
-- Let's check our DNS Resolution with this command, right before let`s take a look at another command  : 
-
-
-# This would allow us to add in the "network interface", "Ip Addrress, and all other related information : 
-
+```
 $ sudo nmtui  
+```
 
 
+> - ***From the below, we can clearly see that our DNS Server is halting us :*** 
 
-# From the below, we can clearly see that our DNS Server is halting us : 
 
-
+```
 ┌──(root㉿kali)-[/etc]
 
 └─# nslookup 192.168.243.1
