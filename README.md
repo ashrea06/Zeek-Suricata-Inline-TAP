@@ -757,16 +757,13 @@ iface eth1 inet manual
 > For Ubuntu User's we're trying to stop the "systemd-networkd", which is a network panner service and for Kali Users no need to worry about this. 
 
 
-> ***From our Ubuntu command-Line Terminal, stop the service*** : 
+> ***From our Ubuntu command-Line Terminal, stop the service*** :
 
-  $ sudo service systemd-networkd stop
-
-
-
-
+```
+$ sudo service systemd-networkd stop
+```
 
 > ***Again for our Ubuntu Users, we will use another command to ensure complete removal, of the "netplan service"*** : 
-
 
 ```
   $ sudo apt remove netplan -y 
@@ -775,21 +772,21 @@ iface eth1 inet manual
 
 # ***Installing Suricata - Signature Based IDS***
 
+
 > [!TIP]
 > _For this tuturial, we have two options, however, we shall start with the "easiest one", first one as the second one requires us to "build and compile the file from source"._
 
 
+> - ***Run this command to install "Suricata Stable",Version from its "repository"*** : 
 
-- Run this command to install "Suricata Stable",Version from its "repository" : 
-
-
+```
     $  sudo apt install software-properties-common
 
+```
 
+> - ***Installation of Suricata*** : 
 
-# Installation of Suricata : 
-
-
+```
   $ sudo apt install suricata -y 
 
 Reading package lists... Done
@@ -807,34 +804,36 @@ The following packages were automatically installed and are no longer required:
   nginx-core python-pastedeploy-tpl python3-alabaster
   python3-commonmark python3-docutils python3-imagesize                                                                   
   python3-snowballstemmer python3-speaklater
+```
 
 
 
-# Option 2 : 
+
+> # - _Option 2_ : 
 
 
+> - ***_To begin with, we grabbed a ".gz version" of "Suricata Signature-Based-IDS", we're good to extract the following_*** : 
 
-#  To begin with, we grabbed a ".gz version" of "Suricata Signature-Based-IDS", we're good to extract the following : 
+ 
+ 
+> - ***Extracting the file, suricata-6.0.11.tar.gz :***
 
-  
-  - Extracting the file, suricata-6.0.11.tar.gz
 
-
+```
     $ tar xzf suricata-6.0.11.tar.gz
+```
 
-
-
+```
 ──(root㉿kali)-[/suricata-Signature-Based-IDS]
 
 └─# ls
 
 suricata-6.0.11  suricata-6.0.11.tar.gz
+```
 
 
-- Let's head into the directory suricata-6.0.11
 
-
-# Run the following command to generate the "MakeFile" : 
+> -  ***Let's head into the directory suricata-6.0.11 and run the command to generate the "MakeFile" :***
 
 
 
