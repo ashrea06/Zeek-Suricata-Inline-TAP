@@ -968,7 +968,7 @@ $ mousepad /etc/suricata/suricata.yaml
 
 
 > [!IMPORTANT]
-> - ***Ensure to replace the default interface, to your previously "assigned sniffing interface : eth0 " shown in the directory , "/etc/network/interfaces"***
+> ***Ensure to replace the default interface, to your previously "assigned sniffing interface : eth0 " shown in the directory , "/etc/network/interfaces"***
 
 
 > [!NOTE]
@@ -1662,15 +1662,15 @@ redef digest_salt = "Please change this value.";
 # @load policy/protocols/conn/vlan-logging
 
 
-
-* >>>>>  # Uncomment the following line to enable logging of link-layer addresses. Enabling
+> - Uncomment the following line to enable logging of link-layer addresses. Enabling
 
 # this adds the link-layer address for each connection endpoint to the conn.log file.
 # @load policy/protocols/conn/mac-logging
 
 
 
-* ---- >>>> This is where we'd add the line : 
+
+> - This is where we'd add the line : 
 
 # Output to JSON
 @load policy/tuning/json-logs.zeek 
@@ -1683,31 +1683,15 @@ redef digest_salt = "Please change this value.";
 ```
 
 
-# Basically, these "added line", would tell the "zeekctl", to log into a file directory that doesn't yet exist ..So let's create a directory as the very last step .. 
+> [!NOTE]
+> _The above configuration will direcct "zeekctl", to log into a `file directory`, however this `doesn't exist as of yet`_
 
+>  ***_Our next step : Create a file logging location `/var/logs/zeek/logs`***
 
-
-
-- Let's make sure to create the "directory, called zeek" at the following location, "/var/log"
-
-
-
+```
 ┌──(root㉿kali)-[/var/log]
 
-└─# mkdir zeek                                               
-
-
-
-# We shall now "cd" into the directory : 
-
-
-┌──(root㉿kali)-[/var/log]
-
-└─# cd zeek      
-
-
-
-# Now within the directory,"zeek", let us now have another directory created called, "logs" : 
+└─# mkdir zeek
 
 
 ┌──(root㉿kali)-[/var/log/zeek]  
@@ -1715,20 +1699,12 @@ redef digest_salt = "Please change this value.";
   $ mkdir  -p logs 
 
 ┌──(root㉿kali)-[/var/log/zeek]
+
 └─# ls 
 
 logs
 
-
-
-# Our, file logging location would be at this new directory, "/var/logs/zeek/logs"
-
-┌──(root㉿kali)-[/logs]
-
-└─# cd /var/log/zeek/logs  
-
-
-
+```
 
 
 
