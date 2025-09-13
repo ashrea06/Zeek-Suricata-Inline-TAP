@@ -722,11 +722,10 @@ iface lo inet loopback
 
 
 > [!TIP]
-> _In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine"_ 
-
-> - ***Here are our "Network interface cards :***
-- eth0 : NAT Interface Card
-- eth1 : Host-Only Interface Card 
+> _In this tutorial, we've created two "network interfaces", one of them is under a NAT Network, whilst the other one is a "HOST-Only Network(constrained network), private address for our Kali Linux Machine"_
+> ***Here are our "Network interface cards :***
+> - eth0 : NAT Interface Card
+> - eth1 : Host-Only Interface Card 
 
 > - ***In our case, here's the equivalent of the "Network Interface File" for our "Kali OS"*** : 
 
