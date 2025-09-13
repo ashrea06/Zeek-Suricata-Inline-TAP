@@ -1481,10 +1481,10 @@ $ crontab -e
 
 
 ```
-
 $  sudo  nano /usr/local/zeek/share/zeek/site/local.zeek
+```
 
-
+```
 {
 # Output to JSON
 @load policy/tuning/json-logs.zeek 
