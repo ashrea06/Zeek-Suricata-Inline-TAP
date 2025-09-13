@@ -1,4 +1,3 @@
-
 # ***Zeek NIDS with OpenSSH Server - Network Intrusion Detection System(Integrating "Suricata" rules similar to "Snort" rules)***
 
 
@@ -1131,15 +1130,12 @@ WantedBy=multi-user.target
 
 
 
-> # Network Threat Hunting with Zeek
+> # _Network Threat Hunting with Zeek_
 
 
 > -  ***In order to take advantage of Zeek, we'll need to get this installed locally. Not only does zeek provides us with that additional edge with deep packet level inspection but also does provide "rich parsing of packet metadata",***
 > -  ***which allow us to perform "understanding what a protocol is doing and what commands are being sent."***.
-> -  This tool has greatly been improved from the start till its very end allowing an out of the box experience. Installation now includes one liner bash  installation which also comes with RITA which again allows for a great visualization using different know the techniques such as common aggregation of data points hence allowing us to easily spot suspicious activities in heavy traffic
-> - environment.
-
-
+> -  This tool has greatly been improved from the start till its very end allowing an out of the box experience. Installation now includes one liner bash  installation which also comes with RITA which again allows for a great visualization using different know the techniques such as common aggregation of data points hence allowing us to easily spot suspicious activities in heavy traffic environment.
 
  > - ***Execute the command below to install both RITA and Zeek altogether :*** 
 
@@ -1157,37 +1153,26 @@ chmod +x install-rita-zeek-here.sh
 > - ***Since this will be taking a lot of time, from Settings --> "power management" --> ScreenTimeout set to "Never" to prevent the screen from timeing out during the "compilation" process.***
 
 
-
+```
 Changing the Keep-Alive Default message to 300 Seconds
-
-
-
-
-#  For convenience purposes, we want to resume our entire work at any point in time on "Windows, Command Prompt", using our Server as the only Option. 
-
-
+For convenience purposes, we want to resume our entire work at any point in time on "Windows, Command Prompt", using our Server as the only Option.
  - Configure DropBear Server's Keep-Alive, by heading to its "configuration file", "/etc/default/dropbear". 
-
-
-# From there, add in the "option" to "bypass" its "Default Keep-Alive" and set this to 300 seconds instead of 60 Seconds.
-
+From there, add in the "option" to "bypass" its "Default Keep-Alive" and set this to 300 seconds instead of 60 Seconds.
+```
 
 
 
 > # Configuring Zeek after installation(Adding Zeek to our "Path
 
-
-
-# Here is the last step, that will allow us to call on "Zeek within the Terminal" and this will be usually done through "/etc" environment file. 
-
-
-- The suggested "command for Ubuntu" and similarly this seem to work for our "Linux Distribution" to allow for this necessary change, here it is as follows : 
+> ***Here is the last step, that will allow us to call on "Zeek within the Terminal" and this will be usually done through "/etc" environment file.*** 
 
 
 
-# Add in the following "path" for "zeek" : "/usr/local/zeek/bin"
 
- 
+> [!TIP]
+> ***Allow the necessary change for this to work with the linux distribution by adding in the following "path" for "zeek" : "/usr/local/zeek/bin"***.
+
+ ```
 ┌──(root㉿kali)-[/opt/zeek]
 
 └─# sudo visudo
@@ -1246,71 +1231,72 @@ root    ALL=(ALL:ALL) ALL
 # See sudoers(5) for more information on "@include" directives:
 
 @includedir /etc/sudoers.d
+```
 
 
 
+> [!IMPORTANT]
+>  Add Zeek PATH to your `system's PATH environmental variable` by adding the following line, `export PATH=$PATH:/usr/local/go/bin` to our `path, "~/.zhsrc, ~/.bashrc"`. 
 
-# Add Zeek path to your `system's PATH environmental variable` by adding the following line, `export PATH=$PATH:/usr/local/go/bin` to our `path, "~/.zhsrc, ~/.bashrc"`. 
 
-
-
+```
 ──(root㉿kali)-[/usr/local/zeek/bin]
+
 └─# nano ~/.zshrc
-                                                                                                                                                                                           
+```
+
+```
 ┌──(root㉿kali)-[/usr/local/zeek/bin]
+
 └─# nano ~/.bashrc
 
+....                                                     
 
-
-************************                                                                                             
-                                                                                             
 # PATH EXPORT                                                                                
                                                                                              
 export PATH=$PATH:/usr/local/zeek/bin
-                                              
-**********************************
+
+```
+
+
+> [!IMPORTANT]
+> - Export PATH, to "~/.zshrc, ~/.bashrc", allows us to run `Zeek`, without the need to `enter Zeek's full location path`.
+> - ***Add the "export PATH=$PATH:/usr/local/go/bin" to the very end of "/.zshrc && /.bashrc".***
+
+>  - ***Let's access these two location from our "Linux Terminal" and add the corresponding "export PATH" : ***
+
+```
+$ nano ~/.bashrc 
+```
+
+```
+$ nano /.zshrc
+```
 
 
 
-# By adding "export PATH", to "~/.zshrc, ~/.bashrc", allows us to run `Zeek`, without the need to `enter Zeek's full location path` .
-     
 
-- Let's access these two location from our "Linux Terminal" and add the corresponding "export PATH" : 
-
-
-      $ nano ~/.bashrc 
-
-
-      $ nano /.zshrc
-
-# Then add the  "export PATH=$PATH:/usr/local/go/bin" to the very end of  "/.zshrc && /.bashrc" .. 
+> # Configuration of Zeek files - Specifying the IP ranges + Node + (zeek)Control
 
 
 
+> - ***These are the 3 files which we would need to modify :*** 
 
-
-                                        *******///////// Configuration of Zeek files - Specifying the IP ranges + Node + (zeek)Control  ******///////////
-
-
-
-# These are the 3 files which we would need to modify : 
-
-
+```
 ┌──(root㉿kali)-[/usr/local/zeek/etc]
 
 └─# ls 
 
 networks.cfg  node.cfg  zeekctl.cfg  zkg
-                                              
+```
+                                           
 
-# We'll mow start to configure the network configuration for "zeek" at this location ; "nano /usr/loca/zeek/etc/networks.cfg" 
+> - ***configure the network configuration for "zeek" at this location ; "nano /usr/loca/zeek/etc/networks.cfg"***
 
-                                            
 
 - See what the "file" network.cfg looks like ;
 
-
-                                                                                                
+```                                                                                                
 # List of local networks in CIDR notation, optionally followed by a descriptive
 # tag. Private address space defined by Zeek's Site::private_address_space set
 # (see scripts/base/utils/site.zeek) is automatically considered local. You can
@@ -1323,23 +1309,19 @@ networks.cfg  node.cfg  zeekctl.cfg  zkg
 # 2607:f140::/32    Student network 
 
 192.168.2.0/24   Private IP Space 
+```
 
-
-# Take notice of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"
-
+> [!NOTE]
+> - ***Take notice of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"***
  
 
 
 
+> - ***Configuration of the "zeek node" itself :***
+> _Let's proceed to this path itself and modify, the "Sniffing Interface" :_ 
 
 
-# Now we'll be haeding to the configuration of the "zeek node" itself :
-
-
-- Let's proceed to this path itself and modify, the "Sniffing Interface" : 
-
-
-
+```
      $ sudo nano /usr/local/zeek/etc/node.cfg 
 
 
@@ -1381,17 +1363,17 @@ host=localhost
 #host=localhost
 #interface=eth0
 
-
-
-# Our "last file" is to setup "zeekctl.cfg" which is the zeek control orchestration "application", it controls event of logging, amd control "clusters".
-
-
-- Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg 
+```
 
 
 
+> - ***Setup "zeekctl.cfg" which is the zeek control orchestration "application", it controls event of logging, amd control "clusters".***
+> -
+> -
+> - > _Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg_ : 
 
 
+```
 # Mail connection summary reports each log rotation interval.  A value of 1
 # means mail connection summaries, and a value of 0 means do not mail
 # connection summaries.  This option has no effect if the trace-summary
@@ -1444,16 +1426,14 @@ LogDir = /var/log/zeek/logs
 
 # Save everything after the applied changes. 
 
+```
 
 
 
-
-                                          
-                                          
-                                                           *********/////// Create ZeekCtl Cron job //////***********
+> # _Create ZeekCtl Cron job_
 
 
-
+                                    
 # ZeekCtl would require crontab to setup "Log Rotation" activities ....
 
 
