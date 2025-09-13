@@ -1425,7 +1425,7 @@ LogDir = /var/log/zeek/logs
 
 > # _Create ZeekCtl Cron job_
 
-> _ZeekCtl would require crontab to setup "Log Rotation" activities, and our cronjob will run every 5 mins with log rotation as follows :_ 
+> _ZeekCtl would require crontab to setup "Log Rotation" activities, and cronjob will run every 5 mins with log rotation as follows :_ 
 
 ```
 # m  h  dom mon dow   command
@@ -1433,6 +1433,10 @@ LogDir = /var/log/zeek/logs
 */5 *  *   *   *     /usr/local/zeek/bin/zeekctl cron
 
 `dom = day of month, mon = month, dow = day of week`
+
+```
+
+> - ***Let's add in the `cronjob` :*** 
 
 ```
 
@@ -1469,26 +1473,16 @@ $ crontab -e
 ```
 
 
-
-
 > # _Change Configuration Output Format of the logs to Json - Policy Tuning_ 
 
 
+> [!NOTE]
+> Interestingly, we would want to change the "configuration output format" of the logs to "JSON" and to accomplish this will move to the very "bottom" of the page, and search through and alter as well as add in the line below :  
 
 
+```
 
-
-
-   #  Interestingly, we would want to change the "configuration output format" of the logs to "JSON" : 
-
-
-     $  sudo  nano /usr/local/zeek/share/zeek/site/local.zeek
-
-
-
-
-#  We will go at the very "bottom" of the page, and search through and alter as well as add in the line below : 
-
+$  sudo  nano /usr/local/zeek/share/zeek/site/local.zeek
 
 
 {
@@ -1686,6 +1680,7 @@ redef digest_salt = "Please change this value.";
 # @load packages
 
 }
+```
 
 
 # Basically, these "added line", would tell the "zeekctl", to log into a file directory that doesn't yet exist ..So let's create a directory as the very last step .. 
