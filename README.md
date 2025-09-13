@@ -1052,7 +1052,7 @@ vars:
 > ***Great, we're good to use to Suricata, however, we would need to use "command-line arguments", to get this to start each and every time(rather lengthy and cumbersome)_***
 
 > [!IMPORTANT]
-> _In our very case a there exists already a service file, for `Suricata`._
+> _In our very case a there exists already a `service file`, for `Suricata`._
 
 
 
@@ -1149,7 +1149,7 @@ chmod +x install-rita-zeek-here.sh
 
 > [!TIP]
 > 
-> - ***Since this will be taking a lot of time, from Settings --> "power management" --> ScreenTimeout set to "Never" to prevent the screen from timeing out during the "compilation" process.***
+> ***Since this will be taking a lot of time, from Settings --> "power management" --> ScreenTimeout set to "Never" to prevent the screen from timeing out during the "compilation" process.***
 
 
 ```
@@ -1235,7 +1235,7 @@ root    ALL=(ALL:ALL) ALL
 
 
 > [!IMPORTANT]
->  Add Zeek PATH to your `system's PATH environmental variable` by adding the following line, `export PATH=$PATH:/usr/local/go/bin` to our `path, "~/.zhsrc, ~/.bashrc"`. 
+>  Add `Zeek PATH` to your `system's PATH environmental variable` by adding the following line, `export PATH=$PATH:/usr/local/go/bin` to our `path, "~/.zhsrc, ~/.bashrc"`. 
 
 
 ```
@@ -1310,18 +1310,16 @@ networks.cfg  node.cfg  zeekctl.cfg  zkg
 ```
 
 > [!NOTE]
-> - ***Take notice of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"***
+> ***Take notice of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"***
  
 
+>  ***Configuration of the `zeek node`***
 
 
-> - ***Configuration of the "zeek node" itself :***
-> _Let's proceed to this path itself and modify, the "Sniffing Interface" :_ 
-
+> -  _Let's proceed to this path itself and modify, the "Sniffing Interface" :_ 
 
 ```
      $ sudo nano /usr/local/zeek/etc/node.cfg 
-
 
 # Example ZeekControl node configuration.
 # This example has a standalone node ready to go except for possibly changing
