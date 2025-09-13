@@ -1310,7 +1310,7 @@ networks.cfg  node.cfg  zeekctl.cfg  zkg
 ```
 
 > [!NOTE]
-> ***Take notice of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"***
+> ***Take note of how we've added, the 192.168.2.0/24(unhash, without the #) , and this corresponds to our "HOME_NET" under Suricata which is our default "Network Address of eth0 : 192.168.2.0/24"***
  
 
 >  ***Configuration of the `zeek node`***
@@ -1425,21 +1425,17 @@ LogDir = /var/log/zeek/logs
 
 > # _Create ZeekCtl Cron job_
 
-
 > _ZeekCtl would require crontab to setup "Log Rotation" activities, and our cronjob will run every 5 mins with log rotation as follows :_ 
 
 ```
-m h d m d   command  Argument
+# m  h  dom mon dow   command
 
-*/5 * * * *  /usr/local/zeek/bin/zeekctl cron 
+*/5 *  *   *   *     /usr/local/zeek/bin/zeekctl cron
 
-```
-
-
-
-> - ***Access our "Crontab" , and in the "new cronjob" :***
+`dom = day of month, mon = month, dow = day of week`
 
 ```
+
 $ crontab -e 
 
 
