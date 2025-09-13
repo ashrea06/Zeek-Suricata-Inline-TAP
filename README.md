@@ -956,7 +956,7 @@ echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 
 
 
-> # Configuring Suricata Yaml
+> # _Configuring Suricata Yaml_
 
 
 > [!TIP]
@@ -1048,7 +1048,7 @@ vars:
 
 
 
-> # Creating a "Service File for Suricata(Start or Stop, for e.g service ssh start)
+> # _Creating a "Service File for Suricata(Start or Stop, for e.g service ssh start)_
 
 > ***Great, we're good to use to Suricata, however, we would need to use "command-line arguments", to get this to start each and every time(rather lengthy and cumbersome)_***
 
@@ -1276,7 +1276,7 @@ $ nano /.zshrc
 
 
 
-> # Configuration of Zeek files - Specifying the IP ranges + Node + (zeek)Control
+> # _Configuration of Zeek files - Specifying the IP ranges + Node + (zeek)Control_
 
 
 
@@ -1291,10 +1291,9 @@ networks.cfg  node.cfg  zeekctl.cfg  zkg
 ```
                                            
 
-> - ***configure the network configuration for "zeek" at this location ; "nano /usr/loca/zeek/etc/networks.cfg"***
+> - ***Configure the network configuration for "zeek" at this location ; "nano /usr/loca/zeek/etc/networks.cfg"***
 
-
-- See what the "file" network.cfg looks like ;
+>   _See what the "file" network.cfg looks like ;_
 
 ```                                                                                                
 # List of local networks in CIDR notation, optionally followed by a descriptive
@@ -1365,13 +1364,9 @@ host=localhost
 
 ```
 
-
-
 > - ***Setup "zeekctl.cfg" which is the zeek control orchestration "application", it controls event of logging, amd control "clusters".***
-> -
-> -
-> - > _Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg_ : 
 
+>  _Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg :_ 
 
 ```
 # Mail connection summary reports each log rotation interval.  A value of 1
@@ -1430,34 +1425,25 @@ LogDir = /var/log/zeek/logs
 
 
 
+
 > # _Create ZeekCtl Cron job_
 
 
-                                    
-# ZeekCtl would require crontab to setup "Log Rotation" activities ....
+> _ZeekCtl would require crontab to setup "Log Rotation" activities, and our cronjob will run every 5 mins with log rotation as follows :_ 
 
-
-Just to summarize, our "cronjob", will be as follows : 
-
-
-
-
-
-# Our cronjob will run every 5 mins, log rotation : 
-
-# m h  dom mon dow   command  Argument
+```
+m h d m d   command  Argument
 
 */5 * * * *  /usr/local/zeek/bin/zeekctl cron 
 
-
-# Let's access our "Crontab" , and in the "new cronjob" : 
-
-
-    $ crontab -e 
+```
 
 
-- Select our default interpreter, chose "1" for nano, and our file will look as in the below : 
 
+> - ***Access our "Crontab" , and in the "new cronjob" :***
+
+```
+$ crontab -e 
 
 
   GNU nano 7.2                     /tmp/crontab.pjEolF/crontab                                           
@@ -1487,12 +1473,14 @@ Just to summarize, our "cronjob", will be as follows :
 # m h  dom mon dow   command
 */5 * * * *  /usr/local/zeek/bin/zeekctl cron
 
+```
 
 
 
 
+> # _Change Configuration Output Format of the logs to Json - Policy Tuning_ 
 
-                                  *********//////// Change Configuration Output Format of the logs to Json - Policy Tuning /////////*******
+
 
 
 
