@@ -1686,7 +1686,7 @@ redef digest_salt = "Please change this value.";
 > [!NOTE]
 > _The above configuration will direcct "zeekctl", to log into a `file directory`, however this `doesn't exist as of yet`_
 
->  ***_Our next step : Create a file logging location `/var/logs/zeek/logs`***
+>  ***_Our next step : Create a file logging location `/var/logs/zeek/logs`_***
 
 ```
 ┌──(root㉿kali)-[/var/log]
