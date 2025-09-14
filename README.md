@@ -1366,61 +1366,59 @@ host=localhost
 >  _Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg :_ 
 
 ```
-# Mail connection summary reports each log rotation interval.  A value of 1
-# means mail connection summaries, and a value of 0 means do not mail
-# connection summaries.  This option has no effect if the trace-summary
-# script is not available.
 
-* ---> Set to "0",  MailConnectionSummary = 1 / "0"
+# Mail connection summaries are sent once per log rotation interval.
+# Requires the trace-summary script. 1 = send mail, 0 = do not send.
 
-# Lower threshold (in percentage of disk space) for space available on the
-# disk that holds SpoolDir. If less space is available, "zeekctl cron" starts
-# sending out warning emails.  A value of 0 disables this feature.
+> - Set to "0",  MailConnectionSummary = 1 / "0"
 
-* ...> Set to "0", MinDiskSpace = 5 / "0"
+MailConnectionSummary = 0
 
-# Send mail when "zeekctl cron" notices the availability of a host in the
-# cluster to have changed.  A value of 1 means send mail when a host status
-# changes, and a value of 0 means do not send mail.
+# Lower threshold (percent) for free space on the filesystem that holds SpoolDir.
+# If free space drops below this, "zeekctl cron" sends warning emails.
+# 0 disables the check.
 
+> - Set to "0", MinDiskSpace = 5 / "0"
 
-* ---> Set to "0", MailHostUpDown = 1 /"0"
+MinDiskSpace = 0
 
+# Send mail when a cluster host's availability changes.
+# 1 = send mail, 0 = do not send.
 
+> - Set to "0", MailHostUpDown = "0"
 
+MailHostUpDown = 0
 
-# will be deleted by "zeekctl cron".  The interval is an integer followed by
-# one of these time units:  day, hr, min.  A value of 0 means that logs
-# never expire.
+# Expiration interval for archived logs deleted by "zeekctl cron".
+# Format: integer followed by a unit: day, hr, or min. 0 = never expire.
 
-* ....> Set to "1 day", LogExpireInterval = 0 / "1 day"
+> - Set to "1 for daily", LogExpireInterval = 1 (A value of 0 means that logs never expire) 
 
+LogExpireInterval = 1 day
 
-# means write to stats.log, and a value of 0 means do not write to stats.log.
+# Write stats to stats.log. 1 = enable, 0 = disable. 
+# Means write to stats.log, and a value of 0 means do not write to stats.log.
 
-* >>>> Set this to "0" StatsLogEnable = 1 / "0"
+> - Set this to "0" StatsLogEnable = 0 (This entry never expire)
 
+StatsLogEnable = 0
 
-# that entries never expire.
->>>> Set this to "1" StatsLogExpireInterval = 0 / "1"
+# How long to keep entries in stats.log. 0 = never expire.
+# If you prefer one day, set to 1 (days).
 
+> -  Set this to "1" StatsLogExpireInterval = 1
 
+StatsLogExpireInterval = 1
 
-Finally let's head to where we'll be "archiving" each rotation interval within the same document :
-
-
-
-# Make sure this has been set to the below directory, otherwise "filebeat" may have some difficulties in recuperating those : 
-
-
+# Directory used for archived logs (rotation target). Make sure this matches your Filebeat path.
 LogDir = /var/log/zeek/logs
-
-
-# Save everything after the applied changes. 
 
 ```
 
-
+> [!IMPORTANT]
+> In this same `document`, configure the `archive directory` used at `each log rotation`.
+> The `path` must `match the setting` below; otherwise `Filebeat` may have `difficulty` collecting the `rotated logs`.
+> ***LogDir = /var/log/zeek/logs***
 
 
 > # _Create ZeekCtl Cron job_
