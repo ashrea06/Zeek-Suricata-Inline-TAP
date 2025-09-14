@@ -1361,7 +1361,7 @@ host=localhost
 
 ```
 
-> - ***Setup "zeekctl.cfg" which is the zeek control orchestration "application", it controls event of logging, amd control "clusters".***
+> ***Setup "zeekctl.cfg" which is the zeek control orchestration "application", it controls event of logging, amd control "clusters".***
 
 >  _Let's make our way to the following location  : /usr/local/zeek/etc/zeekctl.cfg :_ 
 
