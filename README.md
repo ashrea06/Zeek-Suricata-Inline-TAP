@@ -2403,10 +2403,10 @@ The following packages were automatically installed and are no longer required:
   bluez-firmware debugedit dh-elpa-helper docutils-common figlet finger firebird3.0-common firebird3.0-common-doc
   firmware-ath9k-htc firmware-atheros firmware-brcm80211 firmware-intel-sound firmware-iwlwifi firmware-libertas
   firmware-realtek firmware-sof-signed firmware-ti-connectivity firmware-zd1211 freerdp2-x11 gdal-data
-
 ```
 
-> - ***`Analyze` a `large flow set`(Download a sample Pcap: bigflows.pcap) into `Elasticsearch` : 
+
+> - ***Analyze a `large flow set`(Download a sample Pcap: bigflows.pcap) into `Elasticsearch` :*** 
 
 ```
   $ wget https://s3.amazonaws.com/tcpreplay-pcap-files/bigflows.pcap  
