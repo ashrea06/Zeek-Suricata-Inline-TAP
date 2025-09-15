@@ -916,8 +916,9 @@ nameserver 8.8.4.4
 
 
 > [!NOTE]
-> Make sure that the "newly added", "nameservers" stays into the "resolv.conf", as this may occasionally, gets erased by itself after a booting process.
-> Replace the <nameserver_IP> with the IP Address, of the nameserver 8.8.8.8 and 8.8.4.4 
+> 
+> _Make sure that the "newly added", "nameservers" stays into the "resolv.conf", as this may occasionally, gets erased by itself after a booting process._
+> _Replace the <nameserver_IP> with the IP Address, of the nameserver 8.8.8.8 and 8.8.4.4_
 
 
 > - ***Let's add each one by one :*** 
