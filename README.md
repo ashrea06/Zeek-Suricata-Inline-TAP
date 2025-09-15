@@ -1056,7 +1056,7 @@ vars:
 
 
 
-> - ***We'll head to the directory below and start to create "suricata.service" file :****  
+> - ***Let's head to the below directory and start to create "suricata.service" file :****  
 
 ```
   $ sudo nano /lib/systemd/system/suricata.service
