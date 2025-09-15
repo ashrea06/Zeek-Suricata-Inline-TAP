@@ -330,7 +330,7 @@ tcp6       0      0 :::9392                 :::*                    LISTEN      
 
 
 > [!NOTE]
-> - Reduce exposure to "SSH port 22" by changing it to a "less obvious, non-standard port". This helps "obfuscate our operation" by selecting "a port" that "blends in" more naturally with other "network traffic".
+> - _Reduce exposure to "SSH port 22" by changing it to a "less obvious, non-standard port". This helps "obfuscate our operation" by selecting "a port" that "blends in" more naturally with other "network traffic"._
 
 
 ```
