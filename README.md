@@ -1262,7 +1262,7 @@ export PATH=$PATH:/usr/local/zeek/bin
 > - Export PATH, to "~/.zshrc, ~/.bashrc", allows us to run `Zeek`, without the need to `enter Zeek's full location path`.
 > - ***Add the "export PATH=$PATH:/usr/local/go/bin" to the very end of "/.zshrc && /.bashrc".***
 
-> _Access these two location from our `Linux Terminal` and add the corresponding `export PATH` :
+> _Access these two location from our `Linux Terminal` and add the corresponding `export PATH` :_
 
 ```
 $ nano ~/.bashrc 
