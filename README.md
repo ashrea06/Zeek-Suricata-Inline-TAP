@@ -2146,7 +2146,6 @@ $ sudo nano /etc/filebeat/modules.d/zeek.yml
 >
 
 ```
-
 >  # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}***
 
 
@@ -2164,9 +2163,15 @@ $ sudo nano /etc/filebeat/modules.d/zeek.yml
 > ***Creating a "filebeat keystore" :*** 
 
 ```
-  $ sudo filebeat keystore create 
+  $ sudo filebeat keystore create
 ```
 
+
+> ***If this already `exists` and you need to `recreate` it:***
+
+```
+sudo filebeat keystore --force create
+```
 
 > ***Verify Filebeat stored Keys within the keystore :***
 
@@ -2180,136 +2185,104 @@ sudo filebeat keystore list
 ```
 # Required if using username/password
 
+sudo filebeat keystore add ES_HOST
 sudo filebeat keystore add ES_USER
 sudo filebeat keystore add ES_PASS
 ```
 
- 
- > - _Alternatively, use an API key instead of user/pass:_
+ >  ***Alternatively, use an API key instead of user/pass:***
 
 ```
 sudo filebeat keystore add ES_API_KEY
 ```
 
-
 > [!NOTE]
->  _In the Elasticsearch output section, reference the keystore entries: : /etc/filebeat/filebeat.yml   the change at the "ElasticSearch Output" Section :_
-> > _In filebeat.yml, reference keystore entries with the ${KEY_NAME} syntax (do not use $(...))._ 
+> _In the Elasticsearch output section of /etc/filebeat/filebeat.yml, reference secrets using ${KEY_NAME} (do not use $(...)).
+> At startup, Filebeat scans filebeat.yml for ${...} placeholders and resolves each key from the Filebeat keystore first; if not found, it falls back to an environment variable with the same name.
 
 
 
-> ***`Edit` the `Filebeat configuration`:***
+> ***Edit the `Filebeat configuration` to `point` the `Elasticsearch output` to your `cluster and reference secrets` from the `keystore (${ES_HOST}, ${ES_USER}, ${ES_PASS} or ${ES_API_KEY})`:***
 
 ```
     $ nano /etc/filebeat/filebeat.yml
+```
 
+```
 
->>>>>
->>>>
->>>
->>
-
-# ============================== Filebeat modules ==============================
-
-filebeat.config.modules:
-  # Glob pattern for configuration loading
-  path: ${path.config}/modules.d/*.yml
-
-  # Set to true to enable config reloading
-  reload.enabled: false
-
-  # Period on which files under path should be checked for changes
-  #reload.period: 10s
-
-# ======================= Elasticsearch template setting =======================
-
-setup.template.settings:
-  index.number_of_shards: 1
-  #index.codec: best_compression
-  #_source.enabled: false
-
-
-
-# =================================== Kibana ===================================
-
-# Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
-# This requires a Kibana endpoint configuration.
-setup.kibana:
-
-  # Kibana Host
-  # Scheme and port can be left out and will be set to the default (http and 5601)
-  # In case you specify and additional path, the scheme is required: http://localhost:5601/path
-  # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  host: "localhost:5601"
-
-  # Kibana Space ID
-  # ID of the Kibana Space into which the dashboards should be loaded. By default,
-  # the Default Space will be used.
-  #space.id:
-
-# =============================== Elastic Cloud ================================
-
-# These settings simplify using Filebeat with the Elastic Cloud (https://cloud.elastic.co/).
-
-# The cloud.id setting overwrites the `output.elasticsearch.hosts` and
-# `setup.kibana.host` options.
-# You can find the `cloud.id` in the Elastic Cloud web UI.
-#cloud.id:
-
-# The cloud.auth setting overwrites the `output.elasticsearch.username` and
-# `output.elasticsearch.password` settings. The format is `<user>:<pass>`.
-#cloud.auth:
-
-# ================================== Outputs ===================================
-
-# Configure what output to use when sending the data collected by the beat.
-
-
-
->>>
->>>>>> # It is at this section we would make some modification. 
->>>>
->>
 # ---------------------------- Elasticsearch Output ----------------------------
+
 output.elasticsearch:
-  # Array of hosts to connect to.
- 
- >>>>>>
- >>>> Our hosts will be different compared to the below : 
- 
+  # Use keystore/env placeholders (do not use $(...))
+  hosts: ["${ES_HOST}"]          # e.g., https://es.example.com:9200
+  # protocol: "https"            # uncomment if using HTTPS
 
- # "Right keystore" >>>>  hosts:["${es_host}"] 
 
- >>>
-{
+# (Reference only — this is the default example you might see in docs)
+
+# output.elasticsearch:
+#   hosts: ["localhost:9200"]
+#   protocol: "https"
+#   username: "elastic"
+#   password: "changeme"
+
+
+
+  # Option A: username/password from keystore
+
+  username: "${ES_USER}"
+  password: "${ES_PASS}"
+
+For e.g :
+
   hosts: ["localhost:9200"]
-}
-  # Protocol - either `http` (default) or `https`.
-  #protocol: "https"
-
-  # Authentication credentials - either API key or username/password.
-  #api_key: "id:api_key"
+  username: "elastic"
+  password: "changeme"
+ # api_key: "${ES_API_KEY}" # leave commented when using user/pass
 
 
+  # Option B: API key (alternative to user/pass)
 
-  
-  >>>>>>>
-  >>>>>># This is where our keystore, would be a little different than the below ... 
-  >>>>> username: "${es_user}"
-  >>>> password: "${es_user}"
-  >>
+output.elasticsearch:
+  hosts: ["${ES_HOST}"]
+  # protocol: "https"
 
+  # Use API key instead of user/pass
+  api_key: "${ES_API_KEY}"
 
-# Originally, this is what it looks like : 
- {
-  #username: "elastic"
-  #password: "changeme"
+  # username: "${ES_USER}"    # leave commented when using api_key
+  # password: "${ES_PASS}"
+
 ```
 
 
 
+> # ***Deploy status: start Filebeat/Suricata/Zeek***
 
-                    ****************//// Deploy/Status/Start  Filebeat/Suricata/zeekctl ////******************
+
+> _Winlogbeat and Auditbeat are commonly used; in this tutorial we use them as well_
+
+> - ***Load index templates, ingest pipelines, and Kibana dashboards/visualizations for filebeat to work with elastic cluster :***
+
+
+```
+sudo filebeat setup -e
+```
+
+
+
+# After installing Suricata, update to the Emerging Threats ruleset (IDS).
+# Run the update, then restart Suricata to apply the new rules.
+
+sudo suricata-update
+sudo systemctl restart suricata
+
+
+
+> # Deploy Status Start Filebeat/Suricata/zeekctl
+
+
+
 
 
 # WinlogBeat and AuditBeat are the mostly used, and this is what we're using in this tutorial. 
