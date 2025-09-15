@@ -766,7 +766,7 @@ $ sudo service systemd-networkd stop
 ```
 
 
-# ***Installing Suricata - Signature Based IDS***
+> # ***Installing Suricata - Signature Based IDS***
 
 
 > [!TIP]
@@ -1765,6 +1765,7 @@ $ sudo apt-get install apt-transport-https
 Get:2 https://artifacts.elastic.co/packages/7.x/apt stable InRelease [13.7 kB]
 Ign:3 https://download.docker.com/linux/ubuntu kali-rolling InRelease        
 Err:4 https://download.docker.com/linux/ubuntu kali-
+
 ```
 
 
@@ -1785,8 +1786,10 @@ gdal-plugins kali-linux-firmware libaec0 l
 ```
 
 
-> [!NOTE]
- At the `time of writing, eleastic may have changed their infrastructure, where there could be a single elastic agant that controls all the beats. That could have been much easier for us as it does incorporate, new features like fleet central management for "Zeek and Suricata". 
+> [!TIP]
+> In the`near future` we may consider `new features` like `fleet central management` for `Zeek and Suricata`.  
+
+
 
 > # Configuring the filebeat Configuration File
 
