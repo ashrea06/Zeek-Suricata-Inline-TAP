@@ -945,7 +945,7 @@ echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 ```
 
 > [!TIP]
-> _Lastly, we'll nmow clear the apt cache, in case this is causing any sort of conflict :_ 
+> _Lastly, we'll now clear the apt cache, in case this is causing any sort of conflict :_ 
 
 ```
   $ apt clean
@@ -1840,8 +1840,6 @@ filebeat.inputs:
   # Change to true to enable this input configuration.
   enabled: false
 
-=
-
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
 
@@ -2117,17 +2115,14 @@ Enabled suricata
 
 ```
 
+> ***Change the "Zeek" modules "default path" :***  
+
+```
+
+$ sudo nano /etc/filebeat/modules.d/zeek.yml
 
 
-
-# Change the "Zeek" modules "default path" : 
-
-
-    $ sudo nano /etc/filebeat/modules.d/zeek.yml
-
-
-
-# Go at the very bottom, and add the following line to "var.paths" :  
+> - Go to the very bottom, and add the following line to "var.paths" :  
 
   ssl:
     enabled: true
@@ -2144,75 +2139,66 @@ Enabled suricata
   x509:
     enabled: true
 
->>>>  # Set custom paths for the log files. If left empty,
->>>>  # Filebeat will choose the paths depending on your OS.
-  >>>>
-  >>>   # Make sure to remove the {hash,#} such that the path namely, var.paths, can be applied.
-  >>
-  >>   var.paths: [/var/log/zeek/logs/current/*.log]  >>> *, wildcard , means that this will "gather" the "logs" as they come. 
+>>>>>>> Set custom paths for the log files. If left empty, Filebeat will choose the paths depending on your OS. Make sure to remove the {hash,#} such that the path namely, var.paths, can be applied. 
+>>>>> var.paths: [/var/log/zeek/logs/current/*.log]  >>> *, wildcard , means that this will "gather" the "logs" as they come. 
+>>>  
+>> 
+>
 
- 
+```
 
-
-
-              ****************//////// Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version} ////////***********************
+> - # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}
 
 
-
-- Let's analyse how the structure, of the "keystore", looks like : 
-
-
-#  Check how the "filebeat keystore" has a definite structure as shown below : 
-
-
-- es : elastic search
-- host, pwd, users :  artifacts
-
-hosts: ["$(es_host)"] 
-
-username: "${es_users}"
-password: "${es_pwd}"
+[!NOTE]
+> ***The Filebeat keystore securely stores secrets (for example, passwords or API keys) encrypted on disk.***
+> _It is local to Filebeat and should be owned by root with restrictive permissions._
+> _In filebeat.yml, reference keystore entries with the ${KEY_NAME} syntax (do not use $(...))._
+> 
+> - ES_HOST — Elasticsearch host (e.g., https://es.example.com:9200)
+> - ES_USER — Elasticsearch username
+> - ES_PASS — Elasticsearch password
+> - ES_API_KEY — optional base64 API key (alternative to user/pass)
 
 
-# We'll begin creating a "filebeat keystore", let us use the following command :
 
+> ***Creating a "filebeat keystore" :*** 
 
+```
   $ sudo filebeat keystore create 
+```
 
 
-# Add the filebeat keystore, here we're assuming that the keystore should bear the name elastic search, "shortnamed" for "es" and the "artifacts", users : 
+> ***Verify Filebeat stored Keys within the keystore :***
 
-
-  $ sudo filebeat keystore add es_user
-
-
-- Note: Legends, indicate modification area  : >>>
-
-
-
-
-# Let's head into this current file : /etc/filebeat/filebeat.yml 
-
-
-# Note  : As a best practice, there may be some people who will be connecting a "filebeat agent" or another agent to communicate with Elastic. 
-
-
-- In these cases, we may have a  filebeat "keystore", which basically stores all the information like "password, Users", in an environmental variable/encrypted file.
+```
+sudo filebeat keystore list
+```
 
 
 
-Let's start affecting the change at the "ElasticSearch Output" Section : 
+> - ***`Edit` the `Filebeat configuration`***:
+
+Add secrets to the keystore (example: Elasticsearch username and password)
+
+sudo filebeat keystore add ES_USER
+sudo filebeat keystore add ES_PASS
+# Alternatively, use an API key instead of user/pass:
+# sudo filebeat keystore add ES_API_KEY
 
 
 
+> - ***In the Elasticsearch output section, reference the keystore entries: : /etc/filebeat/filebeat.yml   the change at the "ElasticSearch Output" Section :*** 
+
+```
     $ nano /etc/filebeat/filebeat.yml
 
-
-{
 
 >>>>>
 >>>>
 >>>
+>>
+
 # ============================== Filebeat modules ==============================
 
 filebeat.config.modules:
