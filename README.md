@@ -2303,11 +2303,11 @@ sudo suricata -T -c /etc/suricata/suricata.yaml
 ```
 
 
-> - ***Deploy Zeek (apply config and start as needed)***
-
 > [!NOTE]
 > `zeekctl` deploy `validates` the `configuration`, installs updated `scripts/config`, and `restarts` only the `components` that need it. Use it after `any change` to `node.cfg,
 > zeekctl.cfg, or policy scripts`. For a first-time `start`, deploy will start `Zeek` if it isn’t already running.
+
+> ***Deploy Zeek (apply config and start as needed)***
 
 ```
 ┌──(root㉿kali)-[/home/kali]
@@ -2413,7 +2413,7 @@ The following packages were automatically installed and are no longer required:
 ```
 
 
-> - ***`Identify` the correct `interface (your tap/span/sniff NIC)`*** : 
+> - ***Identify the `correct interface` (your tap/span/sniff NIC)*** : 
 
 ```
 ip -br link
