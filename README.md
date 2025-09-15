@@ -1127,9 +1127,6 @@ WantedBy=multi-user.target
 ```
 
 
-
-
-
 > # _Network Threat Hunting with Zeek_
 
 
@@ -1714,7 +1711,7 @@ logs
 
 > [!NOTE]
 > _Filebeat is an "agent" which will be in "charge of taking our logs" and place them into "elastic search" for "visualization purposes"(Kibana)._ 
->_ We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
+> _ We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
 
 
 
@@ -2247,10 +2244,10 @@ output.elasticsearch:
 
 > # ***Deployment: initialize Filebeat, update Suricata rules, start Zeek***
 
-> ***_Winlogbeat and Auditbeat are commonly used; we also use them in this tutorial.***
->
->
-> > _Initialize Filebeat’s assets so it integrates with your Elasticsearch/Kibana stack (index templates, ingest pipelines, ILM policies, and dashboards/visualizations)_:
+> ***Winlogbeat and Auditbeat are commonly used; we also use them in this tutorial.***
+
+> [!IMPORTANT]
+> _`Initialize` Filebeat’s `assets` so it `integrates` with your `Elasticsearch/Kibana stack` (index templates, ingest pipelines, ILM policies, and dashboards/visualizations)_:
 
 ```
 sudo filebeat setup -e
@@ -2262,7 +2259,6 @@ sudo filebeat setup -e
 ```
 sudo suricata -T -c /etc/suricata/suricata.yaml
 ```
-
 
 > - ***Fetch latest ET Open rules and apply :***
 
@@ -2289,6 +2285,8 @@ sudo suricata -T -c /etc/suricata/suricata.yaml
 
 ```
 
+> - ***Restart Suricata :***
+
 ```
 ┌──(root㉿kali)-[/home/kali]
 
@@ -2296,31 +2294,30 @@ sudo suricata -T -c /etc/suricata/suricata.yaml
 ```
 
 
-# The below allows us to update to an emerging "Suricata ruleset" (IDS) from an open-source repository, and it is best to run the "update" command, right after installing "Suricata". 
-
-
-
-
-
-
-
-"start" suricata : 
+> - ***Verify Suricata status :***
 
 ```
-$ sudo service suricata start
-```    
+┌──(root㉿kali)-[/home/kali]
 
-```
-$ sudo service suricata status
+└─$ sudo service suricata status
 ```
 
- # The below is when we first start zeekctl, check for errors, thereafter zeek may only "start". The "deploy function" allows us to put things into place after a "configuration change".   
+
+> - ***Deploy Zeek (apply config and start as needed)***
+
+> [!NOTE]
+> `zeekctl` deploy `validates` the `configuration`, installs updated `scripts/config`, and `restarts` only the `components` that need it. Use it after `any change` to `node.cfg,
+> zeekctl.cfg, or policy scripts`. For a first-time `start`, deploy will start `Zeek` if it isn’t already running.
+
+```
+┌──(root㉿kali)-[/home/kali]
+
+└─$ sudo zeekctl deploy 
+```
 
 
-    $ sudo zeekctl deploy 
 
-
-
+```
 ┌──(root㉿kali)-[/home/kali]
 
 └─# sudo zeekctl status         
@@ -2329,14 +2326,27 @@ Name         Type       Host          Status    Pid    Started
 
 zeek         standalone localhost     running   21191  19 May 09:40:21
 
+```
 
-  
-# We'll allow filebeat to run : 
 
-     $ sudo service filebeat start
-    
-    
-  $ sudo service filebeat status 
+> - ***Enable and start Filebeat*** :
+
+```
+┌──(root㉿kali)-[/home/kali]
+
+└─# sudo service filebeat enable 
+
+┌──(root㉿kali)-[/home/kali]
+
+└─# sudo systemctl start filebeat 
+```
+
+> - ***Verify Filebeat status :***
+
+```
+┌──(root㉿kali)-[/home/kali]
+
+└─#  sudo service filebeat status 
 
 ─# sudo service filebeat status 
 ● filebeat.service - Filebeat sends log files to Logstash or directly to Elasticsearch.
@@ -2362,22 +2372,25 @@ May 19 10:46:43 kali filebeat[23287]: 2023-05-19T10:46:43.538-0400        INFO  
 May 19 10:47:13 kali filebeat[23287]: 2023-05-19T10:47:13.537-0400        INFO        [monitoring]        log/log.g>
 lines 1-21/21 (END)
 
-
-# Hooray , we've made it, the filebeat pipeline is working fine and active. 
-
-# Let's get this to run and move on to our "elastic deployment" and start observing the "logs", however most importantly, we will ensure if the "data", is moving into "Elastic", using a "Pcap" application. 
+```
 
 
+> [!NOTE]
+>  _`Filebeat` is running and the pipeline is `active`, let's proceed with `Elasticsearch deployment` and start `observing` the `logs`. Most importantly, verify that `data` is reaching `Elasticsearch`. You can confirm this with a `pcap tool`
+>  (e.g., tcpdump or Wireshark) and/or by checking `Elasticsearch/Kibana` to ensure events are being `indexed`._
 
 
-                                                                              *************//////// Installing TCPReplay - Testing IDS - Sending Logs to Elastic Search ///////******************
+
+> - # _Installing TCPReplay - Testing IDS - Sending Logs to Elasticsearch_
 
 
-# Since we'll need to capture and review the logs of the network packet-capture, "Pcap", as they go into the Elastic. 
+> [!TIP]
+>  _We’ll `replay PCAP files` to `generate traffic`, let `Suricata/Zeek` produce `logs`, and `verify` those `logs` are `indexed` in `Elasticsearch` (visible in Kibana)._
 
 
-- Install TCPReplay :
+> - ***Install TCPReplay*** :
 
+```
 ┌──(root㉿kali)-[/home/kali]
 └─
 # sudo apt install tcpreplay -y 
@@ -2391,45 +2404,54 @@ The following packages were automatically installed and are no longer required:
   firmware-ath9k-htc firmware-atheros firmware-brcm80211 firmware-intel-sound firmware-iwlwifi firmware-libertas
   firmware-realtek firmware-sof-signed firmware-ti-connectivity firmware-zd1211 freerdp2-x11 gdal-data
 
+```
 
+> - ***`Analyze` a `large flow set`(Download a sample Pcap: bigflows.pcap) into `Elasticsearch` : 
 
-# In case we would need to analyse large amount of data flowing into the ElasticSearch : 
-
-
-
-
-- Below is a proposed, "bigflows.pcap", which we may test out. 
-
-
+```
   $ wget https://s3.amazonaws.com/tcpreplay-pcap-files/bigflows.pcap  
+```
+
+
+> - ***`Identify` the correct `interface (your tap/span/sniff NIC)`*** : 
+
+```
+ip -br link
+```
 
 
 
-# Let's try this packet capture application known as "tcpreplay" : 
 
 
+> [!IMPORTANT]
+> _Given that our `sniffing interface` is `"eth1"`, this will start to `ingest packets` into "kabana" for `visualizations`_.
+>
+> ***Quick advice : `Loop` in `small amount of packets`, to avoid `packet loss`**. 
 
-- Here are some of their abbrev : 
 
+> - ***Fast replay` with `on-screen` progress (replace eth1 with your sniff interface)"*** :
 
-# -t : Makes it go as fast as it can through the interface.
-
-# -v : Outputs Verbose on the screen, such that we may see the IP Address. 
-
-# -i : allows you to enter down the interface, in our case this would be the sniffing interface, eth1.
  
+```
+sudo tcpreplay -t -v -i eth1 bigflows.pcap
+
+# Tip: rate-limit to reduce packet loss
+# sudo tcpreplay --pps=1000 -i eth1 bigflows.pcap
+# or: sudo tcpreplay --mbps=10 -i eth1 bigflows.pcap
+```
+
+> - -t : Makes it go as fast as it can through the interface.
+> - -v : Outputs Verbose on the screen, such that we may see the IP Address. 
+> - -i : allows you to enter down the interface, in our case this would be the sniffing interface, eth1.
 
 
-# Given that, our sniffing interface is "eth1",, this would start ingesting the packets into "kabana" for visualizations. As a quick advice, loop in small amount of packets, to avoid "packet loss". 
-
-
-  $ sudo  tcpreplay -t -v -i eth1 yashil.pcap 
 
 
 
 
+- Remaining work in Progress/ Expansion of this Project :
 
-- Remaining work in Progress/ Expansion of this Project : 
+
 
 # This is the end of this tutorial, at some point in time, we may need to implement some isualization techniques, like "kibana". This may be reproduced, inside of a home or office network, in which a span-port within a "Managed switch, can be used to intercept internet traffic into a virtual network , which would then be monitored by zeek/suricata traffic into Elastic Search vice-versa and visualized on "Kibana or Splunk".
 
@@ -2437,9 +2459,7 @@ The following packages were automatically installed and are no longer required:
 
 
 
-
-          ***********//// Visualizations Purposes - SIEM Kibana Auditbeat *********///
-
+> - # ***Visualizations Purposes - SIEM Kibana Auditbeat***
 
 # ElasticSearch is a "NOSQL Database" which provides advanced analytics, which allows for "machine learning" jobs as well as setting alerts.
 
