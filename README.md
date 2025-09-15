@@ -6,7 +6,7 @@
 
 
 > [!TIP]
-> Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server".
+> _Remember : Our "Guest Machine" is a "Kali OS machine", and the default SSH Server that will be installed will be in the built-in "OpenSSH Server"._
 
 
 _Let's install the "OpenSSH Server" to begin with on the Kali Machine_: 
