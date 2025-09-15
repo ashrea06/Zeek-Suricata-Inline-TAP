@@ -1,7 +1,8 @@
 # ***Zeek NIDS with OpenSSH Server - Network Intrusion Detection System(Integrating "Suricata" rules similar to "Snort" rules)***
 
-
-> - In this tutorial we`ll be building a Home Lab, using Zeek NIDs + FileBeat Input Agent(Written in Golang Programming Language) + Connected to an output Elastic Search.Specifically our NIDS Server, will have "two" separate "interfaces", one of which will be connected to a "Private Network", whilst the other one will be connected to the "NIDS Management Network" where it will also be sending "Log information". 
+ 
+ > _In this tutorial we`ll be building a Home Lab, using Zeek NIDs + FileBeat Input Agent(Written in Golang Programming Language) + Connected to an output Elastic Search.Specifically our NIDS Server, will have "two" separate "interfaces", one of which will be connected to a "Private Network", whilst the other one will be connected to the "NIDS Management Network" where it will also be sending "Log information"._
+ 
 
 
 > [!TIP]
