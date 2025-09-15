@@ -31,13 +31,11 @@ Use 'sudo apt autoremove' to remove them.
 
 
 > [!IMPORTANT]
-> Importantly, the interface through which our "NIDS" would be connected, would not have any sort of liaison with it, in other words, this would not produce any "ARP" tables and neither any routing tables under the NIDS.
+> _Importantly, the interface through which our "NIDS" would be connected, would not have any sort of liaison with it, in other words, this would not produce any "ARP" tables and neither any routing tables under the NIDS._
 
 
 > [!CAUTION]
-> For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS.
-
-
+> _For security reason : We do not want to alarm or tip off the attacker to our "Defense Mechanism" that has been put into place, hence this Network interface(contain no IP Address) will be divulging "Read-Only" information to our NIDS._
 
 
 > [!NOTE]
