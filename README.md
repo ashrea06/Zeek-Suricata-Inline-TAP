@@ -2097,26 +2097,25 @@ processors:
 # This allows to enable 6.7 migration aliases
 #migration.6_to_7.enabled: true
 
-}
+```
 
 
-                    ***********//// Enabling the FileBeat Modules + Changing "Zeek Modules Default Path" /////**********************
-
-
-# We'll now enable the filebeat modules :   
+> # Enabling the `FileBeat Modules + Changing "Zeek Modules Default Path"
 
 
 
+> _We'll now enable the filebeat modules :_   
 
-  (root@kali)-[/var/log/zeek/logs]
 
+```
+(root@kali)-[/var/log/zeek/logs]
 
-    $ sudo filebeat modules enable zeek suricata
+└─ $ sudo filebeat modules enable zeek suricata
 
 Enabled zeek 
 Enabled suricata
 
-
+```
 
 
 
@@ -2309,8 +2308,7 @@ output.elasticsearch:
  {
   #username: "elastic"
   #password: "changeme"
-}
-
+```
 
 
 
