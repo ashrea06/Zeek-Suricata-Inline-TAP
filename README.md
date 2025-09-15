@@ -1788,24 +1788,23 @@ gdal-plugins kali-linux-firmware libaec0 l
 
 
 
-> # Configuring the filebeat Configuration File
+> # _Configuring the filebeat Configuration File_
 
 
-# Let's access our "filebeat configuration" file and this contains the "setup for your log paths" :
+> _Access our `filebeat configuration file` and this contains the "setup for your log paths"_
 
 
-Hints : Look out for the "Kibana Section" at the bottom of this file and remove the "#, hash" , as in the below : 
+> [!TIP]
+> Look out for the "Kibana Section" at the bottom of this file and uncomment, `host: "localhost:5601"`.
 
-  host: "localhost:5601" 
 
-
+```
   $ sudo nano `/etc/filebeat/filebeat.yml`
+```
 
 
 
-
-
-{ 
+```
 ###################### Filebeat Configuration Example #########################
 
 
@@ -1931,10 +1930,9 @@ setup.kibana:
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
   
 
+ > - Uncomment and add the "IP Address" of where the "elastic stack" is set up :
 
-  * >>>> { This is where we would remove the # and we could have instead added an "IP Address" of where you have the "elastic stack" set up, rather than the localhost }  host: "localhost:5601"
-
-
+ host: "localhost:5601"
 
   # Kibana Space ID
   # ID of the Kibana Space into which the dashboards should be loaded. By default,
@@ -1942,11 +1940,7 @@ setup.kibana:
   #space.id:
 
 
-
-
 # =============================== Elastic Cloud ================================
-
-
 
 # These settings simplify using Filebeat with the Elastic Cloud (https://cloud.elastic.co/).
 # The cloud.id setting overwrites the `output.elasticsearch.hosts` and
@@ -1964,43 +1958,42 @@ setup.kibana:
 
 
 
-
-
+>>>>>
+>>>> This section is only for those who're setting "Elastic Cloud". 
+>>>
 >>
->>>>
->>>>>>> The section below is wehere we would replace the localhost, with the "url", of the "elastic cloud deployment". 
-
-
-   # Remember  : This section is only for those who're setting "Elastic Cloud" : 
+> - The section below is wehere we would replace the localhost, with the "url", of the "elastic cloud deployment". 
 
 
 # ---------------------------- Elasticsearch Output ----------------------------
 
 
-
-
 output.elasticsearch:
 
-  # Array of hosts to connect to.
-
->>>>  # As indicated below, is where you would be setting the "Elastic Cloud", URL :
+>>>>>>>
+>>>>>
+>>>
+>> Array of hosts to connect to through a "Elastic Cloud", URL : 
 
   hosts: ["localhost:9200"]
 
+# Protocol - either `http` (default) or `https`.
+# protocol: "https"
 
-  # Protocol - either `http` (default) or `https`.
-  #protocol: "https"
 
-
->>>>>>>>>>>
 >>>>>>>
->>>>    # In case you would have set up an elastic cloud, then this would have to be secured, using a "username and password" from the fields below. 
->>
-  # Authentication credentials - either API key or username/password.
+>>>>
+>>>
+>>  Secure your Elastic Cloud with the authentication credentials, "api_key" and "username and password".
+
+ 
+
+# Authentication credentials - either API key or username/password.
   #api_key: "id:api_key"
   #username: "elastic"
   #password: "changeme"
->>>>>
+
+
 
 # ------------------------------ Logstash Output -------------------------------
 
