@@ -2147,13 +2147,12 @@ $ sudo nano /etc/filebeat/modules.d/zeek.yml
 
 ```
 
-> - # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}
+>  # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}***
 
 
 [!NOTE]
 > ***The Filebeat keystore securely stores secrets (for example, passwords or API keys) encrypted on disk.***
 > _It is local to Filebeat and should be owned by root with restrictive permissions._
-> _In filebeat.yml, reference keystore entries with the ${KEY_NAME} syntax (do not use $(...))._
 > 
 > - ES_HOST — Elasticsearch host (e.g., https://es.example.com:9200)
 > - ES_USER — Elasticsearch username
@@ -2176,19 +2175,30 @@ sudo filebeat keystore list
 ```
 
 
+> ***Add `secrets` to the `keystore`( Elasticsearch username and password):***
 
-> - ***`Edit` the `Filebeat configuration`***:
-
-Add secrets to the keystore (example: Elasticsearch username and password)
+```
+# Required if using username/password
 
 sudo filebeat keystore add ES_USER
 sudo filebeat keystore add ES_PASS
-# Alternatively, use an API key instead of user/pass:
-# sudo filebeat keystore add ES_API_KEY
+```
+
+ 
+ > - _Alternatively, use an API key instead of user/pass:_
+
+```
+sudo filebeat keystore add ES_API_KEY
+```
+
+
+> [!NOTE]
+>  _In the Elasticsearch output section, reference the keystore entries: : /etc/filebeat/filebeat.yml   the change at the "ElasticSearch Output" Section :_
+> > _In filebeat.yml, reference keystore entries with the ${KEY_NAME} syntax (do not use $(...))._ 
 
 
 
-> - ***In the Elasticsearch output section, reference the keystore entries: : /etc/filebeat/filebeat.yml   the change at the "ElasticSearch Output" Section :*** 
+> ***`Edit` the `Filebeat configuration`:***
 
 ```
     $ nano /etc/filebeat/filebeat.yml
