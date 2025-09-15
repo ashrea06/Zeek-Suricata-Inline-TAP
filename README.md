@@ -1734,11 +1734,11 @@ OK
 > [!IMPORTANT]
 >   Ensure to install the package for `https transport` prior to adding the `Elastic stable main repo` as this allows `encryption and authentication over https`.
 
->  ***Add the repository from ` Elastic stable main` branch*** : 
-
 ```
 $ sudo apt-get install apt-transport-https 
 ```
+
+>  ***Add the repository from ` Elastic stable main` branch*** : 
 
 ```
 ┌──(root㉿kali)-[/var/log/zeek/logs]
@@ -1751,7 +1751,7 @@ $ sudo apt-get install apt-transport-https
 
 ```
 
-> - ***Update the "existing repository"*** : 
+> ***Update the "existing repository"*** : 
 
 
 ```
