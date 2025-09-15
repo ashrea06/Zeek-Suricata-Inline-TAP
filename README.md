@@ -1437,7 +1437,6 @@ LogDir = /var/log/zeek/logs
 > - ***Let's add in the `cronjob` :*** 
 
 ```
-
 $ crontab -e 
 
 
@@ -2186,12 +2185,13 @@ sudo filebeat keystore add ES_API_KEY
 ```
 
 > [!NOTE]
-> _In the Elasticsearch output section of /etc/filebeat/filebeat.yml, reference secrets using ${KEY_NAME} (do not use $(...)).
-> At startup, Filebeat scans filebeat.yml for ${...} placeholders and resolves each key from the Filebeat keystore first; if not found, it falls back to an environment variable with the same name.
+> _In the Elasticsearch output section of /etc/filebeat/filebeat.yml, reference secrets using ${KEY_NAME} (do not use $(...))._
+> _At startup, Filebeat scans filebeat.yml for ${...} placeholders and resolves each key from the Filebeat keystore first; if not found, it falls back to an environment variable with the same name._
 
 
 
 > ***Edit the `Filebeat configuration` to `point` the `Elasticsearch output` to your `cluster and reference secrets` from the `keystore (${ES_HOST}, ${ES_USER}, ${ES_PASS} or ${ES_API_KEY})`:***
+
 
 ```
     $ nano /etc/filebeat/filebeat.yml
@@ -2245,52 +2245,31 @@ output.elasticsearch:
 ```
 
 
-> # ***Deploy status: start Filebeat/Suricata/Zeek***
+> # ***Deployment: initialize Filebeat, update Suricata rules, start Zeek***
 
-> ***_Winlogbeat and Auditbeat are commonly used; we also use them in this tutorial. Initialize Filebeat’s assets so it integrates
->  with your Elasticsearch/Kibana stack (index templates, ingest pipelines, ILM policies, and dashboards/visualizations)_***
-
-
-
-
-> - ***Load index templates, ingest pipelines, and Kibana dashboards/visualizations for filebeat to work with elastic cluster :***
-
+> ***_Winlogbeat and Auditbeat are commonly used; we also use them in this tutorial.***
+>
+>
+> > _Initialize Filebeat’s assets so it integrates with your Elasticsearch/Kibana stack (index templates, ingest pipelines, ILM policies, and dashboards/visualizations)_:
 
 ```
 sudo filebeat setup -e
 ```
 
+> - ***Update Suricata to the Emerging Threats ruleset Option*** 
+> _Optional sanity check before applying :_ 
+
+```
+sudo suricata -T -c /etc/suricata/suricata.yaml
+```
 
 
-# After installing Suricata, update to the Emerging Threats ruleset (IDS).
-# Run the update, then restart Suricata to apply the new rules.
+> - ***Fetch latest ET Open rules and apply :***
 
-sudo suricata-update
-sudo systemctl restart suricata
-
-
-
-> # Deploy Status Start Filebeat/Suricata/zeekctl
-
-
-
-
-
-# WinlogBeat and AuditBeat are the mostly used, and this is what we're using in this tutorial. 
-
-
-# Since it is our first time using "filebeat" for this particular elastic cluster, then this would not have been "setup" yet, so let's install it through the command below , and this will install all the "index templates", "index patterns", "dashboards and visualizations" which are default to filebeat ..  
-
-
-    $ sudo filebeat setup -e
-
-
-# The below allows us to update to an emerging "Suricata ruleset" (IDS) from an open-source repository, and it is best to run the "update" command, right after installing "Suricata". 
-
- 
+```
 ┌──(root㉿kali)-[/home/kali]
 
-└─# suricata-update             
+└─# suricata-update
 
 19/5/2023 -- 09:51:35 - <Info> -- Using data-directory /var/lib/suricata.
 19/5/2023 -- 09:51:35 - <Info> -- Using Suricata configuration /etc/suricata/suricata.yaml
@@ -2303,20 +2282,37 @@ sudo systemctl restart suricata
 19/5/2023 -- 09:51:35 - <Info> -- Disabling rules for protocol enip
 19/5/2023 -- 09:51:35 - <Info> -- No sources configured, will use Emerging Threats Open
 19/5/2023 -- 09:51:35 - <Info> -- Fetching https://rules.emergingthreats.net/open/suricata-6.0.10/emerging.rules.tar.gz.
- 100% - 3893087/3893087               
+
+ 100% - 3893087/3893087
+
 19/5/2023 -- 09:51:37 - <Info> -- Done.
 
+```
+
+```
+┌──(root㉿kali)-[/home/kali]
+
+└─$ sudo systemctl restart suricata
+```
+
+
+# The below allows us to update to an emerging "Suricata ruleset" (IDS) from an open-source repository, and it is best to run the "update" command, right after installing "Suricata". 
 
 
 
 
-# From there, we may "start" suricata : 
 
-    $ sudo service suricata start
-    
 
-    $ sudo service suricata status
 
+"start" suricata : 
+
+```
+$ sudo service suricata start
+```    
+
+```
+$ sudo service suricata status
+```
 
  # The below is when we first start zeekctl, check for errors, thereafter zeek may only "start". The "deploy function" allows us to put things into place after a "configuration change".   
 
