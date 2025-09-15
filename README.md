@@ -960,7 +960,7 @@ echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolvconf/resolv.conf.d/head
 
 
 > [!TIP]
-> _In order to configure the "Suricata Yaml" file, let's make use of any editor and access the file at "/etc/suricata/suricata.yaml" :_ 
+> _In order to configure the "Suricata Yaml" file, let's make use of any editor and access the file at "/etc/suricata/suricata.yaml" :_
 
 ```
 $ mousepad /etc/suricata/suricata.yaml 
@@ -985,7 +985,9 @@ $ mousepad /etc/suricata/suricata.yaml
  ```
  {
  
- GNU nano 7.2                              /etc/network/interfaces *                                      
+ GNU nano 7.2                              /etc/network/interfaces *
+
+
  source /etc/network/interfaces.d/*
  
  # The loopback network interface
@@ -1162,7 +1164,7 @@ From there, add in the "option" to "bypass" its "Default Keep-Alive" and set thi
 
 
 
-> # Configuring Zeek after installation(Adding Zeek to our "Path
+> # _Configuring Zeek after installation(Adding Zeek to our "Path_
 
 > ***Here is the last step, that will allow us to call on "Zeek within the Terminal" and this will be usually done through "/etc" environment file.*** 
 
@@ -1277,7 +1279,6 @@ $ nano /.zshrc
 
 
 > # _Configuration of Zeek files - Specifying the IP ranges + Node + (zeek)Control_
-
 
 
 > - ***These are the 3 files which we would need to modify :*** 
@@ -2139,7 +2140,7 @@ $ sudo nano /etc/filebeat/modules.d/zeek.yml
 >  # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}***
 
 
-[!NOTE]
+> [!NOTE]
 > ***The Filebeat keystore securely stores secrets (for example, passwords or API keys) encrypted on disk.***
 > _It is local to Filebeat and should be owned by root with restrictive permissions._
 > 
@@ -2246,11 +2247,13 @@ output.elasticsearch:
 ```
 
 
-
 > # ***Deploy status: start Filebeat/Suricata/Zeek***
 
+> ***_Winlogbeat and Auditbeat are commonly used; we also use them in this tutorial. Initialize Filebeat’s assets so it integrates
+>  with your Elasticsearch/Kibana stack (index templates, ingest pipelines, ILM policies, and dashboards/visualizations)_***
 
-> _Winlogbeat and Auditbeat are commonly used; in this tutorial we use them as well_
+
+
 
 > - ***Load index templates, ingest pipelines, and Kibana dashboards/visualizations for filebeat to work with elastic cluster :***
 
