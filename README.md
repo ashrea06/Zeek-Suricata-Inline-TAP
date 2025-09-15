@@ -2446,23 +2446,14 @@ sudo tcpreplay -t -v -i eth1 bigflows.pcap
 
 
 
-
-
-
-- Remaining work in Progress/ Expansion of this Project :
-
-
-
-# This is the end of this tutorial, at some point in time, we may need to implement some isualization techniques, like "kibana". This may be reproduced, inside of a home or office network, in which a span-port within a "Managed switch, can be used to intercept internet traffic into a virtual network , which would then be monitored by zeek/suricata traffic into Elastic Search vice-versa and visualized on "Kibana or Splunk".
-
-
+> [!NOTE]
+>  _In the future, we may add `visualization` with `Kibana`. The same `setup` can be reproduced in a `home or office network` by using a `SPAN (mirror) port` on a `managed switch` to `copy traffic` into a `monitoring interface` or `virtual network`, where `Zeek/Suricata` analyze the `packets` and `Filebeat` forwards the `logs` to `Elasticsearch` for `visualization` in `Kibana (or Splunk)`._
 
 
 
 > - # ***Visualizations Purposes - SIEM Kibana Auditbeat***
 
 # ElasticSearch is a "NOSQL Database" which provides advanced analytics, which allows for "machine learning" jobs as well as setting alerts.
-
 
 
 
@@ -2503,8 +2494,8 @@ deb https://artifacts.elastic.co/packages/7.x/apt stable main
                                                                        
 
 
-
-  # we'll now be installing the "ElasticSearch Debian" Package : 
+ 
+ the "ElasticSearch Debian" Package : 
 
 
     $ apt-get update && sudo apt-get install elasticsearch
@@ -2519,8 +2510,10 @@ N: Updating from such a repository can't be done securely, and is therefore disa
 N: See apt-secure(8) manpage for repository creation and user configuration details.                                
 W: https://artifacts.elastic.co/packages/7.x/apt/dists/stable/InRelease: Key is stored in legacy trusted.gpg keyring
  (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.                                     
-                                                                                                                    
 
+                                                                                                                    
+                                                                                                                    
+```
 ┌──(root㉿kali)-[/home/kali/Desktop]                     
 
 └─# apt install elasticsearch -y                                                                            
@@ -2529,31 +2522,24 @@ Reading package lists... Done
 Building dependency tree... Done                                                
 Reading state information... Done                                                      
 The following packages were automatically installed and are no longer required:         
-  bluez-firmware debugedit dh-elpa-helper docutils-common figlet finger firebird3.0-common firebird3.0-common-doc   
-  firmware-ath9k-htc firmware-atheros firmware-brcm80211 firmware-intel-sound firmware-iwlwifi firmware-libertas    
-  firmware-realtek firmware-sof-signed firmware-ti-connectivity firmware-zd1211 freerdp2-x11 gdal-data              
-  gdal-plugins kali-linux-firmware libaec0 libarmadillo11 libarpack2 libblosc1 libbson-1.0-0 libcfitsio10           
-  libcfitsio9 libfbclient2 libfreerdp-client2-2 libfreerdp2-2 libfreexl1 libfsverity0 libfyba0 libgeos-c1v5 
 
-
+...
 
 
 # Let us start the "service elasticsearch", which will boot up the "server", and beware that this process will take up a lot of ressources.(in terms of RAM) : 
 
-
+```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
 └─# service elasticsearch start  
+```
 
 
+> - ***Verify Elasticsearch service is "up" and "running" :*** 
 
-
-- Let's check that the service is "up" and "running" : 
-
-
-
+```
   $ service elasticsearch status
-
+```
 
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
@@ -2609,36 +2595,33 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
   },
   "tagline" : "You Know, for Search"
 }
-                                          
+                                  
 
 # We would need to stop the Elastic Stack Server prior to implementing, "Winlog Beat", such that it ingests traffic from our "Windows Host Machine" and sends this across to our "Elasticsearch Stack Server" for advanced analytics.
 
 
+ 
+ 
+> -  ***Restart the "Elastic Server" :*** 
+
+```
+$ sudo service elasticsearch stop 
+```
 
 
-- Let's go ahead and restart the "Elastic Server" : 
+> - ***Ingests traffic from the outside world.(Target Host Machine : Windows)*** : 
 
-
-
-  $ sudo service elasticsearch stop 
-
-
-
-# We'll now do some "configuration changes" which will allow us to ingests traffic from the outside world.(Target Host Machine : Windows) 
-
-
+```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
 └─# sudo nano /etc/elasticsearch/elasticsearch.yml 
+```
+
+ 
+ > - ***Affect `changes` to our "`Network Host`"  as well as the "`discovery.seed_hosts`" within `elasticsearch.yml file` :*** :  
 
 
-
-# Within this document, we'll be modifying and affecting "Network Host"  as well as the "discovery.seed_hosts" : 
-
-
-- Hint : Watch out for the legends, >>>>, for further explanation.
-
-
+```
 
 # ---------------------------------- Network -----------------------------------
 #
@@ -2679,7 +2662,7 @@ discovery.seed_hosts: ["192.168.2.18"]
 #
 # For more information, consult the discovery and cluster formation module documentation.
 
-
+```
 
 
   # Once this has been modified, ensure that this has been saved. 
