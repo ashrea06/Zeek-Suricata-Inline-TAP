@@ -1795,13 +1795,12 @@ gdal-plugins kali-linux-firmware libaec0 l
 
 
 > [!TIP]
-> Look out for the "Kibana Section" at the bottom of this file and uncomment, `host: "localhost:5601"`.
+> _Look out for the "Kibana Section" at the bottom of this file and uncomment, `host: "localhost:5601"`_.
 
 
 ```
   $ sudo nano `/etc/filebeat/filebeat.yml`
 ```
-
 
 
 ```
@@ -1912,9 +1911,7 @@ setup.template.settings:
 #setup.dashboards.url:
 
 
-
 # =================================== Kibana ===================================
-
 
 
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
@@ -1991,8 +1988,6 @@ output.elasticsearch:
   #username: "elastic"
   #password: "changeme"
 
-
-
 # ------------------------------ Logstash Output -------------------------------
 
 #output.logstash:
@@ -2024,18 +2019,14 @@ processors:
 # ================================== Logging ===================================
 
 
-
 # Sets log level. The default log level is info.
 # Available log levels are: error, warning, info, debug
 #logging.level: debug
-
-
 
 # At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publisher", "service".
 #logging.selectors: ["*"]
-
 
 
 # ============================= X-Pack Monitoring ==============================
@@ -2097,13 +2088,10 @@ processors:
 
 ```
 
-
-> # Enabling the `FileBeat Modules + Changing "Zeek Modules Default Path"
-
+> # ***Enabling the `FileBeat Modules + Changing "Zeek Modules Default Path"***
 
 
-> _We'll now enable the filebeat modules :_   
-
+> _Enable the filebeat modules :_   
 
 ```
 (root@kali)-[/var/log/zeek/logs]
@@ -2118,7 +2106,6 @@ Enabled suricata
 > ***Change the "Zeek" modules "default path" :***  
 
 ```
-
 $ sudo nano /etc/filebeat/modules.d/zeek.yml
 
 
@@ -2146,6 +2133,8 @@ $ sudo nano /etc/filebeat/modules.d/zeek.yml
 >
 
 ```
+
+
 >  # ***Create Filebeat Keystore  +  modify {ElasticSearch Output section - Keystore Version}***
 
 
