@@ -97,10 +97,8 @@ Use 'sudo apt autoremove' to remove them.
 Because the bridged adapter did not obtain an IP address dynamically via DHCP, we manually assigned a static IP address within the same subnet—specifically, 192.168.2.80 to ensure it falls within the valid IP range of the network. Alongside this, we also configured a default route pointing to the gateway at 192.168.2.1, allowing outbound traffic to be properly routed through the bridged interface.
 
 
+> _As a good practice before proceeding with this lab, ensure that you remove any existing or conflicting default routes prior to adding new ones:_
 
-
-
-> As a good practice before proceeding with this lab, ensure that you remove any existing or conflicting default routes prior to adding new ones:
 
 ```
 ┌──(osint㉿tlosint)-[~]
