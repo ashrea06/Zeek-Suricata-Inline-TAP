@@ -1262,7 +1262,7 @@ export PATH=$PATH:/usr/local/zeek/bin
 > - Export PATH, to "~/.zshrc, ~/.bashrc", allows us to run `Zeek`, without the need to `enter Zeek's full location path`.
 > - ***Add the "export PATH=$PATH:/usr/local/go/bin" to the very end of "/.zshrc && /.bashrc".***
 
->  - ***Let's access these two location from our "Linux Terminal" and add the corresponding "export PATH" : ***
+> _Access these two location from our `Linux Terminal` and add the corresponding `export PATH` :
 
 ```
 $ nano ~/.bashrc 
@@ -1706,46 +1706,36 @@ logs
 
 
 
-                                              **********/////////// FileBeat Agent Installation + Signing Key Download  + Add Elastic Stable Repository  + Add apt-transport-https  /////////////*********
 
 
 
-
-# Filebeat is an "agent" which will be in "charge of taking our logs" and place them into "elastic search" for "visualization purposes"(Kibana).  
-
+> # _FileBeat Agent Installation + Signing Key Download  + Add Elastic Stable Repository  + Add apt-transport-https_
 
 
 
-- To start off, we will be downloading its "signing key" :
+> [!NOTE]
+> _Filebeat is an "agent" which will be in "charge of taking our logs" and place them into "elastic search" for "visualization purposes"(Kibana)._ 
+>_ We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
 
 
 
-# Here is the signing key installation which is in "GPG" :
-
-
-- GNU Privacy Guard, better known as GnuPG or just GPG, is an implementation of "public key cryptography".
-
-
-
+```
  ┌──(root㉿kali)-[/var/log/zeek/logs]
 
 └─#  wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
 
 Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 OK
+```
 
 
 
 
-                      *************/// Add the repository from "stable main" ///******************
+>  ***Add the repository from ` Elastic stable main` branch*** : 
 
 
-- Our next step, is to add the "repository" from the "elastic stable" branch: 
-
-
-# Add the repo, but prior to that, make sure to install the packaga for "https transport" as this allows encryption and authentication over https : 
-
-
+> [!IMPORTANT]
+>   _Let's first make sure to install the package for `https transport` as this allows `encryption and authentication over https`_ : 
 
   $ sudo apt-get install apt-transport-https 
 
@@ -1753,6 +1743,7 @@ OK
 
 
 ┌──(root㉿kali)-[/var/log/zeek/logs]
+
 
 └─# echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 
@@ -1795,8 +1786,9 @@ gdal-plugins kali-linux-firmware libaec0 l
 
 
 
-                      *************//////// Configuring the filebeat Configuration File **********//////////
 
+
+> # Configuring the filebeat Configuration File
 
 
 # Let's access our "filebeat configuration" file and this contains the "setup for your log paths" :
@@ -2765,17 +2757,18 @@ C:\WINDOWS\system32>curl 192.168.2.18:9200
 
 
 
+> # Installation of Kibana
 
-                              ************/// Installation of Kibana ////***************
-
-# Let's try the below command, however, this would not work, as we don't have the "kibana repository" under the "offical Kali Linux repo". 
-
+> [!TIP]
+>  Given that we do not have the "kibana repository" under the "offical Kali Linux repo", we'll then be downloading and extracting "kibana.**tar.gz" file under https://www.elastic.co /downloads/kibana. 
+ 
   
   $ sudo apt install kibana  -y 
 
 
-
+```
 ┌──(root㉿kali)-[/home/kali]
+
 └─# apt install kibana  -y 
 
 
@@ -2789,13 +2782,8 @@ is only available from another source
 E: Package 'kibana' has no installation candidate
                                                      
 
-
-# Instead, we will be downloading and extracting "kibana.**tar.gz" file under https://www.elastic.co /downloads/kibana. 
-
-
-
 - In order to download the kibana file, we will make use of the "wget" command : 
-
+```
 
 root㉿kali)-[/opt]
 
@@ -2952,8 +2940,7 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 
 
-                              ***************//// Configuring the AuditBeat + Module auditd ************//////////
-
+> # Configuring the AuditBeat + Module auditd
 
 
 
