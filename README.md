@@ -1735,28 +1735,29 @@ OK
 
 
 > [!IMPORTANT]
->   _Let's first make sure to install the package for `https transport` as this allows `encryption and authentication over https`_ : 
+>   Ensure to install the package for `https transport` prior to adding the `Elastic stable main repo` as this allows `encryption and authentication over https`_ : 
 
-  $ sudo apt-get install apt-transport-https 
+```
+$ sudo apt-get install apt-transport-https 
+```
 
 
-
-
+```
 ┌──(root㉿kali)-[/var/log/zeek/logs]
 
 
 └─# echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 
+ 
+ deb https://artifacts.elastic.co/packages/7.x/apt stable main
+
+```
 
 
->>>>>> deb https://artifacts.elastic.co/packages/7.x/apt stable main
+> - ***Update the "existing repository"*** : 
 
 
-
-
-# Let us update the "existing repository" with the changes brought :
-
-
+```
 ┌──(root㉿kali)-[/var/log/zeek/logs]
 
 └─# sudo apt update  
@@ -1764,13 +1765,14 @@ OK
 Get:2 https://artifacts.elastic.co/packages/7.x/apt stable InRelease [13.7 kB]
 Ign:3 https://download.docker.com/linux/ubuntu kali-rolling InRelease        
 Err:4 https://download.docker.com/linux/ubuntu kali-
+```
 
 
+> [!TIP]
+>  ***Install `filebeat agent` which contains contains different modules, like suricata, zeek apache server logs, firewall logs) :***
 
-# We're good to install the filebeat agent( contains different modules, like suricata, zeek apache server logs, firewall logs) : 
-
-
-  $ sudo apt install -y filebeat
+```
+$ sudo apt install -y filebeat
 
 Reading package lists... Done                                                        
 Building dependency tree... Done
@@ -1780,13 +1782,11 @@ bluez-firmware debugedit dh-elpa-helper docutils-common figlet finger firebird3.
 firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-realtek firmware-sof-signed firmware-ti-connectivity firmware-zd1211 freerdp2-x11 gdal-data
 gdal-plugins kali-linux-firmware libaec0 l
 
-
-# Note : At the time of writing, eleastic may have changed their infrastructure, where there could be a single elastic agant that controls all the beats .. That could have been much easier for us as it does incorporate, new features like fleet central management for "Zeek and Suricata". 
-
+```
 
 
-
-
+> [!NOTE]
+ At the `time of writing, eleastic may have changed their infrastructure, where there could be a single elastic agant that controls all the beats. That could have been much easier for us as it does incorporate, new features like fleet central management for "Zeek and Suricata". 
 
 > # Configuring the filebeat Configuration File
 
