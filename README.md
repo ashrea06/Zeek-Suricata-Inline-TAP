@@ -2489,6 +2489,7 @@ apt-transport-https is already the newest version (2.6.0).
 
 
 > - ***Update and install Elasticsearch*** :
+
 ```
 sudo apt-get update
 ```
@@ -2502,6 +2503,7 @@ sudo apt-get install -y elasticsearch
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
 └─# service elasticsearch start  
+
 ```
 
 > - ***Verify Elasticsearch service is "up" and "running" :*** 
@@ -2547,11 +2549,10 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
 > - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :***
 
 ```
-  $ curl 127.0.0.1:9200
-
   ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
-└─# curl 127.0.0.1:9200                     
+  └─# curl 127.0.0.1:9200
+          
 {
   "name" : "kali",
   "cluster_name" : "elasticsearch",
@@ -2587,20 +2588,6 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
 sudo journalctl -u elasticsearch | grep -i "generated password"
 ```
 
-> - ***If `curl returns 401, authenticate (e.g., curl -u elastic http://127.0.0.1:9200) or use an API key.***
-
-
-> [!IMPORTANT]
-> _Memory/heap for labs: Elasticsearch is memory-hungry.
-> To `reduce` RAM usage on a `lab box`, set a `smaller heap` by creating `/etc/elasticsearch/jvm.options.d/heap.options`
-> Ensure `-Xms` equals `-Xmx`, then `restart` :_
-
-
-```
-- Xms1g
-- Xmx1g
-```
-
 > -  ***Apply the changes by restarting the "Elastic Server" :*** 
 
 ```
@@ -2613,7 +2600,6 @@ sudo systemctl restart elasticsearch
 
 
 > - ***Ingests traffic from the outside world (Target Host Machine : Windows)*** : 
-
 
 ```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
