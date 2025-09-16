@@ -3011,7 +3011,7 @@ elasticsearch: http://192.168.2.18:9200...
   version: 7.9.2
 ```
 
-> - ***Enable Auditbeat’s auditd module and start it :***
+> - ***Enable `Auditbeat’s auditd module` and start it :***
 
 ```
 sudo systemctl enable --now auditbeat
