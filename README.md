@@ -2848,7 +2848,7 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 ```
 
-> # _Configure Auditbeat (auditd module on Linux)
+> # _Configure Auditbeat (auditd module on Linux)_
 
 >  _The auditd module provides high-fidelity kernel activity auditing on Linux (e.g., syscalls, logins, policy changes). To analyze these events in Kibana, configure Auditbeat to send its output to Elasticsearch._
 
