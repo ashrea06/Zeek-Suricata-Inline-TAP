@@ -683,7 +683,7 @@ iface eth0 inet dhcp
 > [!NOTE]
 >  Just as a quick "recapitulation" , "eth1" will be the interface that contains no "IP Addresss",  whilst eth0 will have a "statically assigned DHCP IP Address", and this is exactly what what we're are specifying in the "interface file" above.
 > 
-> _The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology._ 
+> _The below is the "entire network interface file" and there we've added few things, so that our interfaces are adjusted to reflect our design and topology._
 
 > - ***Here is an equivalent of the "Network Interface File" designed for a Ubuntu Operating system*** : 
 
@@ -2451,7 +2451,7 @@ sudo tcpreplay -t -v -i eth1 bigflows.pcap
 
 
 
-> - # ***Visualizations Purposes - SIEM Kibana Auditbeat***
+> - # ***Visualizations — SIEM (Kibana) with Auditbeat***
 
 > [!NOTE]
 > _Elasticsearch is a NoSQL search and analytics engine that supports alerting and (in the Elastic Stack) machine-learning jobs._
@@ -2540,7 +2540,9 @@ sudo systemctl enable elasticsearch
 
 May 21 12:02:08 kali systemd[1]: Starting elasticsearch.service - Elasticsearch...
 May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
+
 ```
+
 
 
 > - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :**** 
@@ -2571,23 +2573,47 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
   },
   "tagline" : "You Know, for Search"
 }
-```                                  
+
+```
+
 
 
 > [!NOTE]
-> _Stop the `Elastic Stack Server` prior to implementing, "Winlog Beat", such that it ingests traffic from our "Windows Host Machine" and sends this across to our "Elasticsearch Stack Server" for advanced analytics._
-
-
- 
- 
-> -  ***Restart the "Elastic Server" :*** 
+>  Elasticsearch 8.x security: Enabled by default. On first start, Elasticsearch prints a generated password for the built-in elastic user to the logs.
+> - ***If `curl returns 401, authenticate (e.g., curl -u elastic http://127.0.0.1:9200) or use an API key.***
+>   
+> You can retrieve it with:
 
 ```
-$ sudo service elasticsearch stop 
+sudo journalctl -u elasticsearch | grep -i "generated password"
 ```
 
+> - ***If `curl returns 401, authenticate (e.g., curl -u elastic http://127.0.0.1:9200) or use an API key.***
 
-> - ***Ingests traffic from the outside world.(Target Host Machine : Windows)*** : 
+
+> [!IMPORTANT]
+> _Memory/heap for labs: Elasticsearch is memory-hungry.
+> To `reduce` RAM usage on a `lab box`, set a `smaller heap` by creating `/etc/elasticsearch/jvm.options.d/heap.options`
+> Ensure `-Xms` equals `-Xmx`, then `restart` :_
+
+
+```
+- Xms1g
+- Xmx1g
+```
+
+> -  ***Apply the changes by restarting the "Elastic Server" :*** 
+
+```
+sudo systemctl restart elasticsearch
+```
+
+> [!NOTE]
+> _`Winlogbeat` setup: Do not `stop Elasticsearch/Kibana` to `install` Winlogbeat on `Windows`.
+> Keep `Elasticsearch` running so `Winlogbeat` can `connect and send events`. Only `restart` Elasticsearch if you `changed` its `configuration`._ 
+
+
+> - ***Ingests traffic from the outside world (Target Host Machine : Windows)*** : 
 
 
 ```
@@ -2596,12 +2622,9 @@ $ sudo service elasticsearch stop
 └─# sudo nano /etc/elasticsearch/elasticsearch.yml 
 ```
 
- 
  > - ***Affect `changes` to our "`Network Host`"  as well as the "`discovery.seed_hosts`" within `elasticsearch.yml file` :*** 
 
-
 ```
-
 # ---------------------------------- Network -----------------------------------
 #
 # By default Elasticsearch is only accessible on localhost. Set a different
@@ -2643,17 +2666,11 @@ discovery.seed_hosts: ["192.168.2.18"]
 
 ```
 
-
-  # Once this has been modified, ensure that this has been saved. 
-
-
-
-
-   # Starting the "ElasticSearch Server" ; 
+> - ***Starting the "ElasticSearch Server" ;*** 
   
-
+```
       $ sudo service elasticsearch restart
-
+```
 
 
 
@@ -2711,9 +2728,10 @@ is only available from another source
 E: Package 'kibana' has no installation candidate
                                                      
 
-- In order to download the kibana file, we will make use of the "wget" command : 
-```
+- In order to download the kibana file, we will make use of the "wget" command :
 
+
+```
 root㉿kali)-[/opt]
 
 └─# wget https://artifacts.elastic.co/downloads/kibana/kibana-8.7.1-amd64.deb
