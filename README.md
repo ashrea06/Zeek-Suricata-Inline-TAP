@@ -2497,6 +2497,15 @@ sudo apt-get update
 sudo apt-get install -y elasticsearch
 ```
 
+
+> [!TIP]
+> _Memory/heap for labs: `Elasticsearch` is `memory-hungry`. To reduce `RAM usage` on a `lab box`, set a `smaller heap` by creating `/etc/elasticsearch/jvm.options.d/heap.options` :_
+
+```
+-Xms1g
+-Xmx1g
+```
+
 > - ***Start and enable Elasticsearch (Beware : Server will take up alot of ressources - In terms of RAM) :***
 
 ```
@@ -2576,8 +2585,6 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
 
 ```
 
-
-
 > [!NOTE]
 >  Elasticsearch 8.x security: Enabled by default. On first start, Elasticsearch prints a generated password for the built-in elastic user to the logs.
 > - ***If `curl returns 401, authenticate (e.g., curl -u elastic http://127.0.0.1:9200) or use an API key.***
@@ -2616,9 +2623,10 @@ sudo systemctl restart elasticsearch
 # address here to expose this node on the network:
 #
 
+>>>>>>>
 >>>>> Make sure to adjust the "IP Address" to that of the Kali Machine, Guest Machine, 'Bridge Adapater" 
-
->>>> network.host: 192.168.2.18
+>>>
+>> network.host: 192.168.2.18
 
 
 #
@@ -2636,9 +2644,10 @@ sudo systemctl restart elasticsearch
 #
 
 
-
->>>>  # Under the "discovery.seed_hosts, there would be typically, one of which will be a "master node" and the other node will be a "slave node". 
->>>>>>>>> In our case, we will keep a single "Master Node".
+>>>>>>
+>>>>
+>>>  # Under the "discovery.seed_hosts, there would be typically, one of which will be a "master node" and the other node will be a "slave node". 
+>> In our case, we will keep a single "Master Node".
 
 
 discovery.seed_hosts: ["192.168.2.18"]
@@ -2684,8 +2693,6 @@ C:\WINDOWS\system32>curl 192.168.2.18:9200
 ```
 
 > # _Installation of Kibana_ 
-
-
 
 ```
 ┌──(root㉿kali)-[/home/kali]
