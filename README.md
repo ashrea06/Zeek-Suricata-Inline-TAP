@@ -2453,24 +2453,31 @@ sudo tcpreplay -t -v -i eth1 bigflows.pcap
 
 > - # ***Visualizations Purposes - SIEM Kibana Auditbeat***
 
-# ElasticSearch is a "NOSQL Database" which provides advanced analytics, which allows for "machine learning" jobs as well as setting alerts.
+> [!NOTE]
+> _Elasticsearch is a NoSQL search and analytics engine that supports alerting and (in the Elastic Stack) machine-learning jobs._
 
 
 
-# Download the public signing key : 
+> - ***Import Elastic’s package signing key (modern, apt-key is deprecated):which is used to sign all of the packages :***
 
-- We'll first begin with the "import of the Elastic PGP Key"  which is used to sign all of the packages : 
-
-
-
-    $ wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-
-
+```
+sudo install -m 0755 -d /usr/share/keyrings
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch \
+  | sudo gpg --dearmor -o /usr/share/keyrings/elastic-archive-keyring.gpg
+```
 
 
-# Since most of the packages are hailing from a "common repository", we want to ensure that the right communication is being used, when downloading the required "packages"  : 
+> - ****Add the Elastic APT repository :*** :
 
+```
+echo "deb [signed-by=/usr/share/keyrings/elastic-archive-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+```
 
+> [!NOTE]
+> ***apt-transport-https is already built into `modern APT`; installing it separately isn’t required (harmless if already present).***
+
+```
 ┌──(root㉿kali)-[/home/kali/Desktop]                                            
 
 └─# sudo apt-get install apt-transport-https                                    
@@ -2478,55 +2485,19 @@ sudo tcpreplay -t -v -i eth1 bigflows.pcap
 Reading package lists... Done                                                   
 Building dependency tree... Done                                                
 Reading state information... Done                                               
-apt-transport-https is already the newest version (2.6.0).                      
+apt-transport-https is already the newest version (2.6.0).
+```          
 
 
-
-- Let's save the "new repo" to the repository location inside of the "/etc/apt/sources.list.d" dirsectory :
-
-
-┌──(root㉿kali)-[/home/kali/Desktop]
-
-└─# echo "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
-
-
-deb https://artifacts.elastic.co/packages/7.x/apt stable main
-                                                                       
-
-
- 
- the "ElasticSearch Debian" Package : 
-
-
-    $ apt-get update && sudo apt-get install elasticsearch
-        
-Err:4 https://download.docker.com/linux/ubuntu kali-rolling Release                                                 
-  404  Not Found [IP: 13.226.139.110 443]                                                                           
-Get:5 http://kali.download/kali kali-rolling/main amd64 Packages [19.3 MB]                                          
-Get:6 http://kali.download/kali kali-rolling/main amd64 Contents (deb) [44.7 MB]                                    
-Reading package lists... Done                                                                                      
-E: The repository 'https://download.docker.com/linux/ubuntu kali-rolling Release' does not have a Release file.     
-N: Updating from such a repository can't be done securely, and is therefore disabled by default.                    
-N: See apt-secure(8) manpage for repository creation and user configuration details.                                
-W: https://artifacts.elastic.co/packages/7.x/apt/dists/stable/InRelease: Key is stored in legacy trusted.gpg keyring
- (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.                                     
-
-                                                                                                                    
-                                                                                                                    
+> - ***Update and install Elasticsearch*** :
 ```
-┌──(root㉿kali)-[/home/kali/Desktop]                     
+sudo apt-get update
+```
+```
+sudo apt-get install -y elasticsearch
+```
 
-└─# apt install elasticsearch -y                                                                            
-
-Reading package lists... Done                                                          
-Building dependency tree... Done                                                
-Reading state information... Done                                                      
-The following packages were automatically installed and are no longer required:         
-
-...
-
-
-# Let us start the "service elasticsearch", which will boot up the "server", and beware that this process will take up a lot of ressources.(in terms of RAM) : 
+> - ***Start and enable Elasticsearch (Beware : Server will take up alot of ressources - In terms of RAM) :***
 
 ```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
@@ -2534,13 +2505,16 @@ The following packages were automatically installed and are no longer required:
 └─# service elasticsearch start  
 ```
 
-
 > - ***Verify Elasticsearch service is "up" and "running" :*** 
 
 ```
-  $ service elasticsearch status
+sudo systemctl enable elasticsearch
 ```
 
+
+> - ***`Verify` Elasticsearch is `running` :***
+
+```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
 └─# service elasticsearch status  
@@ -2549,10 +2523,12 @@ The following packages were automatically installed and are no longer required:
      Loaded: loaded (/lib/systemd/system/elasticsearch.service; disabled; preset: disabled)
      Active: active (running) since Sun 2023-05-21 12:02:58 EDT; 14min ago
        Docs: https://www.elastic.co
- 
- 
- 
- >>>> # Here is the process ID :  Main PID: 620492 (java)
+
+>>>>>>
+>>>>
+>>
+
+ Main PID: 620492 (java)
  
  
       Tasks: 60 (limit: 8215)
@@ -2564,13 +2540,13 @@ The following packages were automatically installed and are no longer required:
 
 May 21 12:02:08 kali systemd[1]: Starting elasticsearch.service - Elasticsearch...
 May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
+```
 
 
+> - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :**** 
 
-# Here's a "second way" to test if the elastic search is working, we'll "curl the loopback address" of the "elastic stack" 
-
+```
   $ curl 127.0.0.1:9200
-
 
   ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
@@ -2595,9 +2571,11 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
   },
   "tagline" : "You Know, for Search"
 }
-                                  
+```                                  
 
-# We would need to stop the Elastic Stack Server prior to implementing, "Winlog Beat", such that it ingests traffic from our "Windows Host Machine" and sends this across to our "Elasticsearch Stack Server" for advanced analytics.
+
+> [!NOTE]
+> _Stop the `Elastic Stack Server` prior to implementing, "Winlog Beat", such that it ingests traffic from our "Windows Host Machine" and sends this across to our "Elasticsearch Stack Server" for advanced analytics._
 
 
  
@@ -2611,6 +2589,7 @@ $ sudo service elasticsearch stop
 
 > - ***Ingests traffic from the outside world.(Target Host Machine : Windows)*** : 
 
+
 ```
 ┌──(root㉿kali)-[/etc/apt/sources.list.d]
 
@@ -2618,7 +2597,7 @@ $ sudo service elasticsearch stop
 ```
 
  
- > - ***Affect `changes` to our "`Network Host`"  as well as the "`discovery.seed_hosts`" within `elasticsearch.yml file` :*** :  
+ > - ***Affect `changes` to our "`Network Host`"  as well as the "`discovery.seed_hosts`" within `elasticsearch.yml file` :*** 
 
 
 ```
