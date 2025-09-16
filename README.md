@@ -2971,8 +2971,9 @@ state.period: 1m
 > [!WARNING]
 > 
 > _`Linux` has one `audit inbox` (the kernel audit netlink socket) and one `set of audit rules`. Either the `OS daemon auditd` or `Auditbeat’s auditd module` should own that `inbox` and `manage` those `rules`, not `both`.
-> If both run, they fight: rules get overwritten and you’ll see errors or missed events.
-> ***Best option : Use the `Auditbeat’s auditd module` (no OS auditd) :***_
+> If both run, they fight: rules get overwritten and you’ll see errors or missed events._
+
+> - ***Best option : Use the `Auditbeat’s auditd module` (no OS auditd) :***_
  
 ```
 sudo systemctl stop auditd
