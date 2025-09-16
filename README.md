@@ -3012,7 +3012,7 @@ elasticsearch: http://192.168.2.18:9200...
 ```
 
 > - ***Enable Auditbeat’s auditd module and start it :***
-> - 
+
 ```
 sudo systemctl enable --now auditbeat
 sudo journalctl -u auditbeat -e | grep -i audit
