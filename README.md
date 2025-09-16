@@ -2861,7 +2861,7 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 > [!TIP]
 > _On Windows, use Winlogbeat or Elastic Agent instead—there is no auditd on Windows._
  
-> - ***Edit Auditbeat configuration" :*** 
+> - ***Edit `Auditbeat` configuration :*** 
 
 ```
   $  sudo nano /etc/auditbeat/auditbeat.yml
