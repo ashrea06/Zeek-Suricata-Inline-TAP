@@ -1708,7 +1708,6 @@ logs
 > # _FileBeat Agent Installation + Signing Key Download  + Add Elastic Stable Repository  + Add apt-transport-https_
 
 
-
 > [!NOTE]
 > _Filebeat is an "agent" which will be in "charge of taking our logs" and place them into "elastic search" for "visualization purposes"(Kibana)._ 
 > _ We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
@@ -2701,13 +2700,28 @@ C:\WINDOWS\system32>curl 192.168.2.18:9200
 > # _Installation of Kibana_ 
 
 
-> [!TIP]
->  Given that we do not have the "kibana repository" under the "offical Kali Linux repo", we'll then be downloading and extracting "kibana.**tar.gz" file under https://www.elastic.co /downloads/kibana. 
- 
-  ```
-  $ sudo apt install kibana  -y 
+
+```
+┌──(root㉿kali)-[/home/kali]
+
+└─# apt install kibana  -y 
+
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Package kibana is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'kibana' has no installation candidate
 ```
 
+
+
+> [!TIP]
+> _`kibana repository` does not `exist` under the `offical Kali Linux repo`, we'll then be downloading and `extracting `kibana.*tar.gz file` under `https://www.elastic.co/downloads/kibana`._ 
+ 
 ```
 ┌──(root㉿kali)-[/home/kali]
 
@@ -2724,8 +2738,8 @@ is only available from another source
 E: Package 'kibana' has no installation candidate
 ```                                                  
 
-- In order to download the kibana file, we will make use of the "wget" command :
 
+>  - ***Download Kibana 8.7.1-amd64.deb :*** 
 
 ```
 root㉿kali)-[/opt]
@@ -2737,90 +2751,44 @@ Resolving artifacts.elastic.co (artifacts.elastic.co)... 34.120.127.130, 2600:19
 Connecting to artifacts.elastic.co (artifacts.elastic.co)|34.120.127.130|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 239590498 (228M) [binary/octet-stream]
+```
 
+> - ***Kibana package successfully installed :***
 
-
-# Afterwards we'll then use the "dpkg" command, and run the file : 
-
-
-┌──(root㉿kali)-[/opt]
-
-└─# ls 
-
-49757.py                 discover                      Investigation                         pstree.txt                velociraptor-docker
-506332.txt               dive_0.9.2_linux_amd64.deb    kibana-8.7.1-amd64.deb                RedEye                    virlutils
-63740.txt                dnscat2                       knock                                 slurp                     volatility3
-blackeye-im              dump-endpoints.jq             microsoft                             Spiderpig                 WmiEvent
-bucket-stream            EyeWitness                    mysql-apt-config_0.8.22-1_all.deb     sslScrape                 ZAP_2_10_0_unix.sh
-censys-subdomain-finder  github.com                    ngrok                                 suricata_rules            zaproxy
-core.23335               grr-server_3.4.0-1_amd64.deb  openapi-spec.json                     VBoxGuestAdditions-7.0.6  zeek
-DataSurgeon              httpscreenshot                phantomjs-1.9.8-linux-x86_64.tar.bz2  velociraptor              zeek-docker
-                                                                                                                                                           
+```
 ┌──(root㉿kali)-[/opt]
 
 └─# ls -larh | grep kibana  
 
 -rw-r--r--  1 root         root         229M May  2 05:38 kibana-8.7.1-amd64.deb
+```
+
+> - ****Install the package onto the system :***
+ 
+```
+dpkg -i kibana-8.7.1-amd64.deb 
+```
+
+> [!NOTE]
+>  _`Files` are `installed` under `/usr/share/kibana`, config in `/etc/kibana`, logs in `/var/log/kibana`.At the same time, please make sure that the file matches your CPU arch.
+> ***amd64 → most `x86_64 PCs arm64` → `Raspberry Pi 4/5` or `ARM servers` (use the arm64 build instead)*** 
+> A `systemd service` named `kibana` is `registered` (not necessarily enabled yet).`No` repo is `added`: future `upgrades` won’t happen `automatically` unless you `add` the `Elastic APT repo`._ 
 
 
-
-# Running the "Kibana" installation : 
-
+> - # ***Installing our "AuditBeat" : Sends log and signals/information to ElasticStack***
 
 
-┌──(root㉿kali)-[/opt]
-
-└─# dpkg -i kibana-8.7.1-amd64.deb 
-
-Selecting previously unselected package kibana.
-(Reading database ... 472166 files and directories currently installed.)
-Preparing to unpack kibana-8.7.1-amd64.deb ...
-Unpacking kibana (8.7.1) ...
+> [!NOTE]
+> Beat is a key component, specifically is "Lightweight agent" which will allow us to monitor the Linux servers in the cloud and on-site ( for e.g, Windows Machine).
 
 
+> - ***Install auditbeat :***
 
+```
+sudo apt install auditbeat -y  
+```
 
-
-                  ***********//// Installing our "AuditBeat" : Sends log and signals/information to ElasticStack *****////
-
-
-# Beat is a key component, specifically is "Lightweight agent" which will allow us to monitor the Linux servers in the cloud and on-site ( for e.g, Windows Machine).
-
-
-
-- Let's get this beast installed : 
-
-
-┌──(root㉿kali)-[/opt]             
-
-└─# sudo apt install auditbeat -y  
-s
-Reading package lists... Done                                                
-Building dependency tree... Done
-Reading state information... Done                                            
-The following packages were automatically installed and are no longer required:
-  bluez-firmware debugedit dh-elpa-helper docutils-common figlet finger firebird3.0-common firebird3.0-common-doc firmware-ath9k-htc firmware-atheros
-  firmware-brcm80211 firmware-intel-sound firmware-iwlwifi firmware-libertas firmware-realtek firmware-sof-signed firmware-ti-connectivity
-  firmware-zd1211 freerdp2-x11 gdal-data gdal-plugins kali-linux-firmware libaec0 libarmadillo11 libarpack2 libblosc1 libbson-1.0-0 libcfitsio10
-  libcfitsio9 libfbclient2 libfreerdp-client2-2 libfreerdp2-2 libfreexl1 libfsverity0 libfyba0 libgeos-c1v5 libgeos3.11.1 libgeotiff5 libhashkit2
-  libhdf4-0-alt libhdf5-103-1 libhdf5-hl-100 libkmlbase1 libkmldom1 libkmlengine1 libmemcached11 libmongoc-1.0-0 libmongocrypt0 libmpdec3 libnetcdf19
-  libnginx-mod-http-geoip libnginx-mod-http-image-filter libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libnginx-mod-stream-geoip
-  libodbc2 libodbcinst2 libogdi4.1 libpoppler123 libproj25 libprotobuf23 libpython3.10 libpython3.10-dev libpython3.10-minimal libpython3.10-stdlib
-  librpmbuild9 librpmsign9 librttopo1 libspatialite7 libsuperlu5 libsz2 libtiff5 liburiparser1 libwinpr2-2 libxerces-c3.2 libzxingcore1
-  linux-image-6.0.0-kali3-amd64 medusa nginx-core php8.1-mysql proj-bin proj-data python-odf-doc python-odf-tools python-pastedeploy-tpl
-  python-tables-data python3-aioredis python3-ajpy python3-alabaster python3-apscheduler python3-bottleneck python3-commonmark python3-docutils
-  python3-git python3-gitdb python3-imagesize python3-ipy python3-numexpr python3-odf python3-pandas python3-pandas-lib python3-pyexploitdb
-  python3-pyfiglet python3-pyshodan python3-pysmi python3-pysnmp4 python3-quamash python3-roman python3-smmap python3-snowballstemmer python3-speaklater
-  python3-sphinx python3-tables python3-tables-lib python3-tld python3-yaswfp python3.10 python3.10-dev python3.10-minimal rpm ruby3.0 ruby3.0-dev
-  ruby3.0-doc rwho rwhod sparta-scripts sphinx-common toilet-fonts unixodbc-common wapiti
-Use 'sudo apt autoremove' to remove them.
-The following NEW packages will be installed:
-  auditbeat
-
-
-
-
-                              **********//// Configuring Auditbeat + Kibana ******////// 
+> - #  _Configuring Auditbeat + Kibana_ 
 
 
 # Great we've both "Auditbeat and  Kibana" installed, we will now groom(send the logs to our ElasticSearch Stack) them and get them to start : 
