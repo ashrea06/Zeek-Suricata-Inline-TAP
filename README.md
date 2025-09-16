@@ -2545,7 +2545,7 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
 
 
 
-> - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :**** 
+> - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :***
 
 ```
   $ curl 127.0.0.1:9200
