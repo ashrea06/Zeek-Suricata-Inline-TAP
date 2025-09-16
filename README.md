@@ -2666,7 +2666,7 @@ discovery.seed_hosts: ["192.168.2.18"]
 
 ```
 
-> - ***Starting the "ElasticSearch Server" ;*** 
+> - ***Restart the "ElasticSearch Server" ;*** 
   
 ```
       $ sudo service elasticsearch restart
@@ -2674,13 +2674,10 @@ discovery.seed_hosts: ["192.168.2.18"]
 
 
 
-- Let's continue to test out the Windows Machine, if it can initiate "communication" with the "ElasticSearch Stack" at port 9200. 
+> - ***From the Windows command prompt, initiate "communication" with the "ElasticSearch Stack" at port 9200*** :
 
 
-# From Command Prompt : 
-
-- Run this command : 
-
+```
 C:\WINDOWS\system32>curl 192.168.2.18:9200
 {
   "name" : "kali",
@@ -2699,18 +2696,17 @@ C:\WINDOWS\system32>curl 192.168.2.18:9200
   },
   "tagline" : "You Know, for Search"
 }
+```
 
+> # _Installation of Kibana_ 
 
-
-
-> # Installation of Kibana
 
 > [!TIP]
 >  Given that we do not have the "kibana repository" under the "offical Kali Linux repo", we'll then be downloading and extracting "kibana.**tar.gz" file under https://www.elastic.co /downloads/kibana. 
  
-  
+  ```
   $ sudo apt install kibana  -y 
-
+```
 
 ```
 ┌──(root㉿kali)-[/home/kali]
@@ -2726,7 +2722,7 @@ This may mean that the package is missing, has been obsoleted, or
 is only available from another source
 
 E: Package 'kibana' has no installation candidate
-                                                     
+```                                                  
 
 - In order to download the kibana file, we will make use of the "wget" command :
 
