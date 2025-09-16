@@ -2848,12 +2848,19 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 ```
 
-> # _Configuring Auditbeat’s auditd module
+> # _Configure Auditbeat (auditd module on Linux)
+
+>  _The auditd module provides high-fidelity kernel activity auditing on Linux (e.g., syscalls, logins, policy changes). To analyze these events in Kibana, configure Auditbeat to send its output to Elasticsearch._
+
+> [!NOTE]
+> 
+> _The auditd module interfaces with the Linux kernel’s audit subsystem. Do not run the OS auditd daemon at the same time—both try to control the same audit socket and rules, which causes conflicts.
+> Use one of these paths: run Auditbeat’s auditd module and stop/disable the auditd service, or keep auditd and ship its logs with Filebeat > (pick one)._
 
 
-> _auditd module" provides a high level "monitoring logging" on the targetted "kernel operating system".(for e.g windows/Linux). In order to accomplish the following we would need to send audit events to Elasticsearch._ 
-
-
+ [!TIP]
+> _On Windows, use Winlogbeat or Elastic Agent instead—there is no auditd on Windows._
+ 
 > - ***Edit Auditbeat configuration" :*** 
 
 ```
@@ -2898,10 +2905,36 @@ auditbeat.modules:
 
     ## Identity changes.
 
+>>>>>>>>>
+>>>>>>>
+>>>>
+>>
+auditbeat.modules:
+  - module: auditd
+    enabled: true
+
+>>>>>>>>>
+>>>>>>>
+>>>>
+>>
+setup.kibana:
+  host: "http://192.168.2.18:5601"
+
+>>>>>>>>>
+>>>>>>>
+>>>>
+>>
+output.elasticsearch:
+  hosts: ["http://192.168.2.18:9200"]
+  # If using keystore vars instead, reference as:
+  # hosts: ["${ES_HOST}"]
+  # username: "${ES_USER}"
+  # password: "${ES_PASS}"
+
 >>>>>>>>>>
 >>>>>>>
 >>>>> This module will actively scan for the `file integrity` of the "file system paths", to avoid attacks : 
-
+>>>>
 - module: file_integrity
   paths:
   - /bin
@@ -2935,15 +2968,32 @@ state.period: 1m
 ```
 
 
-> - ***Test the `auditbeat configuration` :*** 
+> [!WARNING]
+> 
+> _`Linux` has one `audit inbox` (the kernel audit netlink socket) and one `set of audit rules`. Either the `OS daemon auditd` or `Auditbeat’s auditd module` should own that `inbox` and `manage` those `rules`, not `both`.
+> If both run, they fight: rules get overwritten and you’ll see errors or missed events.
+> ***Best option : Use the `Auditbeat’s auditd module` (no OS auditd) :***_
+ 
+```
+sudo systemctl stop auditd
+sudo systemctl disable auditd
+
+# Ensure /etc/auditbeat/auditbeat.yml has:
+# auditbeat.modules:
+#   - module: auditd
+#     enabled: true
 
 ```
-  $ sudo auditbeat test config
+
+> - ***Validate the `auditbeat configuration` :*** 
+
+```
+sudo auditbeat test config
 ```
 
+> - ***`Test` communication between `auditbeat` and the `Elasticsearch Server` with the "output" command :****
 
-# Let's test with the "output" command, in order to check the communication between auditbeat and the "ElasticSearch Server"  : 
-
+```
 ┌──(root㉿kali)-[/etc/kibana/certs]
 
 └─# sudo auditbeat test output     
@@ -2958,17 +3008,18 @@ elasticsearch: http://192.168.2.18:9200...
   TLS... WARN secure connection disabled
   talk to server... OK
   version: 7.9.2
+```
 
-# At times, if "elasticsearch server" has not loaded yet, we may obtain an "error" ;  dial up... ERROR dial tcp 192.168.2.18:9200: connect: connection refused. 
+> - ***Enable Auditbeat’s auditd module and start it :***
+> - 
+```
+sudo systemctl enable --now auditbeat
+sudo journalctl -u auditbeat -e | grep -i audit
+```
 
-
-
-
-
-# Let's enable and start the "auditbeat" service : 
-
-  $ systemctl enable  --now  auditbeat
-
+> [!IMPORTANT]
+> 
+> "elasticsearch server" has not loaded yet, we may obtain an "error" ;  dial up... ERROR dial tcp 192.168.2.18:9200: connect: connection refused. 
 
 
 
