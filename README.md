@@ -2986,7 +2986,7 @@ sudo systemctl disable auditd
 
 ```
 
-> - ***Validate the `auditbeat configuration` :*** 
+> - ***`Validate` the `auditbeat configuration` :*** 
 
 ```
 sudo auditbeat test config
