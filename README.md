@@ -2858,7 +2858,7 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 > Use one of these paths: run Auditbeat’s auditd module and stop/disable the auditd service, or keep auditd and ship its logs with Filebeat > (pick one)._
 
 
- [!TIP]
+> [!TIP]
 > _On Windows, use Winlogbeat or Elastic Agent instead—there is no auditd on Windows._
  
 > - ***Edit Auditbeat configuration" :*** 
