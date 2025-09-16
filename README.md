@@ -2555,7 +2555,7 @@ May 21 12:02:58 kali systemd[1]: Started elasticsearch.service - Elasticsearch.
 
 
 
-> - ***Using the Quickc API check (Loopback Address) to verify the status of the "elastic stack" :***
+> - ***Using the Quick API check (Loopback Address) to verify the status of the "elastic stack" :***
 
 ```
   ┌──(root㉿kali)-[/etc/apt/sources.list.d]
@@ -2783,14 +2783,16 @@ sudo apt install auditbeat -y
 
 > - #  _Configuring Auditbeat + Kibana_ 
 
+> _Now with `Auditbeat`and `Kibana`installed, point `Kibana` to your `Elasticsearch node` and (optionally) `bind Kibana` to your `LAN IP` so you can `access` it from `other machines`._
 
-# Great we've both "Auditbeat and  Kibana" installed, we will now groom(send the logs to our ElasticSearch Stack) them and get them to start : 
+> - ***Edit Kibana configuration :***
+
+```
+  $ sudo nano  /etc/kibana/kibana.yml
+```
 
 
-  $ sudo nano  /etc/kibana/kibana.yml`
-
-
-
+```
  /etc/kibana/kibana yml                                                                
 # For more configuration options see the configuration guide for Kibana in
 # https://www.elastic.co/guide/index.html
@@ -2804,11 +2806,12 @@ sudo apt install auditbeat -y
 # To allow connections from remote users, set this parameter to a non-loopback address.
 
 >>>>>>>>>
->>>>>>>>>>>>>>>>  We could have modified the "server.host", such that it reflects the "IP address" of our Kali linux, "bridge Adapter IP" : 192.168.2.18
->>>>>>>>>>>>
+>>>>>>> Modify the "server.host", such that it reflects the "IP address" of the "bridge Adapter IP" : 192.168.2.18
 >>>>>
-#server.host: "localhost"
+>>>
+>> # Bind address for Kibana (default is localhost). Use your Kali bridge IP to allow LAN access.
 
+server.host: "192.168.2.18"        # or "0.0.0.0" for all interfaces (lab only)
 
   
 # The maximum payload size in bytes for incoming server requests.
@@ -2828,38 +2831,37 @@ sudo apt install auditbeat -y
 # The URLs of the Elasticsearch instances to use for all your queries.
 
 
->>>
->>>>> We'll now modify the "elasticsearch.hosts" and set this to, "https://192.168.2.18:9200",and ensure to remove the #, "hash key" to apply the changes. 
->>>>>>>>
+>>>>>>>
+>>>>> Set the "elasticsearch.hosts", to "https://192.168.2.18:9200".
+>>> 
+>>
 elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 # If your Elasticsearch is protected with basic authentication, these settings provide
 # the username and password that the Kibana server uses to perform maintenance on the Kibana
 # index at startup. Your Kibana users still need to authenticate with Elasticsearch, which
 # is proxied through the Kibana server.
+
+
 #elasticsearch.username: "kibana_system"
 #elasticsearch.password: "pass"
 
+```
+
+> # _Configuring Auditbeat’s auditd module
 
 
+> _auditd module" provides a high level "monitoring logging" on the targetted "kernel operating system".(for e.g windows/Linux). In order to accomplish the following we would need to send audit events to Elasticsearch._ 
 
 
-> # Configuring the AuditBeat + Module auditd
+> - ***Edit Auditbeat configuration" :*** 
 
-
-
-- As a brief explanation, "auditd module" provides a high level "monitoring logging" on the targetted "kernel operating system".(for e.g windows/Linux)
-
-
-  # We'll now configure the "lightweight AuditBeat" : 
-
-
-
+```
   $  sudo nano /etc/auditbeat/auditbeat.yml
+```
 
 
-
-
+```
                         /etc/auditbeat/auditbeat.yml                                                             
 
 ###################### Auditbeat Configuration Example #########################
@@ -2896,12 +2898,9 @@ auditbeat.modules:
 
     ## Identity changes.
 
-
-
-
->>>> #  The below module will actively check for the file integrity at these "file system paths", to avoid attacks : 
->>>>>>>>
->>>>>
+>>>>>>>>>>
+>>>>>>>
+>>>>> This module will actively scan for the `file integrity` of the "file system paths", to avoid attacks : 
 
 - module: file_integrity
   paths:
@@ -2911,10 +2910,10 @@ auditbeat.modules:
   - /usr/sbin
   - /etc
 
-
->>>>>>>
->>>>> The module below will go over the "datasets" in each of the instances, for e.g, host, login, package, process... etc : 
->>> The module "system", was not included in this file, so we've just added it.
+>>>>>>>>>>
+>>>>>>
+>>>> This module will go over the "datasets (host, login, package, process..)" in each of the instances
+>> The system module does not come with the default configuration :
 
 - module: system
 datasets: 
@@ -2927,19 +2926,20 @@ datasets:
 - user # User information
 
 
+>>>>>>>>
+>>>>>
+>>  Consider "regular checks" from the "aforementioned datasets" :  
 
-# Add in the setting below to perform "regular checks on the datasets" mentioned above : 
+state.period: 1m
 
-
->>>>>>> state.period: 1m 
-
-
-
-  # Let's now test the "auditbeat configuration" : 
+```
 
 
+> - ***Test the `auditbeat configuration` :*** 
+
+```
   $ sudo auditbeat test config
-
+```
 
 
 # Let's test with the "output" command, in order to check the communication between auditbeat and the "ElasticSearch Server"  : 
