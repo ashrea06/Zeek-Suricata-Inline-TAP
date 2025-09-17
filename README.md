@@ -3239,7 +3239,7 @@ curl -I http://<kibana_host_or_ip>:5601
 sudo systemctl status auditbeat
 ```
 
-> ***Confirm connectivity to Elasticsearch :*** 
+> - ***Confirm connectivity to Elasticsearch :*** 
 
 ```
 sudo auditbeat test output
@@ -3266,13 +3266,12 @@ tcp        0      0 127.0.0.1:59676         127.0.0.1:8001          ESTABLISHED 
 
 tcp6       0      0 :::8000                 :::*                    LISTEN      1019/velociraptor.b 
 
-> - tcp6       0      0 192.168.2.18:9200       :::*                    LISTEN      7774/java           
+> - tcp6       0      0 192.168.2.18:9200       :::*                    LISTEN      7774/java
+  
 ```
 
 > [!NOTE]
 > _`Elasticsearch` is `listening` and `reachable` on `192.168.2.18:9200/9300`.
-> `Kibana` isn’t `listed` here; the `journal` shows it `binds` to `http://localhost:5601` (preboot), which is fine if you only `access` from the `local box`._
-
 
 
 > - ****Quick Log Check :***
@@ -3289,10 +3288,16 @@ May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plug
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudFullStory" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudGainsight" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.559-04:00][INFO ][plugins-service] Plugin "profiling" is disabled.
-May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http.server.Preboot] http server running at http://localhost:56
+May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http.server.Preboot] http server running at http://localhost:5601
 ```
 
->[!WARNING]
+> [!NOTE]
+> _`Kibana` isn’t `listed` here; the `journal` shows it `binds` to `http://localhost:5601` (preboot), which is `fine` if you only `access` from the `local box`._
+
+
+
+
+> [!IMPORTANT]
 > ***`Kibana server` not `ready yet` during `startup` can be `normal` for a `short time`. If it `persists`, it almost always means `one` :***
  
 > - `Kibana` can’t talk to `Elasticsearch` (wrong URL, ES not running, firewall).
@@ -3301,10 +3306,8 @@ May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http
 
 
 
-
-> [!TIP] 1
-> _Case A — Elasticsearch 7.x with security disabled (your earlier curl looked like 7.17.x without auth)_ :
-
+> [!TIP] 
+> _Case A : `Elasticsearch` with `security disabled` :
 
 ```
 # /etc/kibana/kibana.yml
@@ -3316,9 +3319,11 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 ```
 
 
+> - ***Restart kibana :***
 
-
-
+```
+sudo systemctl restart kibana
+```
 
 
 
@@ -3329,6 +3334,42 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 
 
+> [!TIP]
+> _CAse B : `Elasticsearch` with `security enabled`(basic auth)
+
+> _Important: `xpack.security.*` is an `Elasticsearch setting`, not a `Kibana setting`. Put it in `/etc/elasticsearch/elasticsearch.yml`, not `kibana.yml.
+>  Kibana only needs the Elasticsearch URL and, if security is on, valid credentials for kibana_system`:_  
+
+```
+/etc/elasticsearch/elasticsearch.yml
+xpack.security.enabled: true
+```
+
+
+> - ***Restart `Elasticserach`, then `set built-in` user passwords :*** 
+
+```
+sudo systemctl restart elasticsearch
+sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+```
+
+
+> - ***Use the generated password for the kibana_system user in Kibana :*** 
+
+```
+# /etc/kibana/kibana.yml
+server.host: "localhost"             # or "192.168.2.18"
+elasticsearch.hosts: ["https://192.168.2.18:9200"]
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "<the password you set>"
+# If using https, also configure kibana SSL validation if needed
+```
+
+> - ***Restart kibana :***
+
+```
+sudo systemctl restart kibana
+```
 
 > - ***Edit `kibana.yml` file :***
 
@@ -3351,6 +3392,8 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 # elasticsearch.username: "kibana_system"
 # elasticsearch.password: "<password>"
 ```
+
+
 
 
 
