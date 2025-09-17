@@ -3328,7 +3328,7 @@ sudo systemctl restart kibana
 
 
 
-# Let's analyze the logs at this directory : /var/log/kibana
+> # _Let's analyze the logs at this directory : /var/log/kibana_
 
 - Check the "logs being outputted", when the "kibana service" is being restarted.
 
