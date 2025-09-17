@@ -3274,7 +3274,8 @@ tcp6       0      0 :::8000                 :::*                    LISTEN      
 > _`Elasticsearch` is `listening` and `reachable` on `192.168.2.18:9200/9300`.
 
 
-> - ****Quick Log Check :***
+> - ***Quick Log Check :***
+
 
 ```
 journalctl -u kibana -f
