@@ -3007,52 +3007,41 @@ elasticsearch: http://192.168.2.18:9200...
   version: 7.9.2
 ```
 
-> - ***Enable `Auditbeat’s auditd module` and start it :***
+> - ***Enable and start Auditbeat (auditd `module` enabled in `auditbeat.yml`) :****
 
 ```
 sudo systemctl enable --now auditbeat
 sudo journalctl -u auditbeat -e | grep -i audit
 ```
 
+
+
 > [!WARNING]
 > _If Elasticsearch isn’t running or reachable, you may see:
-> dial tcp 192.168.2.18:9200: connect: connection refused
-> Start or fix Elasticsearch, then rerun sudo auditbeat test output.
+> dial tcp 192.168.2.18:9200: connect: connection refused_
+
+> _Start or fix Elasticsearch, then rerun `sudo auditbeat test output`.
 > The warning TLS... secure connection disabled appears when using http://. If your cluster uses TLS, switch to https:// and configure SSL settings in auditbeat.yml._ 
 
 
-Furthermore, we'll quickly be going over the "Kibana Section" : 
 
+> - ***`Kibana section` (update the host so dashboards can load via the Kibana API) :***
 
+```
 # =================================== Kibana ===================================
-
-# Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
-# This requires a Kibana endpoint configuration.
+# Starting with Beats 6.0.0, dashboards are loaded via the Kibana API.
 setup.kibana:
+  # Include scheme and port for clarity
+  host: "http://192.168.2.18:5601"
 
-  # Kibana Host
-  # Scheme and port can be left out and will be set to the default (http and 5601)
-  # In case you specify and additional path, the scheme is required: http://localhost:5601/path
-  # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-
-
->>>>>>>>>
->>>>>> We'll be keeping the host information below as it is at "localhost:5601", so nothing to be changed here. 
-
->>>>>
-  #host: "localhost:5601"
-
-  # Kibana Space ID
-  # ID of the Kibana Space into which the dashboards should be loaded. By default,
-  # the Default Space will be used.
-  #space.id:
+  # Optional: load into a specific Space
+  # space.id: "Default"
+```
 
 
+> - ***`Elastic Cloud` (no changes if you are not using Elastic Cloud) :***
 
-- Next section, "Elastic Cloud", since we're not using any "elastic cloud providers", so we will not undergo any changes. 
-
-
-
+ ```
 # =============================== Elastic Cloud ================================
 
 # These settings simplify using Auditbeat with the Elastic Cloud (https://cloud.elastic.co/).
@@ -3065,107 +3054,122 @@ setup.kibana:
 # The cloud.auth setting overwrites the `output.elasticsearch.username` and
 # `output.elasticsearch.password` settings. The format is `<user>:<pass>`.
 #cloud.auth:
+```
 
+> - ***`Outputs Section`(point Auditbeat to your Elasticsearch node) :***
 
-
-
-
-# The "Outputs Section" is the most important one, where we'll bring some changes :
-
-
-
-                 *******////    Outputs Section : Change the Localhost to our Elastic Server, IP Address   ////*******
-
- ================================== Outputs ===================================
-
-# Configure what output to use when sending the data collected by the beat.
+```
+# ================================== Outputs ===================================
+# Configure where Auditbeat sends data.
 
 # ---------------------------- Elasticsearch Output ----------------------------
 output.elasticsearch:
-  # Array of hosts to connect to.
+  # Use your Elasticsearch address (include scheme and port)
+  hosts: ["http://192.168.2.18:9200"]
+
+  # If your cluster uses HTTPS, uncomment and configure TLS accordingly:
+  # protocol: "https"
+
+  # Authentication (pick one)
+  # api_key: "${ES_API_KEY}"
+  # username: "${ES_USER}"
+  # password: "${ES_PASS}"
+```
+
+
+> [!NOTE]
+> _If you keep `Kibana` bound to `localhost`, only that `machine` can `load dashboards`; setting `host: "http://192.168.2.18:5601"` allows `LAN access`._
 
 
 
 
->>>>>>> 
-# Please modify the below, otherwise by default, `auditbeat` is set to send the "logs" to our "ElasticSearch" at the `localhost`, instead make sure to change it to the "IP Address" of our "Elastic Server", `192.168.2.18`. 
+> # _Alternative outputs: Logstash or Kafka_
+
+> _`Beats` can send `data` to one `output per instance`. If you don’t want to send directly to `Elasticsearch`, you can send to `Logstash` (for parsing/routing) or `Kafka` (for buffering/decoupling), then forward on to `Elasticsearch` from there._
+
+
+```
+# ------------------------------ Logstash Output ------------------------------
+# Enable this if you want Beats -> Logstash -> Elasticsearch
+output.logstash:
+  # One or more Logstash hosts
+  hosts: ["http://192.168.2.18:5044"]
+  loadbalance: true
+
+>>>>>>>
 >>>>>>
->>>>>>>>
->>>>>
->>>
-# Here is where we'll be modifying our hosts: ["localhost:9200"] >>>>> hosts: ["192.168.2.18:9200"]
- 
+>>>>
+>>
 
+  # Optional SSL(Recommended). By default is off.
+  # List of root certificates for HTTPS server verifications.
 
-  # Protocol - either `http` (default) or `https`.
-  #protocol: "https"
+  ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-  # Authentication credentials - either API key or username/password.
-  #api_key: "id:api_key"
-  #username: "elastic"
-  #password: "changeme"
-
-
-
-
-
-
-
-# Another Section : Beats allows us to other sort of Outputs, such as the "Logstash Output", and use the "kafka Server"  instead of the ElasticSearch Server : 
-
-
-# ------------------------------ Logstash Output -------------------------------
-#output.logstash:
-  # The Logstash hosts
-  #hosts: ["localhost:5044"]
-
-  # Optional SSL. By default is off.
-  # List of root certificates for HTTPS server verifications
-  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+  # Client authentication (optional; match Logstash beats input settings)
 
   # Certificate for SSL client authentication
-  #ssl.certificate: "/etc/pki/client/cert.pem"
+  # ssl.certificate: "/etc/pki/client/beats.crt"
 
   # Client Certificate Key
-  #ssl.key: "/etc/pki/client/cert.key"
+  # ssl.key: "/etc/pki/client/beats.key"
+```
+
+
+> # _Start the Services UP - Auditbeat + Kibana :_
+
+
+> - ***Start kibana :*** 
+
+```
+sudo systemctl start kibana
+sudo systemctl enable kibana
+```
 
 
 
+> ***Load Auditbeat assets (run once per cluster)*** :
 
-> # _Start the Services UP - Auditbeat + Kibana_
+```
+sudo auditbeat setup -e
+```
 
-# Finally we've been able to configure both of the services, let's now work on starting both up : 
+```
+INFO  Home path / Config path / Data path / Logs path ...        # Paths are detected correctly
+INFO  Beat ID: e68758c6-...                                      # Unique ID for this Beat instance
+WARN  add_cloud_metadata ... IMDSv2 timeout                       # Harmless if not on AWS/EC2
 
+Overwriting ILM policy is disabled. Set setup.ilm.overwrite: true # FYI: only needed if you re-run and want to replace policies
+INFO  [index-management] Auto ILM enable success                  # ILM turned on
+INFO  [index-management.ilm] ILM policy auditbeat created         # ILM policy created for Auditbeat
 
-# Start kibana : 
+INFO  Set setup.template.name ...                                 # Template name set (ILM-aware)
+INFO  Set setup.template.pattern ...                              # Template pattern set
+INFO  Set settings.index.lifecycle.* in template ...              # Rollover alias / policy wired into template
+INFO  Existing template will be overwritten (overwrite enabled)   # Template overwrite allowed
 
-  $ sudo service kibana start
-
-
-
-
-- ElasticSearch provides us with amazing tooling right "out of the box", like, "loaded templates", dashboards, kibana and many more, but it's as much important to have this "fully setup".   
-
-
-# Very important : Make sure to have the "default templates", indexes loaded, "dashboards and kibana" ready prior to starting "auditbeat". 
-
-
-
-# Let's render this command below, such that we can "examine the logs" outputted to the console, which will give us "confidence" that it can connect to the "ElasticSearch server Stack".
-
-
-
-- e  : logs to our console 
-
-- setup : setup command 
-
+INFO  Try loading template auditbeat-7.17.10 to Elasticsearch      # Connecting to Elasticsearch
+INFO  Template with name "auditbeat-7.17.10" loaded               # Template successfully loaded
+INFO  Loaded index template                                       # Confirmation
+INFO  Index Alias auditbeat-7.17.10 successfully created          # Write alias created
+Index setup finished.                                             # All assets loaded; setup complete
+```
 
 
-# Let's get this going, and just so you're aware this will produce a "series of log events" :  
+> [!NOTE]
+> _The setup subcommand loads Elasticsearch/Kibana assets (index templates, ILM policies, ingest pipelines, and Kibana dashboards). Although the Elastic Stack ships with rich tooling out of the box, these assets must be loaded before starting `Auditbeat` so `data` is `indexed` and `visualized` correctly.
+> The `-e` flag streams logs to the `console` so you can watch `progress`._
 
 
-  $ sudo auditbeat -e setup
+> [!NOTE]
+> _If you re-run `setup` later and want to replace ILM or templates, add in `auditbeat.yml` :
 
+```
+setup.ilm.overwrite: true
+setup.template.overwrite: true
+```
+
+```
 
 2023-05-22T13:40:06.183-0400    INFO    instance/beat.go:698    Home path: [/usr/share/auditbeat] Config path: [/etc/auditbeat] Data path: [/var/lib/auditb
 eat] Logs path: [/var/log/auditbeat] Hostfs Path: [/]                                                                                                      
@@ -3180,21 +3184,13 @@ ff7ee4d4f2b", "libbeat": "7.17.10", "time": "2023-04-23T08:09:56.000Z", "version
 2023-05-22T13:40:09.393-0400    INFO    [beat]  instance/beat.go:1064   Go runtime info {"system_info": {"go": {"os":"linux","arch":
 
 
-
-
-# Refer to the logs below , as a "Proof of Concept", that it is indeed connecting and running the required templates, as well as making a "connection" to our elasticsearch Server. 
-
-
-
-Overwriting ILM policy is disabled. Set `setup.ilm.overwrite: true` for enabling.                                                                                       
+> - Overwriting ILM policy is disabled. Set `setup.ilm.overwrite: true` for enabling.                                                                                       
                                           
 2023-05-22T13:40:09.952-0400    INFO    [index-management]      idxmgmt/std.go:260      Auto ILM enable success.                                              
 2023-05-22T13:40:10.421-0400    INFO    [index-management.ilm]  ilm/std.go:180  ILM policy auditbeat successfully 
 created.                                              
 
-
-
-# Template, index, patterns, graphs, kibana dashboards being loaded : 
+> - Template, index, patterns, graphs, kibana dashboards being loaded : 
 
 2023-05-22T13:40:10.421-0400    INFO    [index-management]      idxmgmt/std.go:396      Set setup.template.name to '{auditbeat-7.17.10 {now/d}-000001}' as ILM is enabled.
 2023-05-22T13:40:10.421-0400    INFO    [index-management]      idxmgmt/std.go:401      Set setup.template.pattern to 'auditbeat-7.17.10-*' as ILM is enabled.          
@@ -3203,11 +3199,7 @@ created.
 2023-05-22T13:40:10.433-0400    INFO    template/load.go:197    Existing template will be overwritten, as overwrite is enabled.
 
 
-
-
-# Connection being made >>>>> 2023-05-22T13:40:10.703-0400    INFO    template/load.go:131    Try loading template auditbeat-7.17.10 to Elasticsearch
-
-
+> - Connection being made >>>>> 2023-05-22T13:40:10.703-0400    INFO    template/load.go:131    Try loading template auditbeat-7.17.10 to Elasticsearch
 
 2023-05-22T13:40:11.387-0400    INFO    template/load.go:123    Template with name "auditbeat-7.17.10" loaded.
 2023-05-22T13:40:11.388-0400    INFO    [index-management]      idxmgmt/std.go:296      Loaded index template.                                                         
@@ -3215,31 +3207,33 @@ created.
 2023-05-22T13:40:12.661-0400    INFO    [index-management.ilm]  ilm/std.go:140  Index Alias auditbeat-7.17.10 successfully created.                                                                                                                                                                                                       
 Index setup finished.                                                               
 
+```
+
+> _After `assets` are in `place`, start the `service` so `events flow to Elasticsearch`. Using `-e` runs in the `foreground` and `streams logs` to your `terminal` (useful for quick verification)_ 
+
+> - ***Start Auditbeat*** :
+
+```
+sudo systemctl start auditbeat
+sudo systemctl enable auditbeat      
+```
+
+> - ***Verify both services :***
 
 
-# Let's enable auditbeat : 
+```
+sudo systemctl status kibana
 
+sudo systemctl status auditbeat
 
-  $ sudo systemctl  enable  --now auditbeat
+# Optional: check Kibana is reachable
 
+curl -I http://<kibana_host_or_ip>:5601
 
-┌──(root㉿kali)-[/etc/elasticsearch]
+sudo auditbeat test output        # confirms connectivity to Elasticsearch
 
-└─# systemctl enable --now auditbeat        
-
-Synchronizing state of auditbeat.service with SysV service script with /lib/systemd/systemd-sysv-install.
-Executing: /lib/systemd/systemd-sysv-install enable auditbeat
-Created symlink /etc/systemd/system/multi-user.target.wants/auditbeat.service → /lib/systemd/system/auditbeat.service.
+```
                                                                                                                                 
-
-
-# Start "auditbeat" : 
-
-
-┌──(root㉿kali)-[/opt]
-
-└─# service auditbeat start 
-
 
 ┌──(root㉿kali)-[/opt]
 
@@ -3319,6 +3313,7 @@ May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http
 
 
 # =================== System: Elasticsearch (Optional) ===================
+
 # These files are used to verify the identity of Kibana to Elasticsearch and are required when
 
 
@@ -3358,7 +3353,7 @@ May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http
 
 
 
-              ****////// Incompatibility Issues - Kibana 8.7 + ElasticSearch 7.17 (No Match) ********/////
+              ****////// Incompatibility Issues - Kibana 8.7 + ElasticSearch 7.17 (No Match) 
 
 
 # It is of utmost importance, that the version for "Kibana and Elasticsearch" matches, in our situation this should work both at "version 7.17"
