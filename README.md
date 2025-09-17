@@ -1029,12 +1029,13 @@ vars:
 
 > [!IMPORTANT]
 > _`Suricata’s checksum gate` is controlled by `checksum-validation`.
-> On `live captures`, NIC `offloading` often makes `packets` look like they have “bad” checksums.
+> On `live captures`, NIC `offloading` often makes `packets` look like they have “bad” checksums._
 >
 >
 >
 > ***To avoid `false drops` disable `checksum validation` in  `IDS tests/replays` when `sniffing live traffic` or `replaying pcaps` through a `NIC`, because offloading (TSO/GSO/GRO, RX/TX checksum offload)
 > can make `Suricata` see `invalid checksums` and `drop/reject packets` that are `actually fine`.****
+
 
 > - ***Change this setting (checksum-validation) to `no` in `suricata.yml` :***
 
@@ -3013,10 +3014,11 @@ sudo systemctl enable --now auditbeat
 sudo journalctl -u auditbeat -e | grep -i audit
 ```
 
-> [!IMPORTANT]
-> 
-> "elasticsearch server" has not loaded yet, we may obtain an "error" ;  dial up... ERROR dial tcp 192.168.2.18:9200: connect: connection refused. 
-
+> [!WARNING]
+> _If Elasticsearch isn’t running or reachable, you may see:
+> dial tcp 192.168.2.18:9200: connect: connection refused
+> Start or fix Elasticsearch, then rerun sudo auditbeat test output.
+> The warning TLS... secure connection disabled appears when using http://. If your cluster uses TLS, switch to https:// and configure SSL settings in auditbeat.yml._ 
 
 
 Furthermore, we'll quickly be going over the "Kibana Section" : 
@@ -3130,9 +3132,7 @@ output.elasticsearch:
 
 
 
-
-                      *********//////  Start the Services UP - Auditbeat + Kibana  *********////// 
-
+> # _Start the Services UP - Auditbeat + Kibana_
 
 # Finally we've been able to configure both of the services, let's now work on starting both up : 
 
