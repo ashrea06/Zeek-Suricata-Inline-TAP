@@ -1028,25 +1028,20 @@ vars:
 
 
 > [!IMPORTANT]
-> - ***Make sure to change/disable, "chechsum validation : No", and the reason for this, is we want to avoid "rejecting or dropping off packets", in case if the "packet capture" software being used, oversees the captured packets not passing the "checksum validation."***
-> - ***Change this setting to `no` #   checksum-validation: yes/ = `no`    # To validate the checksum of received***
+> _`Suricata’s checksum gate` is controlled by `checksum-validation`.
+> On `live captures`, NIC `offloading` often makes `packets` look like they have “bad” checksums.
+>
+>
+>
+> ***To avoid `false drops` disable `checksum validation` in  `IDS tests/replays` when `sniffing live traffic` or `replaying pcaps` through a `NIC`, because offloading (TSO/GSO/GRO, RX/TX checksum offload)
+> can make `Suricata` see `invalid checksums` and `drop/reject packets` that are `actually fine`.****
 
+> - ***Change this setting (checksum-validation) to `no` in `suricata.yml` :***
 
 ```
-# Stream engine settings. Here the TCP stream tracking and reassembly 
-# engine is configured.
-#
-# stream:
-#   memcap: 64mb                # Can be specified in kb, mb, gb.  Just a
-#                               # number indicates it's in bytes.
-#   memcap-policy: ignore       # Can be "drop-flow", "pass-flow", "bypass",
-#                               # "drop-packet", "pass-packet", "reject" or
-#                               # "ignore" default is "ignore"
+# Global packet checksum verification
+checksum-validation: no
 ```
-
-
-
-
 
 > # _Creating a "Service File for Suricata(Start or Stop, for e.g service ssh start)_
 
