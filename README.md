@@ -2182,7 +2182,7 @@ sudo filebeat keystore add ES_API_KEY
 
 
 
-> ***Edit the `Filebeat configuration` to `point` the `Elasticsearch output` to your `cluster and reference secrets` from the `keystore (${ES_HOST}, ${ES_USER}, ${ES_PASS} or ${ES_API_KEY})`:***
+> - ***Edit the `Filebeat configuration` to `point` the `Elasticsearch output` to your `cluster and reference secrets` from the `keystore (${ES_HOST}, ${ES_USER}, ${ES_PASS} or ${ES_API_KEY})`:***
 
 
 ```
@@ -3139,7 +3139,8 @@ INFO  Home path / Config path / Data path / Logs path ...        # Paths are det
 INFO  Beat ID: e68758c6-...                                      # Unique ID for this Beat instance
 WARN  add_cloud_metadata ... IMDSv2 timeout                       # Harmless if not on AWS/EC2
 
-Overwriting ILM policy is disabled. Set setup.ilm.overwrite: true # FYI: only needed if you re-run and want to replace policies
+> - Overwriting ILM policy is disabled. Set setup.ilm.overwrite: true # FYI: only needed if you re-run and want to replace policies
+
 INFO  [index-management] Auto ILM enable success                  # ILM turned on
 INFO  [index-management.ilm] ILM policy auditbeat created         # ILM policy created for Auditbeat
 
@@ -3152,7 +3153,9 @@ INFO  Try loading template auditbeat-7.17.10 to Elasticsearch      # Connecting 
 INFO  Template with name "auditbeat-7.17.10" loaded               # Template successfully loaded
 INFO  Loaded index template                                       # Confirmation
 INFO  Index Alias auditbeat-7.17.10 successfully created          # Write alias created
+
 Index setup finished.                                             # All assets loaded; setup complete
+
 ```
 
 
@@ -3162,7 +3165,7 @@ Index setup finished.                                             # All assets l
 
 
 > [!NOTE]
-> _If you re-run `setup` later and want to replace ILM or templates, add in `auditbeat.yml` :
+> _If you re-run `setup` later and want to replace ILM or templates, add in `auditbeat.yml` :_
 
 ```
 setup.ilm.overwrite: true
@@ -3218,22 +3221,33 @@ sudo systemctl start auditbeat
 sudo systemctl enable auditbeat      
 ```
 
-> - ***Verify both services :***
-
+> - ***Verify Kibana service :***
 
 ```
 sudo systemctl status kibana
+```
 
-sudo systemctl status auditbeat
-
-# Optional: check Kibana is reachable
-
-curl -I http://<kibana_host_or_ip>:5601
-
-sudo auditbeat test output        # confirms connectivity to Elasticsearch
+> -***Check Kibana is `reachable`:*** 
 
 ```
+curl -I http://<kibana_host_or_ip>:5601
+```
+
+> - ***Verify the status of auditbeat :***
+
+```
+sudo systemctl status auditbeat
+```
+
+> ***Confirm connectivity to Elasticsearch :*** 
+
+```
+sudo auditbeat test output
+```
                                                                                                                                 
+
+
+
 
 ┌──(root㉿kali)-[/opt]
 
@@ -3257,7 +3271,11 @@ tcp6       0      0 :::8000                 :::*                    LISTEN      
  >>>>> tcp6       0      0 192.168.2.18:9200       :::*                    LISTEN      7774/java           
 
 
-# As we try to connect to the Kibana, at this address location http://localhost:5601, this is constantly rendering the same error, "Kibana Server not ready yet."
+
+
+> [!WARNING]
+> 
+> Connecting  to the Kibana, at this address location http://localhost:5601, this is constantly rendering the same error, "Kibana Server not ready yet."
 
 
 
