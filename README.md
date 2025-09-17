@@ -1705,8 +1705,8 @@ logs
 
 
 > [!NOTE]
-> _Filebeat is an "agent" which will be in "charge of taking our logs" and place them into "elastic search" for "visualization purposes"(Kibana)._ 
-> _ We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
+> _`Filebeat` is an `agent` which will be in `charge of taking our logs` and place them into `Elasticsearch` for `Visualization purposes`(Kibana).
+>  We'll first be downloading its `signing key installation` is in `GPG` which stands for `GNU Privacy Guard` and is better known as `GnuPG` or just `GPG`, is an `implementation` of `public key cryptography`._
 
 
 
@@ -3227,7 +3227,7 @@ sudo systemctl enable auditbeat
 sudo systemctl status kibana
 ```
 
-> -***Check Kibana is `reachable`:*** 
+> - ***Check Kibana is `reachable`:*** 
 
 ```
 curl -I http://<kibana_host_or_ip>:5601
@@ -3245,10 +3245,7 @@ sudo systemctl status auditbeat
 sudo auditbeat test output
 ```
                                                                                                                                 
-
-
-
-
+```
 ┌──(root㉿kali)-[/opt]
 
 └─# netstat -talpn                            
@@ -3265,40 +3262,58 @@ tcp        0      1 192.168.2.18:36078      169.254.169.254:80      SYN_SENT    
 tcp        0      0 127.0.0.1:8001          127.0.0.1:59676         ESTABLISHED 1019/velociraptor.b 
 tcp        0      0 127.0.0.1:59676         127.0.0.1:8001          ESTABLISHED 1019/velociraptor.b 
 
- >>>>>  tcp6       0      0 192.168.2.18:9300       :::*                    LISTEN      7774/java           
+> - tcp6       0      0 192.168.2.18:9300       :::*                    LISTEN      7774/java           
+
 tcp6       0      0 :::8000                 :::*                    LISTEN      1019/velociraptor.b 
 
- >>>>> tcp6       0      0 192.168.2.18:9200       :::*                    LISTEN      7774/java           
+> - tcp6       0      0 192.168.2.18:9200       :::*                    LISTEN      7774/java           
+```
+
+> [!NOTE]
+> _`Elasticsearch` is `listening` and `reachable` on `192.168.2.18:9200/9300`.
+> `Kibana` isn’t `listed` here; the `journal` shows it `binds` to `http://localhost:5601` (preboot), which is fine if you only `access` from the `local box`._
 
 
 
+> - ****Quick Log Check :***
 
-> [!WARNING]
-> 
-> Connecting  to the Kibana, at this address location http://localhost:5601, this is constantly rendering the same error, "Kibana Server not ready yet."
+```
+journalctl -u kibana -f
+```
 
-
-
-                       ///////// ****** Persistent Ongoing Workaround + Log Analysis  ***************//////////  
-
-# Let's analyze the logs at this directory : /var/log/kibana
-
-- Check the "logs being outputted", when the "kibana service" is being restarted.
-
-  - Try any of these "commands", for any "pertinent issues" related to "firewall", "incompatibility".
-
-
-# Let's start to dig through the logs : 
-
-  $ journalctl  --unit kibana
-
+```
+$ journalctl  --unit kibana
 
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudChat" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudExperiments" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudFullStory" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.551-04:00][INFO ][plugins-service] Plugin "cloudGainsight" is disabled.
 May 22 23:32:35 kali kibana[310957]: [2023-05-22T23:32:35.559-04:00][INFO ][plugins-service] Plugin "profiling" is disabled.
-May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http.server.Preboot] http server running at http://localhost:5601
+May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http.server.Preboot] http server running at http://localhost:56
+```
+
+>[!WARNING]
+> ***`Kibana server` not `ready yet` during `startup` can be `normal` for a `short time`. If it `persists`, it almost always means `one` :***
+ 
+> - `Kibana` can’t talk to `Elasticsearch` (wrong URL, ES not running, firewall).
+> - `Wrong credentials` or `security mismatch` (you set a `username/password` in Kibana, but `Elasticsearch security` is `disabled—or vice-versa`).
+> - `Saved-objects migration` is `stuck`(permissions on the `.kibana index`, or `multiple Kibana versions/instances` against the `same ES`).
+
+
+
+
+> [!TIP] 1
+> _Case A — Elasticsearch 7.x with security disabled (your earlier curl looked like 7.17.x without auth)_ :
+
+
+```
+# /etc/kibana/kibana.yml
+server.host: "localhost"           # or "192.168.2.18" if you want LAN access
+elasticsearch.hosts: ["http://192.168.2.18:9200"]
+
+# Do NOT set elasticsearch.username/password in this case.
+# Remove or comment them out if present.
+```
 
 
 
@@ -3307,51 +3322,55 @@ May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http
 
 
 
-  # We've also made some changes to the file, "/etc/kbana/kibana.yml" : 
+# Let's analyze the logs at this directory : /var/log/kibana
 
+- Check the "logs being outputted", when the "kibana service" is being restarted.
+
+
+
+
+
+> - ***Edit `kibana.yml` file :***
+
+```
+# =================== System: Kibana Server ===================
+# Bind only to localhost (CLI access) or to your LAN IP for remote access.
+server.host: "localhost"              # or "192.168.2.18"
 
 # =================== System: Elasticsearch ===================
+
 # The URLs of the Elasticsearch instances to use for all your queries.
-
-
->>>>>elasticsearch.hosts: ["http://192.168.2.18:9200"]
+elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 # If your Elasticsearch is protected with basic authentication, these settings provide
 # the username and password that the Kibana server uses to perform maintenance on the Kibana
 # index at startup. Your Kibana users still need to authenticate with Elasticsearch, which
 # is proxied through the Kibana server.
 
-
->>>>>>>
->>>>>>>>>
-# These are the "newly added" or "uncommented"settings needed for "kibana" to run properly : 
->>>>>>elasticsearch.username: "kibana_system"
->>>>elasticsearch.password: "pass"
+# Only set these if Elasticsearch security is enabled
+# elasticsearch.username: "kibana_system"
+# elasticsearch.password: "<password>"
+```
 
 
 
-# =================== System: Elasticsearch (Optional) ===================
 
-# These files are used to verify the identity of Kibana to Elasticsearch and are required when
-
-
->>>> xpack.security.enabled : true
-
-# xpack.security.http.ssl.client_authentication in Elasticsearch is set to required.
-#elasticsearch.ssl.certificate: /path/to/your/client.crt
-#elasticsearch.ssl.key: /path/to/your/client.key
-#xpack.encryptedSavedObjects.encryptionKey: "rG*3H&1a#vY8p$9aK5mY2sI7zQ6xX4c"
+Verify that the  
 
 
-
-      
-      
-- Restart Kibana for the changes to take effect : 
+setup.kibana.host: "http://localhost:5601"
+ 
 
 
-    $ service kibana restart 
+> - ***Restart kibana :*** 
+
+```
+sudo systemctl restart kibana
+```
 
 
+
+Beats “setup.kibana” (in auditbeat/filebeat) vs Kibana’s own config
 
 # Restart AuditBeat : 
 
