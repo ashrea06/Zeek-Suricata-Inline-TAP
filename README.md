@@ -3475,98 +3475,99 @@ sudo systemctl enable --now auditbeat
 
 > [!TIP]
 > _`IMDSv2 token ... 169.254.169.254 timeout` is `harmless` on `non-AWS machines`. It’s just the `cloud metadata processor` probing for `EC2`; it will `continue` without it.
-> if `Kibana` still isn’t `ready`, review `20–30 lines` around the `error` in `journalctl -u kibana -f`, and this usually `pinpoints connection, auth`, or `saved-objects migration issues`.
+> If `Kibana` still isn’t `ready`, review `20–30 lines` around the `error` in `journalctl -u kibana -f`, and this usually `pinpoints connection, auth`, or `saved-objects migration issues`._
 
-> _As a `good practice`, after each change, verify Kibana loads :_
+> ***As a `good practice`, after each change, verify Kibana loads :***
 
 ```
 Local box: http://localhost:5601
 From LAN: http://192.168.2.18:5601
 ```
 
-              ****////// Incompatibility Issues - Kibana 8.7 + ElasticSearch 7.17 (No Match) 
 
 
-# It is of utmost importance, that the version for "Kibana and Elasticsearch" matches, in our situation this should work both at "version 7.17"
+> # ⚠️ Version mismatch: Kibana 8.7 vs Elasticsearch 7.17 (incompatible) 
 
+> _`Kibana’s major version` must match `Elasticsearch’s` major `version`. In your case, run both at `7.17.x` (or upgrade both to 8.x together)._
 
   
-  
-  - Proceed with the "uninstallation" of the Previous Version of Kibana : 
+  > - ***1. Uninstall Kibana (8.x)*** :
+
+```
+sudo systemctl stop kibana
+sudo apt remove --purge -y kibana
+# (optional) clean leftovers
+
+sudo rm -rf /etc/kibana /var/log/kibana /usr/share/kibana
+```
+
+> - ***2. Stop and remove Elasticsearch (wrong version) :***
+
+> ⚠️ `Data loss warning` : Removing `/var/lib/elasticsearch` permanently `deletes indices`. `Back up` first if you need `them`._
 
 
+```
+sudo systemctl stop elasticsearch
+sudo apt remove --purge -y elasticsearch
 
- $ apt remove kibana
+# remove data/config/logs
 
+sudo rm -rf /var/lib/elasticsearch /etc/elasticsearch /var/log/elasticsearch /usr/share/elasticsearch
 
+# remove service account (optional; only if you’re “factory resetting”)
 
+sudo deluser elasticsearch 2>/dev/null || true
+sudo delgroup elasticsearch 2>/dev/null || true
+```
 
-# Try the following, in case you would need to remove the "elasticsearch" to match the right version or reinstall the firmware upto a "factory reset" :  
+> - ***3. Fix APT repo & key (remove wrong repo; add 7.x) :***
 
+> _Remove any Elastic 8.x list and the key you installed for it :_
 
+```
+sudo rm -f /etc/apt/sources.list.d/elastic-8.x.list
+sudo rm -f /usr/share/keyrings/elastic-archive-keyring.gpg
+```
 
+> _Add the official 7.x repo & key (modern method) :_
 
-# First step shut down the engine : 
+```
+sudo install -m 0755 -d /usr/share/keyrings
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch \
+  | sudo gpg --dearmor -o /usr/share/keyrings/elastic-archive-keyring.gpg
 
+echo "deb [signed-by=/usr/share/keyrings/elastic-archive-keyring.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
+```
 
-  $ service elasticsearch stop
+> - ***4. Install Elasticsearch 7.17.x and Kibana 7.17.x*** :
 
+```
+sudo apt update
+sudo apt install -y elasticsearch kibana
+```
 
-# Start removing the "gpg key", from this path location : 
+> - ***5. Start and enable services :***
 
+```
+sudo systemctl enable --now elasticsearch
 
-┌──(root㉿kali)-[/usr/share/keyrings]                                                                                                                                         
-└─
+# quick check (no security in default 7.x):
+curl -s http://127.0.0.1:9200 | jq . 2>/dev/null || curl -s http://127.0.0.1:9200
 
-# rm -rf elasticsearch-keyring.gpg              
+sudo systemctl enable --now kibana
+sudo systemctl status kibana
+```
 
+> - ***6. Point Beats and load assets*** :
 
+```
+# In auditbeat/filebeat: set output.elasticsearch.hosts to your ES (e.g., http://192.168.2.18:9200)
+# and setup.kibana.host to your Kibana (e.g., http://192.168.2.18:5601)
 
-
-
-- Below is the "Common installation path" for "ElasticSearch" : 
-
-
-  $  sudo apt remove elasticsearch 
-
-
-- Make sure to delete each indivildual directory :
-
-
-# Installation Directory : 
-
-
-     $ sudo rm -rf /usr/share/elasticsearch
-
-     $  sudo rm -rf /usr/local/elasticsearch
-
-
-# Path.data Directory : 
-
-     $ sudo rm -rf /var/lib/elasticsearch  
-
-
-     $ sudo rm -rf /var/lib/elasticsearch 
-
-
-
-# Path.logs Directory :
-
-     $ sudo rm -rf /var/log/elasticsearch
-
-
-# Elastic Configuration files  :
-
-
-    $ sudo rm -rf /etc/elasticsearch
-
-
-# Remove ElasticSearch "User and Group" :
-
-   $ sudo deluser elasticsearch
-
-   $ sudo delgroup elasticsearch
-
+sudo auditbeat setup -e
+sudo systemctl restart auditbeat
+```
 
 
 
