@@ -3445,24 +3445,44 @@ setup.kibana.host: "http://localhost:5601"
 
 > - _1. Ensure `Elasticsearch` is `healthy`: curl 192.168.2.18:9200 (add auth if enabled)._
 
-> - ***2. Fix `Kibana` credentials/URL according to `Case A or B`;***
+> - ***2. Fix `Kibana` credentials/URL according to `Case A or B`:***
+
 ```
 sudo systemctl restart kibana
 ```
-> - 3. Tail `Kibana logs` until you see `Kibana is now available`.
 
-> - ***4. `Restart` & `Re-run` Auditbeat `setup` if `needed` :***
+> - ***3. Tail `Kibana logs` until you see `Kibana is now available`:***
+
+```
+journalctl -u kibana -f,
+```
+
+> - ***4. `Restart` & `re-run` Auditbeat `setup` if `needed` :***
 
 ```
 sudo service auditbeat restart
 sudo auditbeat setup -e
 ```
 
- 
-# As a good practice, after each and every changes, verify that "kibana works fine" while connecting to the URL : http://localhost:5601
+> - ***Enable services at boot :***
+
+ ```
+sudo systemctl enable --now kibana
+sudo systemctl enable --now auditbeat
+```
 
 
 
+> [!TIP]
+> _`IMDSv2 token ... 169.254.169.254 timeout` is `harmless` on `non-AWS machines`. It’s just the `cloud metadata processor` probing for `EC2`; it will `continue` without it.
+> if `Kibana` still isn’t `ready`, review `20–30 lines` around the `error` in `journalctl -u kibana -f`, and this usually `pinpoints connection, auth`, or `saved-objects migration issues`.
+
+> _As a `good practice`, after each change, verify Kibana loads :_
+
+```
+Local box: http://localhost:5601
+From LAN: http://192.168.2.18:5601
+```
 
               ****////// Incompatibility Issues - Kibana 8.7 + ElasticSearch 7.17 (No Match) 
 
