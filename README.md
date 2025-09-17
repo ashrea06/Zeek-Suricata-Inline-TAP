@@ -3307,7 +3307,7 @@ May 22 23:32:36 kali kibana[310957]: [2023-05-22T23:32:35.927-04:00][INFO ][http
 
 
 > [!TIP] 
-> _Case A : `Elasticsearch` with `security disabled` :
+> _Case A : `Elasticsearch` with `security disabled` :_
 
 ```
 # /etc/kibana/kibana.yml
@@ -3335,7 +3335,7 @@ sudo systemctl restart kibana
 
 
 > [!TIP]
-> _CAse B : `Elasticsearch` with `security enabled`(basic auth)
+> _Case B : `Elasticsearch` with `security enabled`(basic auth)_
 
 > _Important: `xpack.security.*` is an `Elasticsearch setting`, not a `Kibana setting`. Put it in `/etc/elasticsearch/elasticsearch.yml`, not `kibana.yml.
 >  Kibana only needs the Elasticsearch URL and, if security is on, valid credentials for kibana_system`:_  
@@ -3371,11 +3371,38 @@ elasticsearch.password: "<the password you set>"
 sudo systemctl restart kibana
 ```
 
+
+
+> # _`Minimal` health `checks`_
+
+> - ***From the Kibana host :***
+```
+curl -s http://127.0.0.1:5601/status | head -n 20
+curl -s http://192.168.2.18:9200    # add -u elastic:<pass> if security enabled
+```
+
+
+> - ***Check Kibana indices exist and green :***
+
+```
+curl -s 'http://192.168.2.18:9200/_cat/indices/.kibana*?v'
+```
+
+
+
+> [!WARNING]
+> _If `.kibana` shows `red/yellow` or `forbidden/unauthorized` in `Kibana logs, it’s a `credentials or privilege issue`.
+>  Fix the kibana_system password and restart._
+
 > - ***Edit `kibana.yml` file :***
 
 ```
 # =================== System: Kibana Server ===================
 # Bind only to localhost (CLI access) or to your LAN IP for remote access.
+
+>>>>>>>
+>>>>
+>>
 server.host: "localhost"              # or "192.168.2.18"
 
 # =================== System: Elasticsearch ===================
@@ -3396,38 +3423,41 @@ elasticsearch.hosts: ["http://192.168.2.18:9200"]
 
 
 
+> - ***In `Beats configs`(auditbeat/filebeat), keep :***
 
-
-Verify that the  
-
-
+```
 setup.kibana.host: "http://localhost:5601"
- 
+```
 
 
-> - ***Restart kibana :*** 
+> [!NOTE]
+> _`DIfference` between Beats, `setup.kibana` (in auditbeat/filebeat) vs `Kibana’s` own `config`, whether you bound Kibana to the LAN IP 
+> `http://192.168.2.18:5601` or `localhost`, this is just for `Beats` to `load dashboards` via the `Kibana API`.
+> In Kibana’s config (/etc/kibana/kibana.yml), set server.host and elasticsearch.hosts as above._
 
+
+
+
+
+> [!TIP]
+> _`Workflow` to `stabilize things`_ : 
+
+> - _1. Ensure `Elasticsearch` is `healthy`: curl 192.168.2.18:9200 (add auth if enabled)._
+
+> - ***2. Fix `Kibana` credentials/URL according to `Case A or B`;***
 ```
 sudo systemctl restart kibana
 ```
+> - 3. Tail `Kibana logs` until you see `Kibana is now available`.
 
+> - ***4. `Restart` & `Re-run` Auditbeat `setup` if `needed` :***
 
+```
+sudo service auditbeat restart
+sudo auditbeat setup -e
+```
 
-Beats “setup.kibana” (in auditbeat/filebeat) vs Kibana’s own config
-
-# Restart AuditBeat : 
-
-  $ sudo service auditbeat restart
-
-
-
-
-# Re-run the auditBeat setup : 
-
-  $ sudo auditbeat -e setup  
-
-
-
+ 
 # As a good practice, after each and every changes, verify that "kibana works fine" while connecting to the URL : http://localhost:5601
 
 
