@@ -3486,7 +3486,7 @@ From LAN: http://192.168.2.18:5601
 
 
 
-> # ⚠️ Version mismatch: Kibana 8.7 vs Elasticsearch 7.17 (incompatible) 
+> # ⚠️_Version mismatch: Kibana 8.7 vs Elasticsearch 7.17 (incompatible)_
 
 > _`Kibana’s major version` must match `Elasticsearch’s` major `version`. In your case, run both at `7.17.x` (or upgrade both to 8.x together)._
 
